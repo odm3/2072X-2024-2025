@@ -1,7 +1,11 @@
 #include "main.h"
 #include "LemLib/api.hpp"
+#include "globals.hpp"
+#include "lemlib/chassis/chassis.hpp"
+#include "pros/rtos.h"
+#include "pros/rtos.hpp"
 
-using namespace globals;
+// using namespace globals;
 
 /**
  * A callback function for LLEMU's center button.
@@ -13,9 +17,9 @@ void on_center_button() {
 	static bool pressed = false;
 	pressed = !pressed;
 	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
+		pros::lcd::set_text(8, "I was pressed!");
 	} else {
-		pros::lcd::clear_line(2);
+		pros::lcd::clear_line(8);
 	}
 }
 
@@ -28,7 +32,7 @@ void on_center_button() {
 void initialize() {
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Haiii :3 - Ansh");
-	globals::chassis.calibrate();
+	chassis.calibrate();
 	pros::lcd::register_btn1_cb(on_center_button);
 
 	pros::Task screen_task([&]() {
@@ -39,7 +43,7 @@ void initialize() {
             pros::lcd::print(5, "Theta: %f", chassis.getPose().theta); // heading
 			 // print measurements from the rotation sensors
         	pros::lcd::print(6, "Rotation Sensor: %i", odom_vert_sensor.get_position());
-        	pros::lcd::print(7, "Rotation Sensor: %i", odom_hori_sensor.get_position());
+        	pros::lcd::print(7, "Rotation Sensor: %i", odom_hozi_sensor.get_position());
             // delay to save resources
             pros::delay(20);
         }
@@ -105,6 +109,7 @@ void opcontrol() {
 
 		chassis.tank(leftControl, rightControl, false);
 
-	pros::delay(20);  // Run for 20 ms then update
+
+	pros::c::delay(25);
 	}
 }

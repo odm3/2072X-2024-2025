@@ -1,8 +1,7 @@
+#pragma once
 
 #include "LemLib/api.hpp"
-
- #pragma once 
-// V5 ports
+#include "lemlib/chassis/trackingWheel.hpp"
 
 
 #define PORT_LF -1
@@ -35,39 +34,11 @@
 #define HORIZONTAL_OFFSET 0
 
 #define DRIVE_CURVE 1
-
-namespace  globals {
-
     //chassis
 
-extern pros::Motor LF_motor;
-extern pros::Motor LM_motor;
-extern pros::Motor LB_motor;
-extern pros::Motor RF_motor;
-extern pros::Motor RM_motor;
-extern pros::Motor RB_motor;
-extern pros::Motor LPTO_motor;
-extern pros::Motor RPTO_motor;
-
-extern pros::MotorGroup left_chassis;
-extern pros::MotorGroup right_chassis;
-
-extern lemlib::Drivetrain drivetrain;
-
-extern pros::Imu IMU;
-
 extern pros::Rotation odom_vert_sensor;
-extern pros::Rotation odom_hori_sensor;
+extern pros::Rotation odom_hozi_sensor;
 
-extern lemlib::TrackingWheel odom_vert_wheel;
-extern lemlib::TrackingWheel odom_hori_wheel;
-
-extern lemlib::OdomSensors odom_sensors;
-
-extern lemlib::ControllerSettings lateral_controller;
-extern lemlib::ControllerSettings angular_controller;
-
-extern lemlib::ExpoDriveCurve lateral_curve;
 
 extern lemlib::Chassis chassis;
 
@@ -86,5 +57,4 @@ extern pros::adi::DigitalOut mogo_clamp;
 
     //other shii
 
-}
 

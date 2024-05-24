@@ -2,7 +2,7 @@
 #include "LemLib/api.hpp"
 #include "globals.hpp"
 
-using namespace globals;
+// using namespace globals;
 
 //individual motor delcarations
 pros::Motor LF_motor(PORT_LF, pros::MotorGears::blue);
@@ -20,11 +20,11 @@ pros::MotorGroup left_chassis({ PORT_LF, PORT_LM, PORT_LB }, pros::MotorGearset:
 pros::MotorGroup right_chassis({ PORT_RF, PORT_RM, PORT_RB }, pros::MotorGearset::blue);
 
 // drivetrain settings
-lemlib::Drivetrain drivetrain(&globals::left_chassis, // left motor group
-                              &globals::right_chassis, // right motor group
+lemlib::Drivetrain drivetrain(&left_chassis, // left motor group
+                              &right_chassis, // right motor group
                               13, // 10 inch track width
                               lemlib::Omniwheel::NEW_325, // using new 4" omnis
-                              450, // drivetrain rpm is 360
+                              450, // drivetrain rpm is 450
                               2 // horizontal drift is 2 (for now)
 );
 
@@ -36,10 +36,10 @@ pros::Rotation odom_vert_sensor(PORT_ODOM_VERT);
 pros::Rotation odom_hozi_sensor(PORT_ODOM_HORI);
 
 //makes odom tracking wheel configured 
-lemlib::TrackingWheel odom_vert_wheel(&globals::odom_vert_sensor, lemlib::Omniwheel::NEW_2, VERTICAL_OFFSET);
-lemlib::TrackingWheel odom_hori_wheel(&globals::odom_hori_sensor, lemlib::Omniwheel::NEW_2, HORIZONTAL_OFFSET);
+lemlib::TrackingWheel odom_vert_wheel(&odom_vert_sensor, lemlib::Omniwheel::NEW_2, VERTICAL_OFFSET);
+lemlib::TrackingWheel odom_hori_wheel(&odom_hozi_sensor, lemlib::Omniwheel::NEW_2, HORIZONTAL_OFFSET);
 
-lemlib::OdomSensors odom_sensors(&globals::odom_vert_wheel, nullptr, &globals::odom_hori_wheel, nullptr, &globals::IMU);
+lemlib::OdomSensors odom_sensors(&odom_vert_wheel, nullptr, &odom_hori_wheel, nullptr, &IMU);
 
 // makes lateral PID controller
 lemlib::ControllerSettings lateral_controller(
@@ -70,4 +70,4 @@ lemlib::ControllerSettings angular_controller(
 lemlib::ExpoDriveCurve lateral_curve(3, 10, DRIVE_CURVE);
 
 //makes chassis
-lemlib::Chassis chassis(globals::drivetrain, globals::lateral_controller, globals::angular_controller, globals::odom_sensors, &globals::lateral_curve);
+lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, odom_sensors, &lateral_curve);
