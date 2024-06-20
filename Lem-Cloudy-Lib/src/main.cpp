@@ -1,7 +1,10 @@
 #include "main.h"
 #include "LemLib/api.hpp"
-#include "globals.hpp"
 #include "lemlib/chassis/chassis.hpp"
+#include "lemlib/pid.hpp"
+#include "pros/misc.h"
+#include "pros/misc.hpp"
+#include "pros/motors.h"
 #include "pros/rtos.h"
 #include "pros/rtos.hpp"
 
@@ -49,24 +52,14 @@ void initialize() {
         }
     });
 	
+
+	/*pros::c::controller_rumble(pros::E_CONTROLLER_MASTER,"-.");*/
 }
 
-/**
- * Runs while the robot is in the disabled state of Field Management System or
- * the VEX Competition Switch, following either autonomous or opcontrol. When
- * the robot is enabled, this task will exit.
- */
+//yap
 void disabled() {}
 
-/**
- * Runs after initialize(), and before autonomous when connected to the Field
- * Management System or the VEX Competition Switch. This is intended for
- * competition-specific initialization routines, such as an autonomous selector
- * on the LCD.
- *
- * This task will exit when the robot is enabled and autonomous or opcontrol
- * starts.
- */
+//yap
 void competition_initialize() {}
 
 /**
@@ -80,7 +73,11 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+
+chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
+
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -96,18 +93,20 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
 
+	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
 
 	while (true) {
-		// pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
-		// 	(pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-		// 	(pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);  // Prints status of the emulated screen LCDs
-
-		int leftControl = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-		int rightControl = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
+		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
+			(pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
+			(pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);  // Prints status of the emulated screen LCDs
+		pros::Controller master(pros::E_CONTROLLER_MASTER);
+	
+			int leftControl = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+			int rightControl = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
 
 		chassis.tank(leftControl, rightControl, false);
+
 
 
 	pros::c::delay(25);
