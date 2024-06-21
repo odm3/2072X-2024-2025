@@ -40,8 +40,8 @@
  * You should add more #includes here
  */
 //#include "okapi/api.hpp"
-#include "device setup.hpp"
-#include "make things move.hpp"
+#include "devices.hpp"
+
 // #include "LemLib/api.hpp"
 
 /**
