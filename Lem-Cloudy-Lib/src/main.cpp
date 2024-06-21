@@ -1,12 +1,6 @@
 #include "main.h"
-#include "LemLib/api.hpp"
-#include "lemlib/chassis/chassis.hpp"
-#include "lemlib/pid.hpp"
-#include "pros/misc.h"
-#include "pros/misc.hpp"
-#include "pros/motors.h"
-#include "pros/rtos.h"
-#include "pros/rtos.hpp"
+#include "devices.hpp"
+
 
 // using namespace globals;
 
@@ -60,7 +54,8 @@ void initialize() {
 void disabled() {}
 
 //yap
-void competition_initialize() {}
+void competition_initialize(
+) {}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -95,15 +90,17 @@ chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
 void opcontrol() {
 
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
+	intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	conveyor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
 	while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 			(pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 			(pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);  // Prints status of the emulated screen LCDs
-		pros::Controller master(pros::E_CONTROLLER_MASTER);
 	
-			int leftControl = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-			int rightControl = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
+			int leftControl = controlla.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+			int rightControl = controlla.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
 
 		chassis.tank(leftControl, rightControl, false);
 

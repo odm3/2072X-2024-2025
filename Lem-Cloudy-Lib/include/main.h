@@ -40,9 +40,17 @@
  * You should add more #includes here
  */
 //#include "okapi/api.hpp"
-#include "devices.hpp"
 
-// #include "LemLib/api.hpp"
+#include "LemLib/api.hpp"
+#include "devices.hpp"
+#include "lemlib/chassis/chassis.hpp"
+#include "lemlib/pid.hpp"
+#include "pros/misc.h"
+#include "pros/misc.hpp"
+#include "pros/motors.h"
+#include "pros/rtos.h"
+#include "pros/rtos.hpp"
+
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do

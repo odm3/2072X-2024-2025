@@ -1,15 +1,15 @@
 #include "main.h"
-#include "LemLib/api.hpp"
 
 //creates controller
+pros::Controller controlla (pros::E_CONTROLLER_MASTER);
 
-//creates motor variables with specified ports and gearsets
-pros::Motor LF_motor(PORT_LF, pros::MotorGears::blue);
-pros::Motor LM_motor(PORT_LM, pros::MotorGears::blue);;
-pros::Motor LB_motor(PORT_LB, pros::MotorGears::blue);;
-pros::Motor RF_motor(PORT_RF, pros::MotorGears::blue);;
-pros::Motor RM_motor(PORT_RM, pros::MotorGears::blue);;
-pros::Motor RB_motor(PORT_RB, pros::MotorGears::blue);;
+//creates drive motors with specified ports and gearsets
+// pros::Motor LF_motor(PORT_LF, pros::MotorGears::blue);
+// pros::Motor LM_motor(PORT_LM, pros::MotorGears::blue);;
+// pros::Motor LB_motor(PORT_LB, pros::MotorGears::blue);;
+// pros::Motor RF_motor(PORT_RF, pros::MotorGears::blue);;
+// pros::Motor RM_motor(PORT_RM, pros::MotorGears::blue);;
+// pros::Motor RB_motor(PORT_RB, pros::MotorGears::blue);;
 
 //creates left motor groups with inducidual motors listed above
 pros::MotorGroup left_chassis({ PORT_LF, PORT_LM, PORT_LB }, pros::MotorGearset::blue);
@@ -71,3 +71,14 @@ lemlib::ExpoDriveCurve lateral_curve(3, 10, DRIVE_CURVE);
 
 //creates chassis variable with all listed above
 lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, odom_sensors, &lateral_curve);
+
+//mechanism motors
+pros::Motor intake(PORT_INTAKE, pros::MotorGears::green);
+pros::Motor conveyor(PORT_CONVEYOR, pros::MotorGears::green);
+pros::MotorGroup arm({PORT_ARM_LEFT, PORT_ARM_RIGHT}, pros::MotorGears::green);
+
+//pistons
+pros::adi::DigitalOut intake_lift(PORT_INTAKE_LIFT, LOW);
+pros::adi::DigitalOut clamp(PORT_CLAMP, LOW);
+pros::adi::DigitalOut claw(PORT_CLAW, LOW);
+pros::adi::DigitalOut doinker(PORT_DOINKER, LOW);
