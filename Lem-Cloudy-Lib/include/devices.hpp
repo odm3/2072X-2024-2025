@@ -5,24 +5,24 @@
 extern pros::Controller controlla;
 
 //defining motor ports
-#define PORT_LF -1
-#define PORT_LM -2
-#define PORT_LB -3
+#define PORT_LF -7
+#define PORT_LM -16
+#define PORT_LB -18
 
-#define PORT_RF 4
-#define PORT_RM 5
-#define PORT_RB 6
+#define PORT_RF 8
+#define PORT_RM 9
+#define PORT_RB 12
 
-#define PORT_INTAKE 8
-#define PORT_CONVEYOR 9
+#define PORT_INTAKE 4
+#define PORT_CONVEYOR 6
 
-#define PORT_ARM_LEFT 11
-#define PORT_ARM_RIGHT -12
+#define PORT_ARM_LEFT 5
+#define PORT_ARM_RIGHT -10
 
 
 //tracking ports
 
-#define PORT_IMU 10
+#define PORT_IMU 19
 
 #define PORT_ODOM_VERT 13
 #define PORT_ODOM_HORI 14

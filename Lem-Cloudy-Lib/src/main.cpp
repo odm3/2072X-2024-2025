@@ -1,5 +1,7 @@
 #include "main.h"
 #include "devices.hpp"
+#include "pros/adi.h"
+#include "pros/misc.h"
 
 
 // using namespace globals;
@@ -47,7 +49,12 @@ void initialize() {
     });
 	
 
-	/*pros::c::controller_rumble(pros::E_CONTROLLER_MASTER,"-.");*/
+	pros::c::controller_rumble(pros::E_CONTROLLER_MASTER,"-.");
+
+	bool toggleClamp = false;
+	bool toggleIntakeLift = false;
+	bool toggleClaw = HIGH;
+
 }
 
 //yap
@@ -103,6 +110,29 @@ void opcontrol() {
 			int rightControl = controlla.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
 
 		chassis.tank(leftControl, rightControl, false);
+
+		if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+			intake.move_voltage(12000);
+			conveyor.move_voltage(12000);
+		}
+		else if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+			intake.move_voltage(-12000);
+			conveyor.move_voltage(-12000);
+		}
+		else {
+			intake.move_voltage(0);
+			conveyor.move_voltage(0);
+		}
+
+		if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+			arm.move_voltage(12000);
+		}
+		else if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+			arm.move_voltage(-12000);
+		}
+		else {
+			arm.move_voltage(0);
+		}
 
 
 
