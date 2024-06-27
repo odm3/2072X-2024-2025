@@ -1,5 +1,6 @@
 #include "main.h"
 #include "devices.hpp"
+#include "devices.hpp"
 #include "pros/adi.h"
 #include "pros/misc.h"
 
@@ -51,10 +52,6 @@ void initialize() {
 
 	pros::c::controller_rumble(pros::E_CONTROLLER_MASTER,"-.");
 
-	bool toggleClamp = false;
-	bool toggleIntakeLift = false;
-	bool toggleClaw = HIGH;
-
 }
 
 //yap
@@ -96,10 +93,15 @@ chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
  */
 void opcontrol() {
 
+	bool toggleClamp = LOW;
+	bool toggleIntakeLift = LOW;
+	bool toggleClaw = LOW;
+
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
 	intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	conveyor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	
 
 	while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
@@ -111,11 +113,16 @@ void opcontrol() {
 
 		chassis.tank(leftControl, rightControl, false);
 
-		if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+		clamp.set_value(toggleClamp);
+		claw.set_value(toggleClaw);
+		intake_lift_left.set_value(toggleIntakeLift);
+		intake_lift_right.set_value(toggleIntakeLift);
+
+		if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
 			intake.move_voltage(12000);
 			conveyor.move_voltage(12000);
 		}
-		else if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+		else if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
 			intake.move_voltage(-12000);
 			conveyor.move_voltage(-12000);
 		}
@@ -124,16 +131,27 @@ void opcontrol() {
 			conveyor.move_voltage(0);
 		}
 
-		if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-			arm.move_voltage(12000);
+		if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+			arm.move_voltage(4500);
 		}
-		else if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-			arm.move_voltage(-12000);
+		else if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+			arm.move_voltage(-4500);
 		}
 		else {
 			arm.move_voltage(0);
 		}
 
+		if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+			toggleClaw = !toggleClaw;
+		}
+
+		if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+			toggleIntakeLift = !toggleIntakeLift;
+		}
+
+		if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+			toggleClamp = !toggleClamp;
+		}
 
 
 	pros::c::delay(25);

@@ -14,7 +14,7 @@ extern pros::Controller controlla;
 #define PORT_RB 12
 
 #define PORT_INTAKE 4
-#define PORT_CONVEYOR 6
+#define PORT_CONVEYOR -6
 
 #define PORT_ARM_LEFT 5
 #define PORT_ARM_RIGHT -10
@@ -29,10 +29,11 @@ extern pros::Controller controlla;
 
 //tw ports
 
-#define PORT_INTAKE_LIFT 'A'
+#define PORT_INTAKE_LIFT_LEFT 'A'
+#define PORTS_INTAKE_LIFT_RIGHT 'D'
 #define PORT_CLAMP 'B'
 #define PORT_CLAW 'C'
-#define PORT_DOINKER 'D'
+#define PORT_DOINKER 'E'
 
 //other constants
 
@@ -63,7 +64,8 @@ extern pros::MotorGroup arm;
 
 //tw ports
 
-extern pros::adi::DigitalOut intake_lift;
+extern pros::adi::DigitalOut intake_lift_left;
+extern pros::adi::DigitalOut intake_lift_right;
 extern pros::adi::DigitalOut clamp;
 extern pros::adi::DigitalOut claw;
 extern pros::adi::DigitalOut doinker;

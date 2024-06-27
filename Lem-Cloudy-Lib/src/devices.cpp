@@ -1,3 +1,4 @@
+#include "devices.hpp"
 #include "main.h"
 
 //creates controller
@@ -78,7 +79,8 @@ pros::Motor conveyor(PORT_CONVEYOR, pros::MotorGears::green);
 pros::MotorGroup arm({PORT_ARM_LEFT, PORT_ARM_RIGHT}, pros::MotorGears::green);
 
 //pistons
-pros::adi::DigitalOut intake_lift(PORT_INTAKE_LIFT, LOW);
+pros::adi::DigitalOut intake_lift_left(PORT_INTAKE_LIFT_LEFT, LOW);
+pros::adi::DigitalOut intake_lift_right(PORTS_INTAKE_LIFT_RIGHT, LOW);
 pros::adi::DigitalOut clamp(PORT_CLAMP, LOW);
 pros::adi::DigitalOut claw(PORT_CLAW, LOW);
 pros::adi::DigitalOut doinker(PORT_DOINKER, LOW);
