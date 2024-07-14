@@ -1,9 +1,15 @@
-#include "main.h"
-#include "LemLib/api.hpp"
+#pragma once
 
-//creates controller
+#include "main.h" // IWYU pragma: keep
+#include "pros/abstract_motor.hpp"
+#include "pros/adi.h"
+#include "pros/adi.hpp"
 
-//creates motor variables with specified ports and gearsets
+namespace devices {
+    //creates controller
+pros::Controller controlla (pros::E_CONTROLLER_MASTER);
+
+//creates drive motors with specified ports and gearsets
 pros::Motor LF_motor(PORT_LF, pros::MotorGears::blue);
 pros::Motor LM_motor(PORT_LM, pros::MotorGears::blue);;
 pros::Motor LB_motor(PORT_LB, pros::MotorGears::blue);;
@@ -19,7 +25,7 @@ pros::MotorGroup right_chassis({ PORT_RF, PORT_RM, PORT_RB }, pros::MotorGearset
 //creates drivetrain with certain variables listed below
 lemlib::Drivetrain drivetrain(&left_chassis, // left motor group
                               &right_chassis, // right motor group
-                              13, // 10 inch track width
+                              13.5, // 13 inch track width
                               lemlib::Omniwheel::NEW_325, // using new 4" omnis
                               450, // drivetrain rpm is 450
                               2 // horizontal drift is 2 (for now)
@@ -28,17 +34,23 @@ lemlib::Drivetrain drivetrain(&left_chassis, // left motor group
 //creates imu sensor with specified port
 pros::Imu IMU(PORT_IMU);
 
-//creates rotation sensors for odom with specified ports
-pros::Rotation odom_vert_sensor(PORT_ODOM_VERT);
-pros::Rotation odom_hozi_sensor(PORT_ODOM_HORI);
+// //creates rotation sensors for odom with specified ports
+// pros::Rotation odom_vert_sensor(PORT_ODOM_VERT);
+// pros::Rotation odom_hozi_sensor(PORT_ODOM_HORI);
 
-//creates odom tracking wheel configuration with specified rotation sensors, wheel sizes, and offsets
-lemlib::TrackingWheel odom_vert_wheel(&odom_vert_sensor, lemlib::Omniwheel::NEW_2, VERTICAL_OFFSET);
-lemlib::TrackingWheel odom_hori_wheel(&odom_hozi_sensor, lemlib::Omniwheel::NEW_2, HORIZONTAL_OFFSET);
+// //creates odom tracking wheel configuration with specified rotation sensors, wheel sizes, and offsets
+// lemlib::TrackingWheel odom_vert_wheel(&odom_vert_sensor, lemlib::Omniwheel::NEW_2, VERTICAL_OFFSET);
+// lemlib::TrackingWheel odom_hori_wheel(&odom_hozi_sensor, lemlib::Omniwheel::NEW_2, HORIZONTAL_OFFSET);
 
 
 //creates entire odom sensor variable with all classes above
-lemlib::OdomSensors odom_sensors(&odom_vert_wheel, nullptr, &odom_hori_wheel, nullptr, &IMU);
+lemlib::OdomSensors odom_sensors(
+    nullptr, 
+    nullptr, 
+    nullptr, 
+    nullptr,
+    &IMU // inertial sensor
+);
 
 //creates lateral PID controller variable
 lemlib::ControllerSettings lateral_controller(
@@ -67,7 +79,32 @@ lemlib::ControllerSettings angular_controller(
 );
 
 //creates an exponential drive curve function variable with specified deadzone, minimum output, and curve.
-lemlib::ExpoDriveCurve lateral_curve(3, 10, DRIVE_CURVE);
+lemlib::ExpoDriveCurve lateral_curve(
+    5,
+    10,
+    DRIVE_CURVE
+);
 
 //creates chassis variable with all listed above
-lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, odom_sensors, &lateral_curve);
+lemlib::Chassis chassis(
+    drivetrain,
+    lateral_controller,
+    angular_controller,
+    odom_sensors,
+    &lateral_curve);
+
+//mechanism motors
+pros::Motor intake(PORT_INTAKE, pros::MotorGears::rpm_200);
+pros::Motor conveyor(PORT_CONVEYOR, pros::MotorGears::rpm_200);
+// pros::MotorGroup arm({PORT_ARM_LEFT, PORT_ARM_RIGHT}, pros::MotorGears::rpm_200);
+pros::Motor arm(PORT_ARM, pros::MotorGearset::rpm_100);
+
+//pistons
+pros::adi::DigitalOut intake_lift_left(PORT_INTAKE_LIFT_LEFT, LOW);
+pros::adi::DigitalOut intake_lift_right(PORTS_INTAKE_LIFT_RIGHT, LOW);
+pros::adi::DigitalOut clamp_left(PORT_CLAMP_LEFT, LOW);
+pros::adi::DigitalOut clamp_right(PORT_CLAMP_RIGHT, LOW);
+// pros::adi::DigitalOut claw(PORT_CLAW, LOW);
+pros::adi::DigitalOut doinker(PORT_DOINKER, LOW);
+pros::adi::DigitalOut ring_stopper(PORT_RING_STOPPER,LOW);
+}
