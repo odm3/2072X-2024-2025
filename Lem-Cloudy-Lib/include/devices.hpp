@@ -1,42 +1,10 @@
 #pragma once
 
-#include "LemLib/api.hpp"
-#include "lemlib/chassis/trackingWheel.hpp"
-#include "pros/misc.h"
-#include "pros/misc.hpp"
+#include "LemLib/api.hpp" // IWYU pragma: keep
+#include "pros/adi.hpp"
 
-//defining motor powers
-#define PORT_LF -1
-#define PORT_LM -2
-#define PORT_LB -2
-
-#define PORT_RF 4
-#define PORT_RM 5
-#define PORT_RB 6
-
-#define PORT_LIFT 7
-#define PORT_INTAKE 8
-/*#define PORT_INTAKE2 9*/
-
-//tracking ports
-
-#define PORT_IMU 9
-
-#define PORT_ODOM_VERT 11
-#define PORT_ODOM_HORI 12
-
-//tw ports
-
-#define PORT_INTAKE_LIFT "A"
-#define PORT_MOGO_CLAMP "B"
-
-//other constants
-
-#define VERTICAL_OFFSET 0
-#define HORIZONTAL_OFFSET 0
-
-#define DRIVE_CURVE 1
-//chassis
+namespace devices {
+extern pros::Controller controlla;
 
 extern pros::Rotation odom_vert_sensor;
 extern pros::Rotation odom_hozi_sensor;
@@ -44,19 +12,80 @@ extern pros::Rotation odom_hozi_sensor;
 
 extern lemlib::Chassis chassis;
 
+//drive motors
+extern pros::Motor LF_motor;
+extern pros::Motor LM_motor;
+extern pros::Motor LB_motor;
+extern pros::Motor RF_motor;
+extern pros::Motor RM_motor;
+extern pros::Motor RB_motor;
 
-//mechanisms
-
+//other motors
 extern pros::Motor intake;
-extern pros::Motor lift;
-
-
+extern pros::Motor conveyor;
+extern pros::Motor arm;
 
 //tw ports
 
-extern pros::adi::DigitalOut intake_lift;
-extern pros::adi::DigitalOut mogo_clamp;
+extern pros::adi::DigitalOut intake_lift_left;
+extern pros::adi::DigitalOut intake_lift_right;
+extern pros::adi::DigitalOut clamp_left;
+extern pros::adi::DigitalOut clamp_right;
+// extern pros::adi::DigitalOut claw;
+extern pros::adi::DigitalOut doinker;
+}
 
-//other shii
+extern pros::adi::DigitalOut ring_stopper;
 
+//defining motor ports
+#define PORT_LF -18
+#define PORT_LM 12
+#define PORT_LB -13
+
+#define PORT_RF 17
+#define PORT_RM -16
+#define PORT_RB 15
+
+#define PORT_INTAKE 14
+#define PORT_CONVEYOR -19
+
+#define PORT_ARM 11
+// #define PORT_ARM_LEFT 5
+// #define PORT_ARM_RIGHT -10
+
+
+//tracking ports
+
+#define PORT_IMU 20
+
+#define PORT_ODOM_VERT 13
+#define PORT_ODOM_HORI 14
+
+//tw ports
+
+#define PORT_INTAKE_LIFT_LEFT 'A'
+#define PORTS_INTAKE_LIFT_RIGHT 'B'
+#define PORT_CLAMP_LEFT 'C'
+#define PORT_CLAMP_RIGHT 'D'
+// #define PORT_CLAW 'E'
+#define PORT_DOINKER 'F'
+#define PORT_RING_STOPPER 'G'
+
+//other constants
+
+#define VERTICAL_OFFSET 0
+#define HORIZONTAL_OFFSET 0
+
+#define DRIVE_CURVE 1
+
+#define intakeButton pros::E_CONTROLLER_DIGITAL_L1
+#define intakeReverseButton pros::E_CONTROLLER_DIGITAL_L2
+#define intakeLifTButton pros::E_CONTROLLER_DIGITAL_DOWN
+#define ArmUpButton pros::E_CONTROLLER_DIGITAL_R1
+#define ArmDownButton pros::E_CONTROLLER_DIGITAL_R2
+#define clampButton pros::E_CONTROLLER_DIGITAL_B
+#define doinkerButton pros::E_CONTROLLER_DIGITAL_Y
+#define ringStopperButton pros::E_CONTROLLER_DIGITAL_RIGHT
+
+//odom sensors
 

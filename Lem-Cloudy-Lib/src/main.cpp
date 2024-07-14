@@ -1,14 +1,12 @@
 #include "main.h"
-#include "LemLib/api.hpp"
-#include "lemlib/chassis/chassis.hpp"
-#include "lemlib/pid.hpp"
+#include "arm.hpp"
+#include "devices.hpp"
+#include "misc.hpp"
+#include "pros/adi.h"
 #include "pros/misc.h"
-#include "pros/misc.hpp"
-#include "pros/motors.h"
-#include "pros/rtos.h"
-#include "pros/rtos.hpp"
 
-// using namespace globals;
+
+using namespace devices;
 
 /**
  * A callback function for LLEMU's center button.
@@ -45,22 +43,25 @@ void initialize() {
             pros::lcd::print(4, "Y: %f", chassis.getPose().y); // y
             pros::lcd::print(5, "Theta: %f", chassis.getPose().theta); // heading
 			 // print measurements from the rotation sensors
-        	pros::lcd::print(6, "Rotation Sensor: %i", odom_vert_sensor.get_position());
-        	pros::lcd::print(7, "Rotation Sensor: %i", odom_hozi_sensor.get_position());
+        	// pros::lcd::print(6, "Rotation Sensor: %i", odom_vert_sensor.get_position());
+        	// pros::lcd::print(7, "Rotation Sensor: %i", odom_hozi_sensor.get_position());
             // delay to save resources
             pros::delay(20);
         }
     });
 	
 
-	/*pros::c::controller_rumble(pros::E_CONTROLLER_MASTER,"-.");*/
+	pros::c::controller_rumble(pros::E_CONTROLLER_MASTER,"-.");
+
 }
 
 //yap
 void disabled() {}
 
 //yap
-void competition_initialize() {}
+void competition_initialize() {
+
+}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -94,21 +95,55 @@ chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
  */
 void opcontrol() {
 
+	bool toggleClamp = LOW;
+	bool toggleDoinker = LOW;
+	bool toggleRingStopper =  LOW;
+
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
+	intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	conveyor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	
 
 	while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 			(pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 			(pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);  // Prints status of the emulated screen LCDs
-		pros::Controller master(pros::E_CONTROLLER_MASTER);
 	
-			int leftControl = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-			int rightControl = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
+			//tank drive {
 
-		chassis.tank(leftControl, rightControl, false);
+			int leftControl = controlla.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+			int rightControl = controlla.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
 
+			chassis.tank(leftControl, rightControl, false);
+
+			}
+	
+		// //2 stick arcade drive {
+        // int leftY = controlla.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+        // int rightX = controlla.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+
+        // chassis.arcade(leftY, rightX);
+		// //}
+
+		clamp_left.set_value(toggleClamp);
+		clamp_right.set_value(toggleClamp);
+		// claw.set_value(toggleClaw);
+		ring_stopper.set_value(toggleRingStopper);
+
+	intakeControl();
+	armControl();
+	intakeLiftControl();
+	clampControl();
+		
+		if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+			toggleDoinker = !toggleDoinker;
+		}
+
+		if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+			toggleRingStopper = !toggleRingStopper;
+		}
 
 
 	pros::c::delay(25);
-	}
 }
