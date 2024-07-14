@@ -34,22 +34,23 @@
  */
 #define PROS_USE_LITERALS
 
-#include "api.h"
+#include "api.h"// IWYU pragma: keep
 
 /**
  * You should add more #includes here
  */
 //#include "okapi/api.hpp"
-
-#include "LemLib/api.hpp"
-#include "devices.hpp"
-#include "lemlib/chassis/chassis.hpp"
-#include "lemlib/pid.hpp"
-#include "pros/misc.h"
-#include "pros/misc.hpp"
-#include "pros/motors.h"
-#include "pros/rtos.h"
-#include "pros/rtos.hpp"
+#include "LemLib/api.hpp"// IWYU pragma: keep
+#include "lemlib/chassis/chassis.hpp"// IWYU pragma: keep
+#include "lemlib/pid.hpp"// IWYU pragma: keep
+#include "pros/misc.h"// IWYU pragma: keep
+#include "pros/misc.hpp"// IWYU pragma: keep
+#include "pros/motors.h"// IWYU pragma: keep
+#include "pros/rtos.h"// IWYU pragma: keep
+#include "pros/rtos.hpp"// IWYU pragma: keep
+#include "intake.hpp"// IWYU pragma: keep
+#include "arm.hpp"// IWYU pragma: keep
+#include "devices.hpp"// IWYU pragma: keep
 
 
 /**

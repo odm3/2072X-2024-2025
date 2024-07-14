@@ -1,2 +1,4 @@
 #pragma once
-extern void armControl();
+
+void armVoltage(int Voltage);
+void armControl();

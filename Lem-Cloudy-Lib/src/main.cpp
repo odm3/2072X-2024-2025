@@ -1,11 +1,12 @@
 #include "main.h"
+#include "arm.hpp"
 #include "devices.hpp"
-#include "devices.hpp"
+#include "misc.hpp"
 #include "pros/adi.h"
 #include "pros/misc.h"
 
 
-// using namespace globals;
+using namespace devices;
 
 /**
  * A callback function for LLEMU's center button.
@@ -42,8 +43,8 @@ void initialize() {
             pros::lcd::print(4, "Y: %f", chassis.getPose().y); // y
             pros::lcd::print(5, "Theta: %f", chassis.getPose().theta); // heading
 			 // print measurements from the rotation sensors
-        	pros::lcd::print(6, "Rotation Sensor: %i", odom_vert_sensor.get_position());
-        	pros::lcd::print(7, "Rotation Sensor: %i", odom_hozi_sensor.get_position());
+        	// pros::lcd::print(6, "Rotation Sensor: %i", odom_vert_sensor.get_position());
+        	// pros::lcd::print(7, "Rotation Sensor: %i", odom_hozi_sensor.get_position());
             // delay to save resources
             pros::delay(20);
         }
@@ -58,8 +59,9 @@ void initialize() {
 void disabled() {}
 
 //yap
-void competition_initialize(
-) {}
+void competition_initialize() {
+
+}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -94,8 +96,8 @@ chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
 void opcontrol() {
 
 	bool toggleClamp = LOW;
-	bool toggleIntakeLift = LOW;
-	bool toggleClaw = LOW;
+	bool toggleDoinker = LOW;
+	bool toggleRingStopper =  LOW;
 
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
 	intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
@@ -108,52 +110,40 @@ void opcontrol() {
 			(pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 			(pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);  // Prints status of the emulated screen LCDs
 	
+			//tank drive {
+
 			int leftControl = controlla.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 			int rightControl = controlla.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
 
-		chassis.tank(leftControl, rightControl, false);
+			chassis.tank(leftControl, rightControl, false);
 
-		clamp.set_value(toggleClamp);
-		claw.set_value(toggleClaw);
-		intake_lift_left.set_value(toggleIntakeLift);
-		intake_lift_right.set_value(toggleIntakeLift);
+			}
+	
+		// //2 stick arcade drive {
+        // int leftY = controlla.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+        // int rightX = controlla.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
 
-		if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-			intake.move_voltage(12000);
-			conveyor.move_voltage(12000);
-		}
-		else if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-			intake.move_voltage(-12000);
-			conveyor.move_voltage(-12000);
-		}
-		else {
-			intake.move_voltage(0);
-			conveyor.move_voltage(0);
-		}
+        // chassis.arcade(leftY, rightX);
+		// //}
 
-		if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-			arm.move_voltage(4500);
-		}
-		else if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-			arm.move_voltage(-4500);
-		}
-		else {
-			arm.move_voltage(0);
-		}
+		clamp_left.set_value(toggleClamp);
+		clamp_right.set_value(toggleClamp);
+		// claw.set_value(toggleClaw);
+		ring_stopper.set_value(toggleRingStopper);
 
+	intakeControl();
+	armControl();
+	intakeLiftControl();
+	clampControl();
+		
 		if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
-			toggleClaw = !toggleClaw;
+			toggleDoinker = !toggleDoinker;
 		}
 
-		if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
-			toggleIntakeLift = !toggleIntakeLift;
-		}
-
-		if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
-			toggleClamp = !toggleClamp;
+		if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+			toggleRingStopper = !toggleRingStopper;
 		}
 
 
 	pros::c::delay(25);
-	}
 }
