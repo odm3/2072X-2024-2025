@@ -1,5 +1,3 @@
-#pragma once
-
 #include "main.h" // IWYU pragma: keep
 #include "pros/abstract_motor.hpp"
 #include "pros/adi.h"

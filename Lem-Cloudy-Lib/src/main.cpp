@@ -5,7 +5,6 @@
 #include "pros/adi.h"
 #include "pros/misc.h"
 #include "pros/screen.hpp"
-#include "gif-pros/gifclass.hpp"// IWYU pragma: keep
 
 using namespace devices;
 
