@@ -2,6 +2,7 @@
 
 #include "LemLib/api.hpp" // IWYU pragma: keep
 #include "pros/adi.hpp"
+#include "pros/rotation.hpp"
 
 namespace devices {
 extern pros::Controller controlla;
@@ -33,11 +34,12 @@ extern pros::adi::DigitalOut clamp_left;
 extern pros::adi::DigitalOut clamp_right;
 // extern pros::adi::DigitalOut claw;
 extern pros::adi::DigitalOut doinker;
-}
-
 extern pros::adi::DigitalOut ring_stopper;
 
-//defining motor ports
+extern pros::Rotation armRotation;
+}
+
+//smart wire ports
 #define PORT_LF -18
 #define PORT_LM 12
 #define PORT_LB -13
@@ -53,16 +55,16 @@ extern pros::adi::DigitalOut ring_stopper;
 // #define PORT_ARM_LEFT 5
 // #define PORT_ARM_RIGHT -10
 
-
 //tracking ports
 
 #define PORT_IMU 20
 
-#define PORT_ODOM_VERT 13
-#define PORT_ODOM_HORI 14
+// #define PORT_ODOM_VERT 2
+// #define PORT_ODOM_HORI 3
+
+#define PORT_ARM_ROTATION 1
 
 //tw ports
-
 #define PORT_INTAKE_LIFT_LEFT 'A'
 #define PORTS_INTAKE_LIFT_RIGHT 'B'
 #define PORT_CLAMP_LEFT 'C'
@@ -71,13 +73,14 @@ extern pros::adi::DigitalOut ring_stopper;
 #define PORT_DOINKER 'F'
 #define PORT_RING_STOPPER 'G'
 
-//other constants
-
+//odom sensor offsets
 #define VERTICAL_OFFSET 0
 #define HORIZONTAL_OFFSET 0
 
-#define DRIVE_CURVE 1
+//drive curve
+#define DRIVE_CURVE 3
 
+//buttons
 #define intakeButton pros::E_CONTROLLER_DIGITAL_L1
 #define intakeReverseButton pros::E_CONTROLLER_DIGITAL_L2
 #define intakeLifTButton pros::E_CONTROLLER_DIGITAL_DOWN
@@ -86,6 +89,3 @@ extern pros::adi::DigitalOut ring_stopper;
 #define clampButton pros::E_CONTROLLER_DIGITAL_B
 #define doinkerButton pros::E_CONTROLLER_DIGITAL_Y
 #define ringStopperButton pros::E_CONTROLLER_DIGITAL_RIGHT
-
-//odom sensors
-

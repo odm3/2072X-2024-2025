@@ -4,7 +4,8 @@
 #include "misc.hpp"
 #include "pros/adi.h"
 #include "pros/misc.h"
-
+#include "pros/screen.hpp"
+#include "gif-pros/gifclass.hpp"// IWYU pragma: keep
 
 using namespace devices;
 
@@ -31,10 +32,8 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Haiii :3 - Ansh");
+	lvgl_init();
 	chassis.calibrate();
-	pros::lcd::register_btn1_cb(on_center_button);
 
 	pros::Task screen_task([&]() {
         while (true) {

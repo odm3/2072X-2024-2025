@@ -4,7 +4,9 @@
 #include "pros/abstract_motor.hpp"
 #include "pros/adi.h"
 #include "pros/adi.hpp"
+#include "pros/rotation.hpp"
 
+//creates a new namespace for devices
 namespace devices {
     //creates controller
 pros::Controller controlla (pros::E_CONTROLLER_MASTER);
@@ -107,4 +109,6 @@ pros::adi::DigitalOut clamp_right(PORT_CLAMP_RIGHT, LOW);
 // pros::adi::DigitalOut claw(PORT_CLAW, LOW);
 pros::adi::DigitalOut doinker(PORT_DOINKER, LOW);
 pros::adi::DigitalOut ring_stopper(PORT_RING_STOPPER,LOW);
+
+pros::Rotation armRotation(PORT_ARM_ROTATION);
 }

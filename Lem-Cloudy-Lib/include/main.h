@@ -51,6 +51,8 @@
 #include "intake.hpp"// IWYU pragma: keep
 #include "arm.hpp"// IWYU pragma: keep
 #include "devices.hpp"// IWYU pragma: keep
+#include "pros/apix.h"// IWYU pragma: keep
+
 
 
 /**
