@@ -100,10 +100,12 @@ pros::Motor conveyor(PORT_CONVEYOR, pros::MotorGears::rpm_200);
 pros::Motor arm(PORT_ARM, pros::MotorGearset::rpm_100);
 
 //pistons
-pros::adi::DigitalOut intake_lift_left(PORT_INTAKE_LIFT_LEFT, LOW);
-pros::adi::DigitalOut intake_lift_right(PORTS_INTAKE_LIFT_RIGHT, LOW);
-pros::adi::DigitalOut clamp_left(PORT_CLAMP_LEFT, LOW);
-pros::adi::DigitalOut clamp_right(PORT_CLAMP_RIGHT, LOW);
+pros::adi::DigitalOut intake_lift(PORT_INTAKE_LIFT, LOW);
+// pros::adi::DigitalOut intake_lift_left(PORT_INTAKE_LIFT_LEFT, LOW);
+// pros::adi::DigitalOut intake_lift_right(PORTS_INTAKE_LIFT_RIGHT, LOW);
+pros::adi::DigitalOut clamp(PORT_CLAMP, LOW);
+// pros::adi::DigitalOut clamp_left(PORT_CLAMP_LEFT, LOW);
+// pros::adi::DigitalOut clamp_right(PORT_CLAMP_RIGHT, LOW);
 // pros::adi::DigitalOut claw(PORT_CLAW, LOW);
 pros::adi::DigitalOut doinker(PORT_DOINKER, LOW);
 pros::adi::DigitalOut ring_stopper(PORT_RING_STOPPER,LOW);

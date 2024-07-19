@@ -9,21 +9,25 @@ bool toggleDoinker = LOW;
 bool toggleRingStopper =  LOW;
 
 void clampActivate() {
-    clamp_left.set_value(true);
-    clamp_right.set_value(true);
+    // clamp_left.set_value(true);
+    // clamp_right.set_value(true);
+    clamp.set_value(true);
 }
 
 void clampRetract() {
-    clamp_left.set_value(false);
-    clamp_right.set_value(false);
+    // clamp_left.set_value(false);
+    // clamp_right.set_value(false);
+    clamp.set_value(false);
 }
 
 void clampControl() {
     if (controlla.get_digital_new_press(clampButton)) {
-    toggleClamp = !toggleDoinker;
+        controlla.rumble("--");
+    toggleClamp = !toggleClamp;
     }
-    clamp_left.set_value(toggleClamp);
-    clamp_right.set_value(toggleClamp);
+    // clamp_left.set_value(toggleClamp);
+    // clamp_right.set_value(toggleClamp);
+    clamp.set_value(toggleClamp);
 }
 
 void doinkerActivate() {

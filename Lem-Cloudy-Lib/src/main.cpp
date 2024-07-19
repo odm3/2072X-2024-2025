@@ -3,6 +3,7 @@
 #include "devices.hpp"
 #include "misc.hpp"
 #include "pros/adi.h"
+#include "pros/llemu.hpp"
 #include "pros/misc.h"
 #include "pros/screen.hpp"
 
@@ -15,14 +16,16 @@ using namespace devices;
  * "I was pressed!" and nothing.
  */
 void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(8, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(8);
-	}
+  static bool pressed = false;
+  pressed = !pressed;
+  if (pressed) {
+    pros::lcd::set_text(8, "I was pressed!");
+  } else {
+    pros::lcd::clear_line(8);
+  }
 }
+
+
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -31,35 +34,36 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	lvgl_init();
-	chassis.calibrate();
+  lvgl_init();
+  chassis.calibrate();
+//   pros::lcd::initialize();
 
-	pros::Task screen_task([&]() {
-        while (true) {
-            // print robot location to the brain screen
-            pros::lcd::print(3, "X: %f", chassis.getPose().x); // x
-            pros::lcd::print(4, "Y: %f", chassis.getPose().y); // y
-            pros::lcd::print(5, "Theta: %f", chassis.getPose().theta); // heading
-			 // print measurements from the rotation sensors
-        	// pros::lcd::print(6, "Rotation Sensor: %i", odom_vert_sensor.get_position());
-        	// pros::lcd::print(7, "Rotation Sensor: %i", odom_hozi_sensor.get_position());
-            // delay to save resources
-            pros::delay(20);
-        }
-    });
-	
+  pros::Task screen_task([&]() {
+    while (true) {
+      // print robot location to the brain screen
+      pros::lcd::print(3, "X: %f", chassis.getPose().x); // x
+      pros::lcd::print(4, "Y: %f", chassis.getPose().y); // y
+      pros::lcd::print(
+          5, "Theta: %f",
+          chassis.getPose()
+              .theta); // heading
+                       // print measurements from the rotation sensors
+                       // pros::lcd::print(6, "Rotation Sensor: %i",
+      // odom_vert_sensor.get_position()); pros::lcd::print(7, "Rotation Sensor:
+      // %i", odom_hozi_sensor.get_position());
+      // delay to save resources
+      pros::delay(20);
+    }
+  });
 
-	pros::c::controller_rumble(pros::E_CONTROLLER_MASTER,"-.");
-
+  pros::c::controller_rumble(pros::E_CONTROLLER_MASTER, "-.");
 }
 
-//yap
+// yap
 void disabled() {}
 
-//yap
-void competition_initialize() {
-
-}
+// yap
+void competition_initialize() {}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -72,11 +76,7 @@ void competition_initialize() {
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {
-
-chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
-
-}
+void autonomous() { chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE); }
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -93,55 +93,52 @@ chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
  */
 void opcontrol() {
 
-	bool toggleClamp = LOW;
-	bool toggleDoinker = LOW;
-	bool toggleRingStopper =  LOW;
+  bool toggleClamp = LOW;
+  bool toggleDoinker = LOW;
+  bool toggleRingStopper = LOW;
 
-	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
-	intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-	conveyor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-	arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	
+  chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
+  intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+  conveyor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+  arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
-	while (true) {
-		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
-			(pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-			(pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);  // Prints status of the emulated screen LCDs
-	
-			//tank drive {
+  while (true) {
+    pros::lcd::print(0, "%d %d %d",
+                     (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
+                     (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
+                     (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >>
+                         0); // Prints status of the emulated screen LCDs
 
-			int leftControl = controlla.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-			int rightControl = controlla.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
+    // tank drive {
 
-			chassis.tank(leftControl, rightControl, false);
+    int leftControl = controlla.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+    int rightControl = controlla.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
 
-			}
-	
-		// //2 stick arcade drive {
-        // int leftY = controlla.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-        // int rightX = controlla.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+    chassis.tank(leftControl, rightControl, false);
 
-        // chassis.arcade(leftY, rightX);
-		// //}
+    // //2 stick arcade drive {
+    // int leftY = controlla.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+    // int rightX = controlla.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
 
-		clamp_left.set_value(toggleClamp);
-		clamp_right.set_value(toggleClamp);
-		// claw.set_value(toggleClaw);
-		ring_stopper.set_value(toggleRingStopper);
+    // chassis.arcade(leftY, rightX);
+    // //}
 
-	intakeControl();
-	armControl();
-	intakeLiftControl();
-	clampControl();
-		
-		if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
-			toggleDoinker = !toggleDoinker;
-		}
+    // claw.set_value(toggleClaw);
+    ring_stopper.set_value(toggleRingStopper);
 
-		if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
-			toggleRingStopper = !toggleRingStopper;
-		}
+    intakeControl();
+    armControl();
+    intakeLiftControl();
+    clampControl();
 
+    if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+      toggleDoinker = !toggleDoinker;
+    }
 
-	pros::c::delay(25);
+    if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+      toggleRingStopper = !toggleRingStopper;
+    }
+
+    pros::c::delay(25);
+  }
 }

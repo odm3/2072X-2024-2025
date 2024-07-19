@@ -28,8 +28,10 @@ extern pros::Motor arm;
 
 //tw ports
 
+extern pros::adi::DigitalOut intake_lift;
 extern pros::adi::DigitalOut intake_lift_left;
 extern pros::adi::DigitalOut intake_lift_right;
+extern pros::adi::DigitalOut clamp;
 extern pros::adi::DigitalOut clamp_left;
 extern pros::adi::DigitalOut clamp_right;
 // extern pros::adi::DigitalOut claw;
@@ -65,13 +67,15 @@ extern pros::Rotation armRotation;
 #define PORT_ARM_ROTATION 1
 
 //tw ports
-#define PORT_INTAKE_LIFT_LEFT 'A'
-#define PORTS_INTAKE_LIFT_RIGHT 'B'
-#define PORT_CLAMP_LEFT 'C'
-#define PORT_CLAMP_RIGHT 'D'
+#define PORT_INTAKE_LIFT 'H'
+// #define PORT_INTAKE_LIFT_LEFT 'A'
+// #define PORTS_INTAKE_LIFT_RIGHT 'B'
+#define PORT_CLAMP 'G'
+// #define PORT_CLAMP_LEFT 'C'
+// #define PORT_CLAMP_RIGHT 'D'
 // #define PORT_CLAW 'E'
 #define PORT_DOINKER 'F'
-#define PORT_RING_STOPPER 'G'
+#define PORT_RING_STOPPER 'A'
 
 //odom sensor offsets
 #define VERTICAL_OFFSET 0
