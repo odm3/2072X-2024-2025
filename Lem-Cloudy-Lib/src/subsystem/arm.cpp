@@ -5,21 +5,16 @@
 
 using namespace devices;
 
-
-
 void armVoltage(int Voltage) {
     arm.move_voltage(Voltage);
 }
 
 void armControl() {
-
-    arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-
-    if (controlla.get_digital_new_press(ArmUpButton)) {
+    if (controlla.get_digital(ArmUpButton)) {
         arm.move_voltage(12000);
         
     }
-    else if (controlla.get_digital_new_press(ArmDownButton)) {
+    else if (controlla.get_digital(ArmDownButton)) {
         arm.move_voltage(-12000);
     }
     else {

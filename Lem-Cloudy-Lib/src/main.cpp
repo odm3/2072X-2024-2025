@@ -76,7 +76,9 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() { chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE); }
+void autonomous() {
+	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -106,8 +108,7 @@ void opcontrol() {
     pros::lcd::print(0, "%d %d %d",
                      (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
                      (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-                     (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >>
-                         0); // Prints status of the emulated screen LCDs
+                     (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >>0); // Prints status of the emulated screen LCDs
 
     // tank drive {
 
@@ -123,22 +124,13 @@ void opcontrol() {
     // chassis.arcade(leftY, rightX);
     // //}
 
-    // claw.set_value(toggleClaw);
-    ring_stopper.set_value(toggleRingStopper);
-
     intakeControl();
     armControl();
     intakeLiftControl();
     clampControl();
-
-    if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
-      toggleDoinker = !toggleDoinker;
-    }
-
-    if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
-      toggleRingStopper = !toggleRingStopper;
-    }
-
+	doinkerControl();
+	ringStopperControl();
+	
     pros::c::delay(25);
   }
 }
