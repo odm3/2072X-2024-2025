@@ -1,3 +1,4 @@
+#include "autos.hpp"
 #include "arm.hpp"
 #include "devices.hpp"
 #include "intake.hpp"
@@ -6,8 +7,6 @@
 #include "main.h" // IWYU pragma: keep
 #include "misc.hpp"
 #include "pros/rtos.hpp"
-
-using namespace devices;
 
 ASSET(x)
 
@@ -20,7 +19,19 @@ void tuneLateral() {
     chassis.moveToPoint(0, 40, 99999);
 }
 
-void AWP_right1() {
+void qualLeft() {
+
+}
+
+void qualRight() {
+
+}
+
+void soloAWPLeft() {
+
+}
+
+void soloAWPRight() {
     chassis.setPose(58,-5.5,104);
     chassis.moveToPose(-35.5, -20, 104, 9999, {false});
     clampActivate();
@@ -40,6 +51,16 @@ void AWP_right1() {
     armVoltage(0); 
 
 }
+
+void elimsLeft() {
+
+}
+
+void elimsRight() {
+
+}
+
+
 
 void Skills() {
 

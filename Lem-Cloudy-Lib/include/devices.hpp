@@ -2,9 +2,9 @@
 
 #include "LemLib/api.hpp" // IWYU pragma: keep
 #include "pros/adi.hpp"
+#include "pros/imu.hpp"
 #include "pros/rotation.hpp"
 
-namespace devices {
 extern pros::Controller controlla;
 
 extern pros::Rotation odom_vert_sensor;
@@ -12,6 +12,8 @@ extern pros::Rotation odom_hozi_sensor;
 
 
 extern lemlib::Chassis chassis;
+
+//smart wire ports
 
 //drive motors
 extern pros::Motor LF_motor;
@@ -26,6 +28,9 @@ extern pros::Motor intake;
 extern pros::Motor conveyor;
 extern pros::Motor arm;
 
+//sensor ports
+extern pros::Imu IMU;
+
 //tw ports
 
 extern pros::adi::DigitalOut intake_lift;
@@ -39,7 +44,6 @@ extern pros::adi::DigitalOut doinker;
 extern pros::adi::DigitalOut ring_stopper;
 
 extern pros::Rotation armRotation;
-}
 
 //smart wire ports
 #define PORT_LF -19
@@ -93,3 +97,13 @@ extern pros::Rotation armRotation;
 #define clampButton pros::E_CONTROLLER_DIGITAL_B
 #define doinkerButton pros::E_CONTROLLER_DIGITAL_Y
 #define ringStopperButton pros::E_CONTROLLER_DIGITAL_RIGHT
+
+//algo inputs
+#define arm_kp 0.5
+
+//checking devices
+bool isConnected(int port);
+void checkIfConnected(int port, std::string deviceName);
+void checkAllDevices();
+
+//brain screen w/ robodash

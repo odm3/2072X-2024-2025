@@ -52,8 +52,9 @@
 #include "arm.hpp"// IWYU pragma: keep
 #include "devices.hpp"// IWYU pragma: keep
 #include "pros/apix.h"// IWYU pragma: keep
-
-
+#include "robodash/api.h"// IWYU pragma: keep
+#include "autos.hpp"// IWYU pragma: keep
+#include "misc.hpp"//IWYU pragma: keep
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
@@ -66,6 +67,7 @@
 // using namespace pros;
 // using namespace pros::literals;
 // using namespace okapi;
+using namespace rd;
 
 /**
  * Prototypes for the competition control tasks are redefined here to ensure

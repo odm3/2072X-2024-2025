@@ -119,6 +119,31 @@
                     "src\\main.cpp"
                 ],
                 "version": "4.1.0"
+            },
+            "robodash": {
+                "location": "C:\\Users\\anshr\\AppData\\Roaming\\PROS\\templates\\robodash@2.1.1",
+                "metadata": {
+                    "origin": "robodash"
+                },
+                "name": "robodash",
+                "py/object": "pros.conductor.templates.local_template.LocalTemplate",
+                "supported_kernels": "^4.1.0",
+                "system_files": [
+                    "include\\robodash\\core.h",
+                    "ASSET_FILES",
+                    "include\\robodash\\views\\console.hpp",
+                    "include\\robodash\\api.h",
+                    "include\\robodash\\views\\image.hpp",
+                    "include\\robodash\\views\\selector.hpp",
+                    "include\\robodash\\impl\\styles.h",
+                    "include\\robodash\\apix.h",
+                    "include\\robodash\\impl\\filesystem.h",
+                    "include\\robodash\\impl\\assets.h",
+                    "firmware\\robodash.a"
+                ],
+                "target": "v5",
+                "user_files": [],
+                "version": "2.1.1"
             }
         },
         "upload_options": {},

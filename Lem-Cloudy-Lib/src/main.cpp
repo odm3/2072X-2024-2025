@@ -1,13 +1,15 @@
 #include "main.h"
 #include "arm.hpp"
+#include "autos.hpp"
 #include "devices.hpp"
 #include "misc.hpp"
 #include "pros/adi.h"
 #include "pros/llemu.hpp"
 #include "pros/misc.h"
 #include "pros/screen.hpp"
-
-using namespace devices;
+#include "robodash/views/image.hpp"
+#include "robodash/views/selector.hpp"
+// #include "robodash/views/selector.hpp"
 
 /**
  * A callback function for LLEMU's center button.
@@ -15,17 +17,20 @@ using namespace devices;
  * When this callback is fired, it will toggle line 2 of the LCD text between
  * "I was pressed!" and nothing.
  */
-void on_center_button() {
-  static bool pressed = false;
-  pressed = !pressed;
-  if (pressed) {
-    pros::lcd::set_text(8, "I was pressed!");
-  } else {
-    pros::lcd::clear_line(8);
-  }
-}
 
 
+Selector autoSelector1( { 
+  {"noAuto", &noAuto},
+  {"qualLeft", &qualLeft},
+  {"qualRight", &qualRight},
+  {"soloAWPLeft", &soloAWPLeft},
+  {"SoloAWPRight", &soloAWPRight},
+  {"elimsLeft", &elimsLeft},
+  {"elimsRight", &elimsRight},
+  {"Skills", &Skills},
+  {"tuneLateral", &tuneLateral},
+  {"tuneAngular", &tuneAngular}
+});
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -33,31 +38,19 @@ void on_center_button() {
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
+
 void initialize() {
-  lvgl_init();
   chassis.calibrate();
-//   pros::lcd::initialize();
-
-  pros::Task screen_task([&]() {
-    while (true) {
-      // print robot location to the brain screen
-      pros::lcd::print(3, "X: %f", chassis.getPose().x); // x
-      pros::lcd::print(4, "Y: %f", chassis.getPose().y); // y
-      pros::lcd::print(
-          5, "Theta: %f",
-          chassis.getPose()
-              .theta); // heading
-                       // print measurements from the rotation sensors
-                       // pros::lcd::print(6, "Rotation Sensor: %i",
-      // odom_vert_sensor.get_position()); pros::lcd::print(7, "Rotation Sensor:
-      // %i", odom_hozi_sensor.get_position());
-      // delay to save resources
-      pros::delay(20);
-    }
-  });
-
+  armRotation.reset_position();
+  lvgl_init();
+  autoSelector1.focus();
+  clampRetract();
+  checkAllDevices();
+  //   pros::lcd::initialize();
   pros::c::controller_rumble(pros::E_CONTROLLER_MASTER, "-.");
 }
+
+Image nerd("D:\nerd-nerdy.c", "nerd");
 
 // yap
 void disabled() {}
@@ -78,6 +71,7 @@ void competition_initialize() {}
  */
 void autonomous() {
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
+  autoSelector1.run_auton();
 }
 
 /**
@@ -94,6 +88,8 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+
+  nerd.focus();
 
   bool toggleClamp = LOW;
   bool toggleDoinker = LOW;
@@ -128,9 +124,9 @@ void opcontrol() {
     armControl();
     intakeLiftControl();
     clampControl();
-	doinkerControl();
-	ringStopperControl();
-	
+	  doinkerControl();
+	  ringStopperControl();
+
     pros::c::delay(25);
   }
 }

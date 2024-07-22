@@ -2,11 +2,8 @@
 #include "misc.hpp"
 #include "devices.hpp"
 
-using namespace devices;
-
 bool toggleClamp = LOW;
 bool toggleDoinker = LOW;
-bool toggleRingStopper =  LOW;
 
 void clampActivate() {
     // clamp_left.set_value(true);
@@ -45,19 +42,4 @@ void doinkerControl() {
         toggleDoinker = !toggleDoinker;
     }
     doinker.set_value(toggleDoinker);
-}
-
-void ringStopperActivate() {
-    ring_stopper.set_value(true);
-}
-
-void ringStopperRetract() {
-    ring_stopper.set_value(false);
-}
-
-void ringStopperControl() {
-    if (controlla.get_digital_new_press(ringStopperButton)) {
-        toggleRingStopper = !toggleRingStopper;
-    }
-    ring_stopper.set_value(toggleRingStopper);
 }

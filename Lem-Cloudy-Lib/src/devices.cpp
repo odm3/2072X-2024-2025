@@ -1,12 +1,15 @@
+#include "devices.hpp"
 #include "main.h" // IWYU pragma: keep
 #include "pros/abstract_motor.hpp"
 #include "pros/adi.h"
 #include "pros/adi.hpp"
+#include "pros/device.hpp"
 #include "pros/rotation.hpp"
+#include "robodash/views/console.hpp"
 
 //creates a new namespace for devices
-namespace devices {
-    //creates controller
+
+//creates controller
 pros::Controller controlla (pros::E_CONTROLLER_MASTER);
 
 //creates drive motors with specified ports and gearsets
@@ -111,4 +114,41 @@ pros::adi::DigitalOut doinker(PORT_DOINKER, LOW);
 pros::adi::DigitalOut ring_stopper(PORT_RING_STOPPER,LOW);
 
 pros::Rotation armRotation(PORT_ARM_ROTATION);
+
+bool isConnected(int port) {
+    if ((pros::Device::get_plugged_type(port) == pros::v5::DeviceType::none) ||(pros::Device::get_plugged_type(port) == pros::DeviceType::undefined))  {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+rd::Console console;
+
+void checkIfConnected(int port, std::string deviceName) {
+    if ((isConnected(port)) == false) {
+        controlla.rumble(".....");
+        controlla.set_text(0,0, deviceName + "is unplugged!");
+        console.println((deviceName + "is unplugged!").c_str());
+    }
+}
+
+void checkAllDevices() {
+    checkIfConnected(PORT_LF, "LF_motor");
+    checkIfConnected(PORT_LB, "LM_motor");
+    checkIfConnected(PORT_LM, "LM_motor");
+    checkIfConnected(PORT_RF, "RF_motor");
+    checkIfConnected(PORT_RM, "RM_motor");
+    checkIfConnected(PORT_RB, "RB_motor");
+    checkIfConnected(PORT_INTAKE, "intake");
+    checkIfConnected(PORT_CONVEYOR, "conveyor");
+    checkIfConnected(PORT_ARM, "arm");
+    checkIfConnected(PORT_IMU, "IMU");
+    checkIfConnected(PORT_INTAKE_LIFT, "intake_lift");
+    checkIfConnected(PORT_CLAMP_LEFT, "clamp_left");
+    checkIfConnected(PORT_CLAMP_RIGHT, "clamp_right");
+    // checkIfConnected(PORT_DOINKER, "doinker");
+    // checkIfConnected(PORT_RING_STOPPER, "ring_stopper");
+    checkIfConnected(PORT_ARM_ROTATION, "armRotation");
 }

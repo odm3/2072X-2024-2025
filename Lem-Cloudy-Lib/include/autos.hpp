@@ -3,5 +3,10 @@
 void noAuto();
 void tuneLateral();
 void tuneAngular();
-void AWP_right1();
+void qualLeft();
+void qualRight();
+void soloAWPLeft();
+void soloAWPRight();
+void elimsLeft();
+void elimsRight();
 void Skills();
