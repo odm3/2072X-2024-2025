@@ -3,9 +3,7 @@
 #include "pros/abstract_motor.hpp"
 #include "pros/adi.h"
 #include "pros/adi.hpp"
-#include "pros/device.hpp"
 #include "pros/rotation.hpp"
-#include "robodash/views/console.hpp"
 
 //creates a new namespace for devices
 

@@ -7,9 +7,6 @@
 #include "pros/llemu.hpp"
 #include "pros/misc.h"
 #include "pros/screen.hpp"
-#include "robodash/views/image.hpp"
-#include "robodash/views/selector.hpp"
-// #include "robodash/views/selector.hpp"
 
 /**
  * A callback function for LLEMU's center button.
@@ -18,19 +15,6 @@
  * "I was pressed!" and nothing.
  */
 
-
-Selector autoSelector1( { 
-  {"noAuto", &noAuto},
-  {"qualLeft", &qualLeft},
-  {"qualRight", &qualRight},
-  {"soloAWPLeft", &soloAWPLeft},
-  {"SoloAWPRight", &soloAWPRight},
-  {"elimsLeft", &elimsLeft},
-  {"elimsRight", &elimsRight},
-  {"Skills", &Skills},
-  {"tuneLateral", &tuneLateral},
-  {"tuneAngular", &tuneAngular}
-});
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -42,16 +26,11 @@ Selector autoSelector1( {
 void initialize() {
   chassis.calibrate();
   armRotation.reset_position();
-  lvgl_init();
-  autoSelector1.focus();
   clampRetract();
   checkAllDevices();
   //   pros::lcd::initialize();
   pros::c::controller_rumble(pros::E_CONTROLLER_MASTER, "-.");
 }
-
-Image nerd("D:\nerd-nerdy.c", "nerd");
-
 // yap
 void disabled() {}
 
@@ -71,7 +50,6 @@ void competition_initialize() {}
  */
 void autonomous() {
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_BRAKE);
-  autoSelector1.run_auton();
 }
 
 /**
@@ -89,7 +67,6 @@ void autonomous() {
  */
 void opcontrol() {
 
-  nerd.focus();
 
   bool toggleClamp = LOW;
   bool toggleDoinker = LOW;
