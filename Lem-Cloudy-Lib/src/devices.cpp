@@ -122,13 +122,11 @@ bool isConnected(int port) {
     }
 }
 
-rd::Console console;
-
 void checkIfConnected(int port, std::string deviceName) {
     if ((isConnected(port)) == false) {
         controlla.rumble(".....");
         controlla.set_text(0,0, deviceName + "is unplugged!");
-        console.println((deviceName + "is unplugged!").c_str());
+        // console.println((deviceName + "is unplugged!").c_str());
     }
 }
 
