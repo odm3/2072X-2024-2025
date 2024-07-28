@@ -43,6 +43,9 @@
 #include "robodash/api.h"// IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "Ez-Template/api.hpp"// IWYU pragma: keep
+#include "autos.hpp"// IWYU pragma: keep
+#include "controls.hpp"// IWYU pragma: keep
+#include "devices.hpp"// IWYU pragma: keep
 
 
 /**
@@ -55,7 +58,7 @@
  */
 //using namespace pros;
 // using namespace pros::literals;
-//using namespace okapi;
+using namespace okapi;
 
 /**
  * Prototypes for the competition control tasks are redefined here to ensure

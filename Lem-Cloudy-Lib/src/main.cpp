@@ -67,8 +67,6 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-
-
   bool toggleClamp = LOW;
   bool toggleDoinker = LOW;
   bool toggleRingStopper = LOW;
