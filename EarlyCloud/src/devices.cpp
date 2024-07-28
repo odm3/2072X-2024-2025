@@ -1,4 +1,5 @@
 #include "devices.hpp"
+#include "lemlib/chassis/trackingWheel.hpp"
 #include "main.h" // IWYU pragma: keep
 #include "pros/adi.h"
 #include "pros/adi.hpp"
@@ -51,9 +52,9 @@ pros::adi::DigitalOut ring_stopper(PORT_RING_STOPPER,LOW);
 lemlib::Drivetrain drivetrain(&left_chassis, // left motor group
                               &right_chassis, // right motor group
                               13.5, // 13 inch track width
-                              lemlib::Omniwheel::NEW_325, // using new 4" omnis
-                              450, // drivetrain rpm is 450
-                              2 // horizontal drift is 2 (for now)
+                              lemlib::Omniwheel::NEW_275, // using n
+                              480, // drivetrain rpm is 450
+                              8 // horizontal drift is 2 (for now)
 );
 
 // //creates rotation sensors for odom with specified ports

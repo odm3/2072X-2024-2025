@@ -55,12 +55,12 @@ extern ez::Drive EzTempChassis;
 
 //drive curve
 #define LEMLIB_DRIVE_CURVE 1
-#define EZTEMP_DRIVE_CURVE 3
+#define EZTEMP_DRIVE_CURVE 5
 
 //smart wire ports
 #define PORT_LF -19
 #define PORT_LM 12
-#define PORT_LB -11
+#define PORT_LB -6
 
 #define PORT_RF 15
 #define PORT_RM -14

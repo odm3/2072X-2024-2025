@@ -22,3 +22,6 @@ void wallStakeLoad();
 
 void armVoltage(int Voltage);
 void armControl();
+
+void getRingUnstuck();
+void getRingUnstuck_t();

@@ -1,8 +1,10 @@
 #include "controls.hpp"
+#include "EZ-Template/util.hpp"
 #include "devices.hpp"
 #include "main.h"// IWYU pragma: keep
 #include "pros/abstract_motor.hpp"
 #include "pros/motors.h"
+#include "pros/rtos.hpp"
 
 bool toggleRingStopper =  false;
 bool toggleIntakeLift = false;
@@ -51,10 +53,18 @@ void doinkerRetract() {
     doinker.set_value(true);
 }
 
+double conveyorStuckCurrent = 10000000; //placeholder
 
 void intakeVoltage(int voltage) {
     intake.move_voltage(voltage);
     conveyor.move_voltage(voltage);
+
+    if (conveyor.get_current_draw() > conveyorStuckCurrent) {
+        conveyor.move_voltage(-12000);
+    }
+    else {
+        return;
+    }
 }
 
 
@@ -110,6 +120,9 @@ else if (controlla.get_digital(intakeReverseButton)) {
 	intake.move_voltage(-12000);
 	conveyor.move_voltage(-12000);
     }
+else if (conveyor.get_current_draw() > conveyorStuckCurrent) {
+    conveyor.move_voltage(-12000);
+}
 else {
 	intake.move_voltage(0);
 	conveyor.move_voltage(0);

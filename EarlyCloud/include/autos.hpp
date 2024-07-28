@@ -24,3 +24,8 @@ void swing_example();
 void motion_chaining();
 void combining_movements();
 void interfered_example();
+
+
+void riaTest();
+void qualLeftEz();
+void intakeauto();

@@ -1,32 +1,33 @@
 #include "main.h"
+#include <iostream>
+#include <string>
 #include <type_traits>
 
 //create an autonomous selector using robodash
 rd::Selector autoSelector1( {
+
 	{"noAuto",&noAuto},
 	{"qualLeft",&qualLeft},
+	{"qualLeftEz", &qualLeftEz},
 	{"qualRight",&qualRight},
 	{"soloAWPLeft",&soloAWPLeft},
 	{"soloAWPRight",&soloAWPRight},
 	{"elimsLeft",&elimsLeft},
 	{"elimsRight",&elimsRight},
 	{"Skills", &Skills},
+	{"noAuto",&noAuto},
+	{"tuneLateral",&tuneLateralLemLib},
+	{"tuneAngular",&tuneAngularLemLib},
+	{"drive_example", &drive_example},
+	{"turn_example", &turn_example},
+	{"drive_and_turn", &drive_and_turn},
+	{"wait_until_change_speed", &wait_until_change_speed},
+	{"swing_example", &swing_example},
+	{"motion_chaining", &motion_chaining},
+	{"interfered_example", &interfered_example},
+	{"intakeforward", &intakeauto}
 	}
 );
-
-// rd::Selector tuningSelector( {
-// 	{"noAuto",&noAuto},
-// 	{"tuneLateral",&tuneLateralLemLib},
-// 	{"tuneAngular",&tuneAngularLemLib},
-// 	{"drive_example", &drive_example},
-// 	{"turn_example", &turn_example},
-// 	{"drive_and_turn", &drive_and_turn},
-// 	{"wait_until_change_speed", &wait_until_change_speed},
-// 	{"swing_example", &swing_example},
-// 	{"motion_chaining", &motion_chaining},
-// 	{"interfered_example", &interfered_example},
-// 	}
-// );
 
 //create a console using robodash
 rd::Console(deviceConsole);
@@ -94,21 +95,21 @@ rd::Console(deviceConsole);
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-
-	ez::ez_template_print();
+	LemLibChassis.calibrate(false); // calibrate the lem lib chassis without imu
+    // calibrate the chassis with imu
+    EzTempChassis.opcontrol_curve_sd_initialize();
+    EzTempChassis.drive_imu_calibrate(false);
+    EzTempChassis.opcontrol_drive_sensors_reset();
 
 	pros::delay(500);
 
+	EzTempChassis.opcontrol_curve_default_set(3);
+	EzTempChassis.opcontrol_curve_buttons_toggle(true); // Enables modifying the controller curve with buttons on the joysticks
+    EzTempChassis.opcontrol_drive_activebrake_set(activeBreak_kp); // Sets the active brake kP. We recommend 0.1.
+    // EzTempChassis.set_curve_default(0, 0); // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)  
+    default_constants(); // Set the drive to your own constants from autons.cpp!
+
 	autoSelector1.focus();
-	LemLibChassis.calibrate(true);
-	// EzTempChassis.drive_imu_calibrate(false);
-	
-	pros::c::delay(500);
-
-	EzTempChassis.opcontrol_curve_sd_initialize();
-	EzTempChassis.opcontrol_curve_buttons_toggle(true);
-
-	default_constants();
 
 	pros::c::controller_rumble(pros::E_CONTROLLER_MASTER, ".");
 }
@@ -147,7 +148,6 @@ void autonomous() {
   	EzTempChassis.drive_imu_reset();                  // Reset gyro position to 0
   	EzTempChassis.drive_sensor_reset();               // Reset drive sensors to 0
   	EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);  // Set motors to hold.
-
 	autoSelector1.run_auton();
 	}
 
@@ -191,6 +191,8 @@ void opcontrol() {
 
       EzTempChassis.pid_tuner_iterate();  // Allow PID Tuner to iterate
     }
+
+	std::cout << "motor current draw" << conveyor.get_current_draw();
 
 	//drive styles, the uncommented one is which will be used
     EzTempChassis.opcontrol_tank();  // Tank control

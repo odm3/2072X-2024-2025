@@ -14,6 +14,41 @@ const int DRIVE_SPEED = 110;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 90;
 
+void intakeauto() {
+  intakeVoltage(12000);
+}
+
+// void riaTest() {
+//   EzTempChassis.pid_drive_set(24_in, DRIVE_SPEED, false);
+//   EzTempChassis.pid_wait_until(12_in);
+//   EzTempChassis.pid_turn_set(45_deg, TURN_SPEED, false);
+//   EzTempChassis.pid_wait();
+//   intakeLiftUp();
+//   intakeVoltage(12000);
+//   EzTempChassis.pid_drive_set(6_in,DRIVE_SPEED);
+//   EzTempChassis.pid_wait();
+//   intakeLiftDown();
+//   pros::delay(500); 
+//   EzTempChassis.pid_drive_set(-6_in,DRIVE_SPEED);
+//   intakeVoltage(0);
+
+// }
+
+// void pleasepleasepleaseworkkkkkk() {
+//   intakeVoltage(12000);
+//   pros::delay(250);
+//   armVoltage(3000);
+//   pros::delay(250);
+//   intakeVoltage(-12000);
+//   armVoltage(0);
+//   pros::delay(250);
+//   clampActivate();
+//   ringStopperActivate();
+//   pros::delay(100);
+//   EzTempChassis.pid_drive_set(48_cm , DRIVE_SPEED, false);
+//   EzTempChassis.pid_wait();
+// }
+
 void default_constants() {
   EzTempChassis.pid_heading_constants_set(11, 0, 20);
   EzTempChassis.pid_drive_constants_set(20, 0, 100);
@@ -41,7 +76,7 @@ void noAuto() {
 
 void qualLeft() {
     LemLibChassis.setPose(-55, 35, 270);
-    LemLibChassis.moveToPose(-34, 30, 300, 99999, {false} );
+    LemLibChassis.moveToPose(-34, 30, 300, 99999, {false, 8} );
     LemLibChassis.waitUntilDone();
     clampActivate();
     LemLibChassis.moveToPoint(-23.5, 45, 99999);
@@ -58,9 +93,32 @@ void qualLeft() {
     LemLibChassis.waitUntilDone();
 }
 
+void qualLeftEz() {
+  EzTempChassis.pid_drive_set(-8_in, DRIVE_SPEED);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_turn_set(60_deg, TURN_SPEED);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_drive_set(-24_in, DRIVE_SPEED, true);
+  EzTempChassis.pid_wait();
+  clampActivate();
+  intakeVoltage(12000);
+  EzTempChassis.pid_turn_set(60_deg, TURN_SPEED);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_drive_set(16_in, DRIVE_SPEED);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_turn_set(90_deg, TURN_SPEED);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_drive_set(20_in, DRIVE_SPEED);
+  EzTempChassis.pid_wait();
+  doinkerActivate();
+  EzTempChassis.pid_swing_set(RIGHT_SWING, 90_deg, SWING_SPEED, 0, false);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_drive_set(8_in, DRIVE_SPEED, false);
+}
+
 void qualRight() {
     LemLibChassis.setPose(-55, -15, 270);
-    LemLibChassis.moveToPose(-34, -20, 300, 9999, {false});
+    LemLibChassis.moveToPose(-34, -20, 300, 9999, {false, 8, 0.6});
     LemLibChassis.waitUntilDone();
     clampActivate();
     LemLibChassis.moveToPoint(-23.5, -47, 99999);
@@ -73,14 +131,14 @@ void qualRight() {
 
 void soloAWPLeft() {
     LemLibChassis.setPose(-55, 35, 270);
-    LemLibChassis.moveToPose(-34, 30, 300, 99999, {false} );
+    LemLibChassis.moveToPose(-34, 30, 300, 99999, {false, 8} );
     LemLibChassis.waitUntilDone();
     clampActivate();
     LemLibChassis.moveToPoint(-23.5, 45, 99999);
     intakeVoltage(12000);
     LemLibChassis.waitUntilDone();
     pros::delay(500);
-    LemLibChassis.moveToPose(-47.5, 3, 180, 99999);
+    LemLibChassis.moveToPose(-47.5, 3, 180, 99999, {true, 8});
     intakeVoltage(-6000);
     LemLibChassis.waitUntilDone();
     intakeVoltage(12000);
@@ -90,7 +148,7 @@ void soloAWPLeft() {
     LemLibChassis.moveToPoint(-58,  18, 99999, {false});
     LemLibChassis.waitUntilDone();
     // armtowallstake
-    LemLibChassis.moveToPose(-58, 0, 180, 99999);
+    LemLibChassis.moveToPose(-58, 0, 180, 99999, {true, 8});
     LemLibChassis.waitUntilDone();
     LemLibChassis.turnToPoint(-70, 0, 99999);
     LemLibChassis.waitUntilDone();
@@ -100,19 +158,19 @@ void soloAWPLeft() {
 
 void soloAWPRight() {
     LemLibChassis.setPose(-58,-10,270);
-    LemLibChassis.moveToPose(-34, -20, 104, 9999, {false});
+    LemLibChassis.moveToPose(-34, -20, 104, 9999, {false, 8});
     clampActivate();
-    LemLibChassis.moveToPose(-43, -7, 300, 9999, {}, false);
+    LemLibChassis.moveToPose(-43, -7, 300, 9999, {true, 8}, false);
     intakeVoltage(12000);
     pros::delay(500);
     intakeVoltage(-12000);
     LemLibChassis.waitUntilDone();
-    LemLibChassis.moveToPose(-27, -40, 155, 9999, {}, false);
+    LemLibChassis.moveToPose(-27, -40, 155, 9999, {true, 8}, false);
     pros::delay(750);
     intakeVoltage(12000);
     LemLibChassis.waitUntilDone();
     pros::delay(250);
-    LemLibChassis.moveToPose(-9, -28, 60, 9999);
+    LemLibChassis.moveToPose(-9, -28, 60, 9999, {true, 8});
     armVoltage(12000);
     pros::delay(2000);
     armVoltage(0); 
@@ -129,7 +187,7 @@ void elimsRight() {
 
 void mogoRush() {
     LemLibChassis.setPose(-58, -35, 270);
-    LemLibChassis.moveToPose(-9, -40, 300, 99999, {false});
+    LemLibChassis.moveToPose(-9, -40, 300, 99999, {false, 8});
     LemLibChassis.waitUntilDone();
     clampActivate();
     intakeVoltage(12000);
@@ -138,7 +196,7 @@ void mogoRush() {
     clampRetract();
     EzTempChassis.pid_turn_set(180,TURN_SPEED,false);
     EzTempChassis.pid_wait();
-    LemLibChassis.moveToPose(-12.5, 30, 120, 9999, {false});
+    LemLibChassis.moveToPose(-12.5, 30, 120, 9999, {false, 8});
     LemLibChassis.waitUntilDone();
     clampActivate();
     LemLibChassis.moveToPoint(-23.5, 47, 99999);
@@ -160,10 +218,10 @@ void Skills() {
 
 void tuneLateralLemLib() {
     LemLibChassis.setPose(0,0,0);
-    LemLibChassis.moveToPoint(0, 48, 99999);
+    LemLibChassis.moveToPoint(0, 48, 3000);
     LemLibChassis.waitUntilDone();
     controlla.rumble(".");
-    LemLibChassis.moveToPoint(0, 0, 9999, {false});
+    LemLibChassis.moveToPoint(0, 0, 3000, {false});
     LemLibChassis.waitUntilDone();
     controlla.rumble(".");
 }
@@ -190,13 +248,17 @@ void drive_example() {
   // for slew, only enable it when the drive distance is greater than the slew distance + a few inches
 
   EzTempChassis.pid_drive_set(24_in, DRIVE_SPEED, true);
-  EzTempChassis.pid_wait();
+  EzTempChassis.pid_wait_until(24);
+  controlla.rumble(".");
 
-  EzTempChassis.pid_drive_set(-12_in, DRIVE_SPEED);
-  EzTempChassis.pid_wait();
+  EzTempChassis.pid_drive_set(-12_in, DRIVE_SPEED, true);
+  EzTempChassis.pid_wait_until(-12);
+  controlla.rumble(".");
 
-  EzTempChassis.pid_drive_set(-12_in, DRIVE_SPEED);
-  EzTempChassis.pid_wait();
+  EzTempChassis.pid_drive_set(-12_in, DRIVE_SPEED, true);
+  EzTempChassis.pid_wait_until(-12);
+  controlla.rumble(".");
+
 }
 
 ///
