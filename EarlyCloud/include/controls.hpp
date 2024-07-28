@@ -18,10 +18,9 @@ void ringStopperActivate();
 void ringStopperRetract();
 void ringStopperControl();
 
-void wallStakeLoad();
 
 void armVoltage(int Voltage);
+void armToZero();
+void armToAllianceStake();
+void armtowallstake();
 void armControl();
-
-void getRingUnstuck();
-void getRingUnstuck_t();

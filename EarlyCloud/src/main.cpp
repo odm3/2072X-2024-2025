@@ -1,12 +1,11 @@
 #include "main.h"
-#include <iostream>
-#include <string>
-#include <type_traits>
+//includes
 
-//create an autonomous selector using robodash
+//create an autonomous selector using robodash for compitiion paths
 rd::Selector autoSelector1( {
 
 	{"noAuto",&noAuto},
+	{"drive to ladder", &driveToLadder},
 	{"qualLeft",&qualLeft},
 	{"qualLeftEz", &qualLeftEz},
 	{"qualRight",&qualRight},
@@ -14,8 +13,21 @@ rd::Selector autoSelector1( {
 	{"soloAWPRight",&soloAWPRight},
 	{"elimsLeft",&elimsLeft},
 	{"elimsRight",&elimsRight},
+	{"mogo rush red", &mogoRushRed},
+	{"mogo rush red alliance stake", &mogoRushBlueAllianceStake},
+	{"mogo rush blue", &mogoRushBlue},
+	{"mogo rush blue alliance stake", &mogoRushBlueAllianceStake},
+	{"ring rush red", &ringRushRed},
+	{"ring rush red alliance stake", &ringRushRedAllianceStake},
+	{"ring rush blue", &ringRushBlue},
+	{"ring rush blue alliance stake", &ringRushBlueAllianceStake},
 	{"Skills", &Skills},
-	{"noAuto",&noAuto},
+	}
+);
+
+/*creates an autonomous selector for auton routes that help
+with the tuning of constants, such as pid and motion chaining*/
+rd::Selector tuningSelector( {
 	{"tuneLateral",&tuneLateralLemLib},
 	{"tuneAngular",&tuneAngularLemLib},
 	{"drive_example", &drive_example},
@@ -25,12 +37,14 @@ rd::Selector autoSelector1( {
 	{"swing_example", &swing_example},
 	{"motion_chaining", &motion_chaining},
 	{"interfered_example", &interfered_example},
-	{"intakeforward", &intakeauto}
-	}
-);
+	{"intakeforward", &intakeauto},
+});
 
-//create a console using robodash
+/*create a console using robodash, this will be used any time 
+device values are desired to printed to the brain screen*/
 rd::Console(deviceConsole);
+
+//don't worry about the next few comments until initialize, they are for a future project
 
 // bool isPlugged(int port) {
 
@@ -84,7 +98,6 @@ rd::Console(deviceConsole);
 // 	}
 // 	controlla.rumble("-");
 // 	pros::delay(250);
-
 // 	}
 // }
 
@@ -95,21 +108,20 @@ rd::Console(deviceConsole);
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	LemLibChassis.calibrate(false); // calibrate the lem lib chassis without imu
-    // calibrate the chassis with imu
+	//the following 4 commands calibrate both the LemLib and EzTemp chassis'
+	LemLibChassis.calibrate(false); 
     EzTempChassis.opcontrol_curve_sd_initialize();
     EzTempChassis.drive_imu_calibrate(false);
     EzTempChassis.opcontrol_drive_sensors_reset();
 
-	pros::delay(500);
+	pros::delay(500); //a wait time of 500ms so the user cannot do anything while the chassis' are initializing
 
-	EzTempChassis.opcontrol_curve_default_set(3);
+	EzTempChassis.opcontrol_curve_default_set(3); 		//Drive curve so the user can have better control in driver control
 	EzTempChassis.opcontrol_curve_buttons_toggle(true); // Enables modifying the controller curve with buttons on the joysticks
-    EzTempChassis.opcontrol_drive_activebrake_set(activeBreak_kp); // Sets the active brake kP. We recommend 0.1.
-    // EzTempChassis.set_curve_default(0, 0); // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)  
-    default_constants(); // Set the drive to your own constants from autons.cpp!
+    EzTempChassis.opcontrol_drive_activebrake_set(activeBreak_kp); // Sets the active brake kP
+    default_constants(); // Set the drive to your my constants from autons.cpp
 
-	autoSelector1.focus();
+	autoSelector1.focus(); //makes the compition auton selector prioritized to select before a match
 
 	pros::c::controller_rumble(pros::E_CONTROLLER_MASTER, ".");
 }
@@ -130,7 +142,9 @@ void disabled() {}
  * This task will exit when the robot is enabled and autonomous or opcontrol
  * starts.
  */
-void competition_initialize() {}
+void competition_initialize() {
+	//this is where the auton selector should be, but it's better in initilize
+}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -144,12 +158,24 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	EzTempChassis.pid_targets_reset();                // Resets PID targets to 0
-  	EzTempChassis.drive_imu_reset();                  // Reset gyro position to 0
-  	EzTempChassis.drive_sensor_reset();               // Reset drive sensors to 0
-  	EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);  // Set motors to hold.
-	autoSelector1.run_auton();
+	
+	EzTempChassis.pid_targets_reset();                					// Resets PID targets to 0
+  	EzTempChassis.drive_imu_reset();                					  // Reset gyro position to 0
+  	EzTempChassis.drive_sensor_reset();              					 // Reset drive sensors to 0
+  	EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);  // Set motors to hold for EzTemp
+	LemLibChassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);			  // Set motors to hold for LemLib
+	autoSelector1.run_auton();											 //runs the selected auton
 	}
+
+	//runs autonomous code for tuning autonomous routes
+void tuningAutonomous() {
+	EzTempChassis.pid_targets_reset();                					// Resets PID targets to 0
+  	EzTempChassis.drive_imu_reset();                					  // Reset gyro position to 0
+  	EzTempChassis.drive_sensor_reset();              					 // Reset drive sensors to 0
+  	EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);  // Set motors to hold for EzTemp
+	LemLibChassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);			  // Set motors to hold for LemLib
+	autoSelector1.run_auton();											 //runs the selected auton
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -165,17 +191,16 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	//sets all motors to coast or hold
 	EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
 	intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   	conveyor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	bool toggleClamp = false;
-	bool toggleIntakeLift = false;
-  	bool toggleDoinker = false;
-  	bool toggleRingStopper = false;
+	
+
   while (true) {
 	// PID Tuner
-    // After you find values that you're happy with, you'll have to set them in auton.cpp
+		//while the robot is not connected to competition control,
     if (!pros::competition::is_connected()) {
       // Enable / Disable PID Tuner
       //  When enabled:
@@ -184,15 +209,18 @@ void opcontrol() {
       if (master.get_digital_new_press(DIGITAL_X))
         EzTempChassis.pid_tuner_toggle();
 
-      // Trigger the selected autonomous routine
+      // Trigger the selected autonomous routine for tuning
       if (master.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT) && master.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
-        	autonomous();
+        	tuningAutonomous();
       }
 
       EzTempChassis.pid_tuner_iterate();  // Allow PID Tuner to iterate
     }
 
+	/*WORK IN PROGRESS*/
+	//find how much current the conveyor is drawing
 	std::cout << "motor current draw" << conveyor.get_current_draw();
+
 
 	//drive styles, the uncommented one is which will be used
     EzTempChassis.opcontrol_tank();  // Tank control
@@ -201,9 +229,7 @@ void opcontrol() {
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
 
-    // . . .
-    // Put more user control code here!
-    // . . .
+    //functions from controls.cpp/.hpp that let the user control the mechanims
     intakeControl();
     armControl();
     intakeLiftControl();
@@ -212,6 +238,6 @@ void opcontrol() {
 	ringStopperControl();
 	// wallStakeLoad();
 
-    pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
+    pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations
   }
 }

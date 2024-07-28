@@ -3,12 +3,8 @@
 #include "main.h" // IWYU pragma: keep
 #include "pros/adi.h"
 #include "pros/adi.hpp"
-#include "pros/device.h"
-#include "pros/device.hpp"
 #include "pros/rotation.hpp"
-#include <string>
-
-//creates a new namespace for devices
+//includes
 
 //creates controller
 pros::Controller controlla (pros::E_CONTROLLER_MASTER);
@@ -31,52 +27,54 @@ pros::Imu IMU(PORT_IMU);
 pros::Rotation armRotation(PORT_ARM_ROTATION);
 pros::Rotation conveyorRotation(PORT_CONVEYOR_ROTATION);
 
-//creates motors for mechanisms
+//creates motors for mechanisms with specified ports and gearsets
 pros::Motor intake(PORT_INTAKE, pros::MotorGears::rpm_200);
 pros::Motor conveyor(PORT_CONVEYOR, pros::MotorGears::rpm_200);
 // pros::MotorGroup arm({PORT_ARM_LEFT, PORT_ARM_RIGHT}, pros::MotorGears::rpm_200);
 pros::Motor arm(PORT_ARM, pros::MotorGearset::rpm_100);
 
-//tw devices
+//tw devices (pistons)
 pros::adi::DigitalOut intake_lift(PORT_INTAKE_LIFT, LOW);
-// pros::adi::DigitalOut intake_lift_left(PORT_INTAKE_LIFT_LEFT, LOW);
-// pros::adi::DigitalOut intake_lift_right(PORTS_INTAKE_LIFT_RIGHT, LOW);
-// pros::adi::DigitalOut clamp(PORT_CLAMP, LOW);
+// pros::adi::DigitalOut intake_lift_left(PORT_INTAKE_LIFT_LEFT, LOW);        /*SCRAPPED*/
+// pros::adi::DigitalOut intake_lift_right(PORTS_INTAKE_LIFT_RIGHT, LOW);     /*SCRAPPED*/
+// pros::adi::DigitalOut clamp(PORT_CLAMP, LOW);                              /*SCRAPPED*/
 pros::adi::DigitalOut clamp_left(PORT_CLAMP_LEFT, LOW);
 pros::adi::DigitalOut clamp_right(PORT_CLAMP_RIGHT, LOW);
-// pros::adi::DigitalOut claw(PORT_CLAW, LOW);
+// pros::adi::DigitalOut claw(PORT_CLAW, LOW);                                /*SCRAPPED*/
 pros::adi::DigitalOut doinker(PORT_DOINKER, LOW);
 pros::adi::DigitalOut ring_stopper(PORT_RING_STOPPER,LOW);
 
 //creates drivetrain with certain variables listed below
 lemlib::Drivetrain drivetrain(&left_chassis, // left motor group
                               &right_chassis, // right motor group
-                              13.5, // 13 inch track width
-                              lemlib::Omniwheel::NEW_275, // using n
-                              480, // drivetrain rpm is 450
-                              8 // horizontal drift is 2 (for now)
+                              13.5, // 13.5 inch track width
+                              lemlib::Omniwheel::NEW_275, // using new 2.75" diameter omni wheels
+                              480, // drivetrain rpm is 480
+                              8 // horizontal drift is 8 since a tracking wheel is used, 2 if all omnis are used
 );
 
-// //creates rotation sensors for odom with specified ports
-// pros::Rotation odom_vert_sensor(PORT_ODOM_VERT);
-// pros::Rotation odom_hozi_sensor(PORT_ODOM_HORI);
 
-// //creates odom tracking wheel configuration with specified rotation sensors, wheel sizes, and offsets
-// lemlib::TrackingWheel odom_vert_wheel(&odom_vert_sensor, lemlib::Omniwheel::NEW_2, VERTICAL_OFFSET);
-// lemlib::TrackingWheel odom_hori_wheel(&odom_hozi_sensor, lemlib::Omniwheel::NEW_2, HORIZONTAL_OFFSET);
+/*NOT CURRENTLY IN USE
+//creates rotation sensors for odom with specified ports
+pros::Rotation odom_vert_sensor(PORT_ODOM_VERT);
+pros::Rotation odom_hozi_sensor(PORT_ODOM_HORI);
 
-//lemlib chassis settings
+//creates odom tracking wheel configuration with specified rotation sensors, wheel sizes, and offsets
+lemlib::TrackingWheel odom_vert_wheel(&odom_vert_sensor, lemlib::Omniwheel::NEW_2, VERTICAL_OFFSET);
+lemlib::TrackingWheel odom_hori_wheel(&odom_hozi_sensor, lemlib::Omniwheel::NEW_2, HORIZONTAL_OFFSET);
 
-//creates entire odom sensor variable with all classes above
+*/
+
+//creates odom sensor group with the sensors crated above
 lemlib::OdomSensors odom_sensors(
-    nullptr, 
-    nullptr, 
-    nullptr, 
-    nullptr,
+    nullptr, // N/A
+    nullptr, // N/A
+    nullptr, // N/A
+    nullptr, // N/A
     &IMU // inertial sensor
 );
 
-//creates lateral PID controller variable
+//creates lateral drive PID controller 
 lemlib::ControllerSettings lateral_controller(
     10, // proportional gain (kP)
     0, // integral gain (kI)
@@ -89,7 +87,7 @@ lemlib::ControllerSettings lateral_controller(
     20 // maximum acceleration (slew)
 );
 
-//creates angular PID controller variable
+//creates angular drive PID controller 
 lemlib::ControllerSettings angular_controller(
     2, // proportional gain (kP)
     0, // integral gain (kI)
@@ -102,6 +100,7 @@ lemlib::ControllerSettings angular_controller(
     0 // maximum acceleration (slew)
 );
 
+/*NOT CURRENTLY IN USE*/
 //creates an exponential drive curve function variable with specified deadzone, minimum output, and curve.
 lemlib::ExpoDriveCurve lateral_curve(
     5,
@@ -109,7 +108,7 @@ lemlib::ExpoDriveCurve lateral_curve(
     LEMLIB_DRIVE_CURVE
 );
 
-//creates chassis variable with all listed above
+//creates LemLib chassis with variables created above
 lemlib::Chassis LemLibChassis(
     drivetrain,
     lateral_controller,
@@ -117,6 +116,7 @@ lemlib::Chassis LemLibChassis(
     odom_sensors
 );
 
+//creates chassis for LemLib with listed motor ports and constants
 ez::Drive EzTempChassis( 
     {PORT_LF, PORT_LM, PORT_LB},
     {PORT_RF, PORT_RM, PORT_RB}, 

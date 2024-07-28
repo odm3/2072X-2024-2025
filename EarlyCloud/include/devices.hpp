@@ -6,6 +6,7 @@
 #include "pros/rotation.hpp"
 #include "Ez-Template/api.hpp"
 
+//controller
 extern pros::Controller controlla;
 
 //drive motors
@@ -28,9 +29,9 @@ extern pros::Rotation conveyorRotation;
 
 //tw ports
 extern pros::adi::DigitalOut intake_lift;
-extern pros::adi::DigitalOut intake_lift_left;
-extern pros::adi::DigitalOut intake_lift_right;
-extern pros::adi::DigitalOut clamp;
+// extern pros::adi::DigitalOut intake_lift_left;
+// extern pros::adi::DigitalOut intake_lift_right;
+// extern pros::adi::DigitalOut clamp;
 extern pros::adi::DigitalOut clamp_left;
 extern pros::adi::DigitalOut clamp_right;
 // extern pros::adi::DigitalOut claw;
@@ -38,8 +39,6 @@ extern pros::adi::DigitalOut doinker;
 extern pros::adi::DigitalOut ring_stopper;
 extern pros::Rotation odom_vert_sensor;
 extern pros::Rotation odom_hozi_sensor;
-
-
 
 //algo inputs
 #define activeBreak_kp 0
@@ -54,10 +53,12 @@ extern ez::Drive EzTempChassis;
 #define HORIZONTAL_OFFSET 0
 
 //drive curve
-#define LEMLIB_DRIVE_CURVE 1
+#define LEMLIB_DRIVE_CURVE 1.25
 #define EZTEMP_DRIVE_CURVE 5
 
 //smart wire ports
+
+//drive motor ports
 #define PORT_LF -19
 #define PORT_LM 12
 #define PORT_LB -6
@@ -66,10 +67,12 @@ extern ez::Drive EzTempChassis;
 #define PORT_RM -14
 #define PORT_RB 13
 
+//other motor ports
 #define PORT_INTAKE 18
 #define PORT_CONVEYOR -20
-
 #define PORT_ARM 4
+
+/*SCRAPPED*/
 // #define PORT_ARM_LEFT 5
 // #define PORT_ARM_RIGHT -10
 
@@ -77,17 +80,18 @@ extern ez::Drive EzTempChassis;
 #define PORT_IMU 16
 #define PORT_ARM_ROTATION 2
 #define PORT_CONVEYOR_ROTATION 3
+/*NOT IN CURRENT USE*/
 // #define PORT_ODOM_VERT #
 // #define PORT_ODOM_HORI #
 
 //tw ports
 #define PORT_INTAKE_LIFT 'G'
-// #define PORT_INTAKE_LIFT_LEFT 'A'
-// #define PORTS_INTAKE_LIFT_RIGHT 'B'
-// #define PORT_CLAMP 'H'
+// #define PORT_INTAKE_LIFT_LEFT 'A'    /*SCRAPPED*/
+// #define PORTS_INTAKE_LIFT_RIGHT 'B'  /*SCRAPPED*/
+// #define PORT_CLAMP 'H'               /*SCRAPPED*/
 #define PORT_CLAMP_LEFT 'H'
 #define PORT_CLAMP_RIGHT 'E'
-// #define PORT_CLAW 'E'
+// #define PORT_CLAW 'E'                /*SCRAPPED*/
 #define PORT_DOINKER 'B'
 #define PORT_RING_STOPPER 'A'
 

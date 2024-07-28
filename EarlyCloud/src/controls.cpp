@@ -6,97 +6,110 @@
 #include "pros/motors.h"
 #include "pros/rtos.hpp"
 
+
+//inits all variables for pistons as false/not activate 
 bool toggleRingStopper =  false;
 bool toggleIntakeLift = false;
 bool toggleClamp = false;
 bool toggleDoinker = false;
 
+//lifts the intake up
 void intakeLiftUp() {
-// intake_lift_left.set_value(true);
-// intake_lift_right.set_value(true);
 intake_lift.set_value(true);
 }
 
+//lifts the intake down
 void intakeLiftDown() {
-// intake_lift_left.set_value(false);
-// intake_lift_right.set_value(false);
 intake_lift.set_value(false);
 }
 
+//activates the ring stopper
 void ringStopperActivate() {
     ring_stopper.set_value(true);
 }
 
+//retracts the ring stopper
 void ringStopperRetract() {
     ring_stopper.set_value(false);
 }
 
+//activates the clamp
 void clampActivate() {
-    // clamp_left.set_value(true);
-    // clamp_right.set_value(true);
     clamp_left.set_value(true);
     clamp_right.set_value(true);
 }
 
+//retracts the clamp
 void clampRetract() {
-    // clamp_left.set_value(false);
-    // clamp_right.set_value(false);
     clamp_left.set_value(false);
     clamp_right.set_value(false);
 }
 
+//activates the doinker
 void doinkerActivate() {
     doinker.set_value(true);
 }
 
+//retracts the doinker
 void doinkerRetract() {
     doinker.set_value(true);
 }
 
-double conveyorStuckCurrent = 10000000; //placeholder
+/*placeholder current value for conveyor getting stuck, if current is above this value,
+the conveyor will reverse for a certain amount of time*/
+double conveyorStuckCurrent = 10000000;
 
+//moves the intake and conveyor with a specific desired voltage
 void intakeVoltage(int voltage) {
     intake.move_voltage(voltage);
     conveyor.move_voltage(voltage);
 
     if (conveyor.get_current_draw() > conveyorStuckCurrent) {
         conveyor.move_voltage(-12000);
+        pros::delay(500);
     }
     else {
         return;
     }
 }
 
-
+//moves the arm motor using a specific desired voltage
 void armVoltage(int Voltage) {
     arm.move_voltage(Voltage);
 }
 
+double ARM_POS_ZERO = 0;
+double ARM_POS_ALLIANCE = 60;
+double ARM_POS_WALL = 180;
+
+
+/*WORK IN PROGRESS*/
+//moves the arm to base position
 void armToZero() {
-    while (armRotation.get_position() != 0) {
+    while (armRotation.get_position() != ARM_POS_ZERO) {
      armVoltage(-12000);
     }
 }
 
-void armToIntakeLifted() {
-    while (armRotation.get_position() != 60) {
-    armVoltage(12000);
-    }
-}
-
-void armToScoreUp() {
-    while (armRotation.get_position() != 180) {
-     armVoltage(12000);
-    }
-}
-
-void armToScoreDown() {
-    while (armRotation.get_position() != 60) {
+/*WORK IN PROGRESS*/
+//moves arm to the alliance stake position with values from the arm rotation sensor
+void armToAllianceStake() {
+    while (armRotation.get_position() != ARM_POS_ALLIANCE) {
         armVoltage(-12000);
     }
 }
 
-void armControlSpecific(double targetPos) {
+/*WORK IN PROGRESS*/
+//moves arm to the wall stake position with values from the arm rotation sensor
+void armToWallStake() {
+    while (armRotation.get_position() != ARM_POS_WALL) {
+     armVoltage(12000);
+    }
+}
+
+/*WORK IN PROGRESS*/
+//moves arm to a specific desired position with values from the arm rotation sensor
+void armToSpecific(double targetPos) {
     
     double currentPos = armRotation.get_position();
     double error = targetPos - currentPos;
@@ -110,6 +123,7 @@ void armControlSpecific(double targetPos) {
 
 }
 
+//controls for intake and conveyor during driverControl
 void intakeControl() {
 
 if (controlla.get_digital(intakeButton)) {
@@ -129,6 +143,7 @@ else {
     }
 }
 
+//controls for the intake lift during driverControl
 void intakeLiftControl() {
 
 if (controlla.get_digital_new_press(intakeLifTButton)) {
@@ -139,6 +154,7 @@ if (controlla.get_digital_new_press(intakeLifTButton)) {
 	intake_lift.set_value(toggleIntakeLift);
 }
 
+//controls for the ring stopper during driverControl
 void ringStopperControl() {
     if (controlla.get_digital_new_press(ringStopperButton)) {
         toggleRingStopper = !toggleRingStopper;
@@ -146,6 +162,7 @@ void ringStopperControl() {
     ring_stopper.set_value(toggleRingStopper);
 }
 
+//controls for the clamp during driverControl
 void clampControl() {
     if (controlla.get_digital_new_press(clampButton)) {
     toggleClamp = !toggleClamp;
@@ -156,6 +173,7 @@ void clampControl() {
     clamp_right.set_value(toggleClamp);
 }
 
+//controls for the doinker for driverControl
 void doinkerControl() {
     if (controlla.get_digital_new_press(doinkerButton)) {
         toggleDoinker = !toggleDoinker;
@@ -163,6 +181,7 @@ void doinkerControl() {
     doinker.set_value(toggleDoinker);
 }
 
+//current controls for the arm during driverControl
 void armControl() {
     if (controlla.get_digital(ArmUpButton)) {
         arm.move_voltage(12000);
@@ -174,14 +193,4 @@ void armControl() {
     else {
         arm.move_voltage(0);
     }
-}
-
-void wallStakeLoad() {
-	intakeVoltage(12000);
-	if ((toggleRingStopper == true) + conveyor.get_actual_velocity() < 15) {
-		intake.move_voltage(12000);
-		conveyor.move_voltage(-12000);
-		pros::delay(500);
-		return;
-	}
 }

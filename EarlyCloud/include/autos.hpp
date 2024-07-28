@@ -2,16 +2,26 @@
 
 void default_constants();
 
-void noAuto();
+//compition autos
 
+void noAuto();
+void driveToLadder();
 void qualLeft();
 void qualRight();
+void qualLeftEz();
 void soloAWPLeft();
 void soloAWPRight();
 void elimsLeft();
 void elimsRight();
 void Skills();
-
+void mogoRushRed();
+void mogoRushRedAllianceStake();
+void mogoRushBlue();
+void mogoRushBlueAllianceStake();
+void ringRushRed();
+void ringRushRedAllianceStake();
+void ringRushBlue();
+void ringRushBlueAllianceStake();
 // tuning pid autos
 
 void tuneLateralLemLib();
@@ -24,8 +34,5 @@ void swing_example();
 void motion_chaining();
 void combining_movements();
 void interfered_example();
-
-
-void riaTest();
-void qualLeftEz();
 void intakeauto();
+

@@ -6,49 +6,17 @@
 #include "lemlib/asset.hpp"
 #include "main.h" // IWYU pragma: keep
 #include "pros/rtos.hpp"
+//includes
 
+//asset files for pure pursuit path following
 ASSET(X)
 
-// These are out of 127
+// a universal speed for the EzTempChassis to follow. These are out of 127
 const int DRIVE_SPEED = 110;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 90;
 
-void intakeauto() {
-  intakeVoltage(12000);
-}
-
-// void riaTest() {
-//   EzTempChassis.pid_drive_set(24_in, DRIVE_SPEED, false);
-//   EzTempChassis.pid_wait_until(12_in);
-//   EzTempChassis.pid_turn_set(45_deg, TURN_SPEED, false);
-//   EzTempChassis.pid_wait();
-//   intakeLiftUp();
-//   intakeVoltage(12000);
-//   EzTempChassis.pid_drive_set(6_in,DRIVE_SPEED);
-//   EzTempChassis.pid_wait();
-//   intakeLiftDown();
-//   pros::delay(500); 
-//   EzTempChassis.pid_drive_set(-6_in,DRIVE_SPEED);
-//   intakeVoltage(0);
-
-// }
-
-// void pleasepleasepleaseworkkkkkk() {
-//   intakeVoltage(12000);
-//   pros::delay(250);
-//   armVoltage(3000);
-//   pros::delay(250);
-//   intakeVoltage(-12000);
-//   armVoltage(0);
-//   pros::delay(250);
-//   clampActivate();
-//   ringStopperActivate();
-//   pros::delay(100);
-//   EzTempChassis.pid_drive_set(48_cm , DRIVE_SPEED, false);
-//   EzTempChassis.pid_wait();
-// }
-
+//constants used for functions that the EzTempChassis uses
 void default_constants() {
   EzTempChassis.pid_heading_constants_set(11, 0, 20);
   EzTempChassis.pid_drive_constants_set(20, 0, 100);
@@ -66,14 +34,18 @@ void default_constants() {
   EzTempChassis.slew_drive_constants_set(7_in, 80);
 }
 
-void funExitConditions() {
-
-}
-
+//nothing happens during auto (0 stakes, 0 rings, no lader, 0pts.)
 void noAuto() {
     
 }
 
+//auto that just drives up to the ladder, the arm makes sure that it touches (0 stakes, 0 rings, touches ladder, 0pts.)
+void driveToLadder() {
+  EzTempChassis.pid_drive_set(48_in, DRIVE_SPEED);
+  armVoltage(3000);
+}
+
+//default auto for qualification matches on the left side, (1 goal, 2 rings, ladder touch, 4pts.)
 void qualLeft() {
     LemLibChassis.setPose(-55, 35, 270);
     LemLibChassis.moveToPose(-34, 30, 300, 99999, {false, 8} );
@@ -93,6 +65,7 @@ void qualLeft() {
     LemLibChassis.waitUntilDone();
 }
 
+//default auto for qualification matches on the left side, but using strictly EzTempChassis (1 stake, 2 rings, ladder touch, 4pts.)
 void qualLeftEz() {
   EzTempChassis.pid_drive_set(-8_in, DRIVE_SPEED);
   EzTempChassis.pid_wait();
@@ -116,6 +89,7 @@ void qualLeftEz() {
   EzTempChassis.pid_drive_set(8_in, DRIVE_SPEED, false);
 }
 
+//default auto for qualifications on the right side (1 stake, 2 rings, ladder touch, 4pts.)
 void qualRight() {
     LemLibChassis.setPose(-55, -15, 270);
     LemLibChassis.moveToPose(-34, -20, 300, 9999, {false, 8, 0.6});
@@ -128,7 +102,7 @@ void qualRight() {
     intakeVoltage(-3000);
     LemLibChassis.waitUntilDone();
 }
-
+//auto which acheives autonomous win point by itself on the left side (2 stakes, 2 rings, ladder touch, 6pts.)
 void soloAWPLeft() {
     LemLibChassis.setPose(-55, 35, 270);
     LemLibChassis.moveToPose(-34, 30, 300, 99999, {false, 8} );
@@ -144,7 +118,7 @@ void soloAWPLeft() {
     intakeVoltage(12000);
     LemLibChassis.moveToPoint(-47.5, 0, 99999);
     LemLibChassis.waitUntilDone();
-    wallStakeLoad();
+    intakeVoltage(12000);
     LemLibChassis.moveToPoint(-58,  18, 99999, {false});
     LemLibChassis.waitUntilDone();
     // armtowallstake
@@ -156,6 +130,7 @@ void soloAWPLeft() {
     LemLibChassis.moveToPoint(-35, 0, 9999);
 }
 
+//auto which acheives autonomous win point by itself on the left side (2 stakes, 2 rings, ladder touch, 6pts.)
 void soloAWPRight() {
     LemLibChassis.setPose(-58,-10,270);
     LemLibChassis.moveToPose(-34, -20, 104, 9999, {false, 8});
@@ -177,15 +152,18 @@ void soloAWPRight() {
 
 }
 
+//auto which scores the most points for elims on the left side
 void elimsLeft() {
 
 }
 
+//auto which scores the most points for elims on the right side
 void elimsRight() {
 
 }
 
-void mogoRush() {
+//auto which rushes for the middle mobile goal whilst on the red side (2 stakes, 2 rings, maybe ladder, 6pts)
+void mogoRushRed() {
     LemLibChassis.setPose(-58, -35, 270);
     LemLibChassis.moveToPose(-9, -40, 300, 99999, {false, 8});
     LemLibChassis.waitUntilDone();
@@ -204,10 +182,46 @@ void mogoRush() {
     LemLibChassis.waitUntilDone();
     LemLibChassis.moveToPoint(-20, -5, 500);
     armVoltage(3000);
+}
 
+//auto which rushes for the mobile goal in the middle whilst on the red side and scores on the alliance stake (3 stakes, 3 rings, maybe ladder, 9pts.)
+void mogoRushRedAllianceStake() {
+  
+}
+
+//auto whihc rushes for the middle mobile goal whilst on the blue side (2 stakes, 2 rings, maybe ladder, 6pts.)
+void mogoRushBlue() {
 
 }
 
+//auto which rushes for the middle mobile goal whilst on the blue side and scores on the alliance stake (3 stakes, 3 rings, maybe ladder, 9pts)
+void mogoRushBlueAllianceStake() {
+
+}
+
+/*MIDDLE RINGS DOES NOT MEAN THE RINGS INSIDE THE LADDER*/
+
+//auto which rushes for the middle rings whilst on the red side of the field (1 stake, 4 rings, maybe ladder, 6 pts.)
+void ringRushRed() {
+
+}
+
+//auto which rushes for the middle rings whilst on the red side of the field and scores the alliance stake (2 stakes, 4 rings, maybe ladder, 8pts.)
+void ringRushRedAllianceStake() {
+
+}
+
+//auto which rushes for the middle rings whilst on the blue side of the field (1 stake, 4 rings, maybe ladder, 6pts.)
+void ringRushBlue() {
+
+}
+
+//auto which rushes for the middle rings whilst on the blue side of the field nd scores the alliance stake (2 stakes, 4 rings, maybe ladder, 8pts)
+void ringRushBlueAllianceStake() {
+
+}
+
+//auto that runs for skills
 void Skills() {
 
 }
