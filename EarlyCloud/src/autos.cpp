@@ -13,35 +13,9 @@
 ASSET(X)
 
 // a universal speed for the EzTempChassis to follow. These are out of 127
-const int DRIVE_SPEED = 110;
+const int DRIVE_SPEED = 100;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 90;
-
-//constants used for functions that the EzTempChassis uses
-void default_constants() {
-  EzTempChassis.pid_heading_constants_set(11, 0, 20);
-  EzTempChassis.pid_drive_constants_set(20, 0, 100);
-  EzTempChassis.pid_turn_constants_set(6, 0.05, 60, 15);
-  EzTempChassis.pid_swing_constants_set(6, 0, 65);
-
-  // EzTempChassis.pid_turn_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  // EzTempChassis.pid_swing_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  // EzTempChassis.pid_drive_exit_condition_set(80_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
-
-  // EzTempChassis.pid_turn_chain_constant_set(3_deg);
-  // EzTempChassis.pid_swing_chain_constant_set(5_deg);
-  // EzTempChassis.pid_drive_chain_constant_set(3_in);
-
-  EzTempChassis.slew_drive_constants_set(7_in, 80);
-}
-
-void mogo_constants() {
-  EzTempChassis.pid_heading_constants_set(11, 0, 20);
-  EzTempChassis.pid_drive_constants_set(20, 0, 100);
-  EzTempChassis.pid_turn_constants_set(3, 0.05, 20, 15);
-  EzTempChassis.pid_swing_constants_set(6, 0, 65);
-
-}
 
 //nothing happens during auto 
 //(0 stakes, 0 rings, no lader, 0pts.)
@@ -256,20 +230,20 @@ void Skills() {
 
 void tuneLateralLemLib() {
     LemLibChassis.setPose(0,0,0);
-    LemLibChassis.moveToPoint(0, 24, 3000);
+    LemLibChassis.moveToPose(0, 24, 0, 99999);
     LemLibChassis.waitUntilDone();
     controlla.rumble(".");
-    LemLibChassis.moveToPoint(0, 0, 3000, {false});
+    LemLibChassis.moveToPose(0, 0, 0, 99999, {false});
     LemLibChassis.waitUntilDone();
     controlla.rumble(".");
 }
 
 void tuneAngularLemLib() {
     LemLibChassis.setPose(0,0,0);
-    LemLibChassis.turnToHeading(90, 99999999);
+    LemLibChassis.turnToHeading(90, 5000);
     LemLibChassis.waitUntilDone();
     controlla.rumble(".");
-    LemLibChassis.turnToHeading(0, 99999);
+    LemLibChassis.turnToHeading(0, 5000);
     LemLibChassis.waitUntilDone();
     controlla.rumble(".");
 }
@@ -285,22 +259,11 @@ void drive_example() {
   // The third parameter is a boolean (true or false) for enabling/disabling a slew at the start of drive motions
   // for slew, only enable it when the drive distance is greater than the slew distance + a few inches
 
-  EzTempChassis.pid_drive_set(24_in, DRIVE_SPEED, true);
+  EzTempChassis.pid_drive_set(24_in, DRIVE_SPEED, false, true);
   EzTempChassis.pid_wait();
-  controlla.rumble(".");
-  pros::delay(1000);
 
-
-  EzTempChassis.pid_drive_set(-12_in, DRIVE_SPEED, true);
+  EzTempChassis.pid_drive_set(-24_in, DRIVE_SPEED, false, true);
   EzTempChassis.pid_wait();
-  controlla.rumble(".");
-  pros::delay(1000);
-
-  EzTempChassis.pid_drive_set(-12_in, DRIVE_SPEED, true);
-  EzTempChassis.pid_wait();
-  controlla.rumble(".");
-  pros::delay(1000);
-
 
 }
 

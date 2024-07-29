@@ -108,15 +108,15 @@ rd::Console(deviceConsole);
  */
 void initialize() {
 	//the following 4 commands calibrate both the LemLib and EzTemp chassis'
+	EzTempChassis.drive_imu_calibrate();
 	LemLibChassis.calibrate(false); 
     EzTempChassis.opcontrol_curve_sd_initialize();
-    EzTempChassis.drive_imu_calibrate(false);
     EzTempChassis.opcontrol_drive_sensors_reset();
 
 	pros::delay(500); //a wait time of 500ms so the user cannot do anything while the chassis' are initializing
 
 	EzTempChassis.opcontrol_curve_default_set(3); 		//Drive curve so the user can have better control in driver control
-	EzTempChassis.opcontrol_curve_buttons_toggle(true); // Enables modifying the controller curve with buttons on the joysticks
+	EzTempChassis.opcontrol_curve_buttons_toggle(false); // Disables modifying the controller curve with buttons
     EzTempChassis.opcontrol_drive_activebrake_set(activeBreak_kp); // Sets the active brake kP
     default_constants(); // Set the drive to your my constants from autons.cpp
 
@@ -216,14 +216,9 @@ void opcontrol() {
       EzTempChassis.pid_tuner_iterate();  // Allow PID Tuner to iterate
     }
 
-	/*WORK IN PROGRESS*/
-	//find how much current the conveyor is drawing
-	std::cout << "motor current draw" << conveyor.get_current_draw();
-
-
 	//drive styles, the uncommented one is which will be used
-    EzTempChassis.opcontrol_tank();  // Tank control
-    // chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
+    //EzTempChassis.opcontrol_tank();  // Tank control
+    EzTempChassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade

@@ -44,6 +44,9 @@ extern pros::Rotation odom_hozi_sensor;
 #define activeBreak_kp 0
 #define arm_kp 0.5
 
+void default_constants();
+void mogo_constants();
+
 //chassis'
 extern lemlib::Chassis LemLibChassis;
 extern ez::Drive EzTempChassis;
@@ -103,4 +106,4 @@ extern ez::Drive EzTempChassis;
 #define ArmDownButton pros::E_CONTROLLER_DIGITAL_R2
 #define clampButton pros::E_CONTROLLER_DIGITAL_B
 #define doinkerButton pros::E_CONTROLLER_DIGITAL_Y
-#define ringStopperButton pros::E_CONTROLLER_DIGITAL_RIGHT  
+#define ringStopperButton pros::E_CONTROLLER_DIGITAL_Y  

@@ -100,6 +100,32 @@ lemlib::ControllerSettings angular_controller(
     0 // maximum acceleration (slew)
 );
 
+//constants used for functions that the EzTempChassis uses
+void default_constants() {
+  EzTempChassis.pid_heading_constants_set(11, 0, 20);
+  EzTempChassis.pid_drive_constants_set(20, 0, 0);
+  EzTempChassis.pid_turn_constants_set(6, 0.05, 60, 15);
+  EzTempChassis.pid_swing_constants_set(6, 0, 65);
+
+  EzTempChassis.pid_turn_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
+  EzTempChassis.pid_swing_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
+  EzTempChassis.pid_drive_exit_condition_set(80_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
+
+  EzTempChassis.pid_turn_chain_constant_set(3_deg);
+  EzTempChassis.pid_swing_chain_constant_set(5_deg);
+  EzTempChassis.pid_drive_chain_constant_set(3_in);
+
+  EzTempChassis.slew_drive_constants_set(7_in, 80);
+}
+
+void mogo_constants() {
+  EzTempChassis.pid_heading_constants_set(11, 0, 20);
+  EzTempChassis.pid_drive_constants_set(20, 0, 100);
+  EzTempChassis.pid_turn_constants_set(3, 0.05, 20, 15);
+  EzTempChassis.pid_swing_constants_set(6, 0, 65);
+
+}
+
 /*NOT CURRENTLY IN USE*/
 //creates an exponential drive curve function variable with specified deadzone, minimum output, and curve.
 lemlib::ExpoDriveCurve lateral_curve(
@@ -122,6 +148,6 @@ ez::Drive EzTempChassis(
     {PORT_RF, PORT_RM, PORT_RB}, 
     PORT_IMU,
     2.75, 
-    600,
-    1.25
+    480,
+    60.0/48.0
 );
