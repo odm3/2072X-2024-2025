@@ -37,7 +37,6 @@ rd::Selector tuningSelector( {
 	{"swing_example", &swing_example},
 	{"motion_chaining", &motion_chaining},
 	{"interfered_example", &interfered_example},
-	{"intakeforward", &intakeauto},
 });
 
 /*create a console using robodash, this will be used any time 
@@ -174,7 +173,7 @@ void tuningAutonomous() {
   	EzTempChassis.drive_sensor_reset();              					 // Reset drive sensors to 0
   	EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);  // Set motors to hold for EzTemp
 	LemLibChassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);			  // Set motors to hold for LemLib
-	autoSelector1.run_auton();											 //runs the selected auton
+	tuningSelector.run_auton();											 //runs the selected auton
 }
 
 /**
