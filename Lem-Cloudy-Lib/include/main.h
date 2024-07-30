@@ -1,3 +1,4 @@
+// no longer using this, lvgl issues haha
 /**
  * \file main.h
  *
@@ -51,7 +52,9 @@
 #include "intake.hpp"// IWYU pragma: keep
 #include "arm.hpp"// IWYU pragma: keep
 #include "devices.hpp"// IWYU pragma: keep
-
+#include "pros/apix.h"// IWYU pragma: keep
+#include "autos.hpp"// IWYU pragma: keep
+#include "misc.hpp"//IWYU pragma: keep
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
