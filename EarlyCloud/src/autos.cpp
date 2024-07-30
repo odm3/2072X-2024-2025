@@ -13,7 +13,7 @@
 ASSET(X)
 
 // a universal speed for the EzTempChassis to follow. These are out of 127
-const int DRIVE_SPEED = 100;
+const int DRIVE_SPEED = 80;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 90;
 
@@ -230,7 +230,7 @@ void Skills() {
 
 void tuneLateralLemLib() {
     LemLibChassis.setPose(0,0,0);
-    LemLibChassis.moveToPose(0, 24, 0, 99999);
+    LemLibChassis.moveToPose(0, 24, 0, 99999, {true});
     LemLibChassis.waitUntilDone();
     controlla.rumble(".");
     LemLibChassis.moveToPose(0, 0, 0, 99999, {false});
@@ -259,10 +259,10 @@ void drive_example() {
   // The third parameter is a boolean (true or false) for enabling/disabling a slew at the start of drive motions
   // for slew, only enable it when the drive distance is greater than the slew distance + a few inches
 
-  EzTempChassis.pid_drive_set(24_in, DRIVE_SPEED, false, true);
+  EzTempChassis.pid_drive_set(24_in, DRIVE_SPEED, false);
   EzTempChassis.pid_wait();
 
-  EzTempChassis.pid_drive_set(-24_in, DRIVE_SPEED, false, true);
+  EzTempChassis.pid_drive_set(-24_in, DRIVE_SPEED, false);
   EzTempChassis.pid_wait();
 
 }

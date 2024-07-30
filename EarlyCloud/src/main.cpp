@@ -176,6 +176,19 @@ void tuningAutonomous() {
 	tuningSelector.run_auton();											 //runs the selected auton
 }
 
+void display_task() {
+	pros::delay(4000);
+	while (true) {
+	//gets pose of the chassis
+	lemlib::Pose pose1 = LemLibChassis.getPose();
+// print the x, y, and theta values of the pose
+deviceConsole.printf("X: %f, Y: %f, Theta: %f\n", pose1.x, pose1.y, pose1.theta);
+	pros::delay(250);
+	}
+}
+
+pros::Task displayStuffTask(display_task);
+
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -231,6 +244,11 @@ void opcontrol() {
 	doinkerControl();
 	ringStopperControl();
 	// wallStakeLoad();
+
+	// get the pose of the chassis
+	// lemlib::Pose pose = LemLibChassis.getPose();
+	// print the x, y, and theta values of the pose
+	// deviceConsole.printf("X: %f, Y: %f, Theta: %f\n", pose.x, pose.y, pose.theta);
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations
   }
