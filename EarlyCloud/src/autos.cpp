@@ -26,7 +26,7 @@ void driveToLadder() {
 
 //default auto for qualification matches on the left side, but using strictly EzTempChassis
 // (1 stake, 2 rings, ladder touch, 4pts.)
-void EzQualsLeft() {
+void EzAWPLeft() {
   EzTempChassis.pid_drive_set(-9_in, DRIVE_SPEED, false);
   EzTempChassis.pid_wait();
   EzTempChassis.pid_turn_set(30_deg, TURN_SPEED);
