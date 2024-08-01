@@ -5,6 +5,9 @@
 #include "pros/imu.hpp"
 #include "pros/rotation.hpp"
 #include "Ez-Template/api.hpp"
+#include "Timer.h"
+
+extern Timer timer;
 
 //controller
 extern pros::Controller controlla;
@@ -81,7 +84,7 @@ extern ez::Drive EzTempChassis;
 
 //sensor ports
 #define PORT_IMU 16
-#define PORT_ARM_ROTATION 2
+#define PORT_ARM_ROTATION -2
 #define PORT_CONVEYOR_ROTATION 3
 /*NOT IN CURRENT USE*/
 // #define PORT_ODOM_VERT #
@@ -101,9 +104,9 @@ extern ez::Drive EzTempChassis;
 //buttons
 #define intakeButton pros::E_CONTROLLER_DIGITAL_L1
 #define intakeReverseButton pros::E_CONTROLLER_DIGITAL_L2
-#define intakeLifTButton pros::E_CONTROLLER_DIGITAL_DOWN
+#define intakeLifTButton pros::E_CONTROLLER_DIGITAL_Y
 #define ArmUpButton pros::E_CONTROLLER_DIGITAL_R1
 #define ArmDownButton pros::E_CONTROLLER_DIGITAL_R2
 #define clampButton pros::E_CONTROLLER_DIGITAL_B
-#define doinkerButton pros::E_CONTROLLER_DIGITAL_Y
-#define ringStopperButton pros::E_CONTROLLER_DIGITAL_Y  
+#define doinkerButton pros::E_CONTROLLER_DIGITAL_RIGHT
+#define ringStopperButton pros::E_CONTROLLER_DIGITAL_DOWN

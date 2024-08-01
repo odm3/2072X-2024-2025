@@ -1,6 +1,7 @@
 #pragma once
 
 void intakeVoltage(int voltage);
+void intakeVoltage1(int voltage);
 void intakeControl();
 void intakeLiftUp();
 void intakeLiftDown();
@@ -22,5 +23,7 @@ void ringStopperControl();
 void armVoltage(int Voltage);
 void armToZero();
 void armToAllianceStake();
-void armtowallstake();
+void armToWallStake();
 void armControl();
+
+#include "api.h"

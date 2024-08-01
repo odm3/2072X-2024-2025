@@ -4,6 +4,7 @@
 #include "pros/adi.h"
 #include "pros/adi.hpp"
 #include "pros/rotation.hpp"
+#include "timer.h"
 //includes
 
 //creates controller
@@ -103,15 +104,14 @@ lemlib::ControllerSettings angular_controller(
 //constants used for functions that the EzTempChassis uses
 void default_constants() {
   EzTempChassis.pid_heading_constants_set(11, 0, 20);
-//   EzTempChassis.pid_drive_constants_set(2.3, 0, 95);
-//   EzTempChassis.pid_drive_constants_set(4, 0, 3);
-  EzTempChassis.pid_drive_constants_set(4, 0, 20);
-  EzTempChassis.pid_turn_constants_set(6, 0.05, 60, 15);
+  EzTempChassis.pid_drive_constants_set(4, 0, 3);
+  // EzTempChassis.pid_drive_constants_set(6, 0, 75);
+  EzTempChassis.pid_turn_constants_set(6, 0.05, 75, 15);
   EzTempChassis.pid_swing_constants_set(6, 0, 65);
 
   EzTempChassis.pid_turn_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
   EzTempChassis.pid_swing_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  EzTempChassis.pid_drive_exit_condition_set(10000_ms, 1_in, 10000_ms, 3_in, 500_ms, 10000_ms);
+  EzTempChassis.pid_drive_exit_condition_set(1000_ms, 1_in, 1000_ms, 3_in, 1000_ms, 1000_ms);
 
   EzTempChassis.pid_turn_chain_constant_set(3_deg);
   EzTempChassis.pid_swing_chain_constant_set(5_deg);
@@ -120,7 +120,7 @@ void default_constants() {
   EzTempChassis.slew_drive_constants_set(7_in, 80);
 }
 
-void mogo_constants() {
+void no_mogo_constants() {
   EzTempChassis.pid_heading_constants_set(11, 0, 20);
   EzTempChassis.pid_drive_constants_set(20, 0, 100);
   EzTempChassis.pid_turn_constants_set(3, 0.05, 20, 15);
@@ -150,6 +150,8 @@ ez::Drive EzTempChassis(
     {PORT_RF, PORT_RM, PORT_RB}, 
     PORT_IMU,
     2.75,
-    600,
-    60.0/48.0
+    480
 );
+
+
+Timer timer;

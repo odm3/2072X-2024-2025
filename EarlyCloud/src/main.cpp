@@ -6,21 +6,10 @@ rd::Selector autoSelector1( {
 
 	{"noAuto",&noAuto},
 	{"drive to ladder", &driveToLadder},
-	{"qualLeft",&qualLeft},
-	{"qualLeftEz", &qualLeftEz},
-	{"qualRight",&qualRight},
-	{"soloAWPLeft",&soloAWPLeft},
-	{"soloAWPRight",&soloAWPRight},
-	{"elimsLeft",&elimsLeft},
-	{"elimsRight",&elimsRight},
-	{"mogo rush red", &mogoRushRed},
-	{"mogo rush red alliance stake", &mogoRushBlueAllianceStake},
-	{"mogo rush blue", &mogoRushBlue},
-	{"mogo rush blue alliance stake", &mogoRushBlueAllianceStake},
-	{"ring rush red", &ringRushRed},
-	{"ring rush red alliance stake", &ringRushRedAllianceStake},
-	{"ring rush blue", &ringRushBlue},
-	{"ring rush blue alliance stake", &ringRushBlueAllianceStake},
+	{"EzQualLeft", &EzQualsLeft},
+	{"EzQualRight", &EzQualsRight},
+	{"Ez AWP Left", &EzAWPLeft},
+	{"Ez AWP Right", &EzAWPRight},
 	{"Skills", &Skills},
 	}
 );
@@ -44,6 +33,23 @@ device values are desired to printed to the brain screen*/
 rd::Console(deviceConsole);
 
 //don't worry about the next few comments until initialize, they are for a future project
+
+	// {"Ez Elims Left", &EzElimsLeft},
+	// {"Ez Elims Right", &EzElimsRight},
+	// {"qualLeft",&qualLeft},
+	// {"qualRight",&qualRight},
+	// {"soloAWPLeft",&soloAWPLeft},
+	// {"soloAWPRight",&soloAWPRight},
+	// {"elimsLeft",&elimsLeft},
+	// {"elimsRight",&elimsRight},
+	// {"mogo rush red", &mogoRushRed},
+	// {"mogo rush red alliance stake", &mogoRushBlueAllianceStake},
+	// {"mogo rush blue", &mogoRushBlue},
+	// {"mogo rush blue alliance stake", &mogoRushBlueAllianceStake},
+	// {"ring rush red", &ringRushRed},
+	// {"ring rush red alliance stake", &ringRushRedAllianceStake},
+	// {"ring rush blue", &ringRushBlue},
+	// {"ring rush blue alliance stake", &ringRushBlueAllianceStake},
 
 // bool isPlugged(int port) {
 
@@ -115,10 +121,11 @@ void initialize() {
 
 	pros::delay(500); //a wait time of 500ms so the user cannot do anything while the chassis' are initializing
 
-	EzTempChassis.opcontrol_curve_default_set(3); 		//Drive curve so the user can have better control in driver control
+	EzTempChassis.opcontrol_curve_default_set(3, 3); 		//Drive curve so the user can have better control in driver control
 	EzTempChassis.opcontrol_curve_buttons_toggle(false); // Disables modifying the controller curve with buttons
     EzTempChassis.opcontrol_drive_activebrake_set(activeBreak_kp); // Sets the active brake kP
     default_constants(); // Set the drive to your my constants from autons.cpp
+	armRotation.reset_position();
 
 	autoSelector1.focus(); //makes the compition auton selector prioritized to select before a match
 
@@ -144,7 +151,6 @@ void disabled() {}
 void competition_initialize() {
 	//this is where the auton selector should be, but it's better in initilize
 }
-
 /**
  * Runs the user autonomous code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -173,21 +179,8 @@ void tuningAutonomous() {
   	EzTempChassis.drive_sensor_reset();              					 // Reset drive sensors to 0
   	EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);  // Set motors to hold for EzTemp
 	LemLibChassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);			  // Set motors to hold for LemLib
-	tuningSelector.run_auton();											 //runs the selected auton
+	autoSelector1.run_auton();											 //runs the selected auton
 }
-
-void display_task() {
-	pros::delay(4000);
-	while (true) {
-	//gets pose of the chassis
-	lemlib::Pose pose1 = LemLibChassis.getPose();
-// print the x, y, and theta values of the pose
-deviceConsole.printf("X: %f, Y: %f, Theta: %f\n", pose1.x, pose1.y, pose1.theta);
-	pros::delay(250);
-	}
-}
-
-pros::Task displayStuffTask(display_task);
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -230,9 +223,9 @@ void opcontrol() {
     }
 
 	//drive styles, the uncommented one is which will be used
-    //EzTempChassis.opcontrol_tank();  // Tank control
-    EzTempChassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
-    // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
+    EzTempChassis.opcontrol_tank();  // Tank control
+	//EzTempChassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
+ 	//EzTempChassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
 
@@ -245,11 +238,11 @@ void opcontrol() {
 	ringStopperControl();
 	// wallStakeLoad();
 
-	// get the pose of the chassis
-	// lemlib::Pose pose = LemLibChassis.getPose();
-	// print the x, y, and theta values of the pose
-	// deviceConsole.printf("X: %f, Y: %f, Theta: %f\n", pose.x, pose.y, pose.theta);
+	controlla.print(0, 0, "torque: %.2f", conveyor.get_torque());
+
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations
   }
 }
+
+
