@@ -6,6 +6,7 @@
 #include "lemlib/asset.hpp"
 #include "main.h" // IWYU pragma: keep
 #include "pros/device.h"
+#include "pros/device.hpp"
 #include "pros/rtos.hpp"
 
 // a universal speed for the EzTempChassis to follow. These are out of 127
@@ -22,6 +23,52 @@ void noAuto() {
 //(0 stakes, 0 rings, touches ladder, 0pts.)
 void driveToLadder() {
   EzTempChassis.pid_drive_set(-48_in, DRIVE_SPEED);
+}
+
+void EzQualsLeft() {
+  EzTempChassis.pid_drive_set(-9_in, DRIVE_SPEED, false, true);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_turn_set(30_deg, TURN_SPEED, false);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_drive_set(-4_in, DRIVE_SPEED);
+  EzTempChassis.pid_wait();
+  clampActivate();
+  pros::delay(250);
+  EzTempChassis.pid_turn_set(95_deg, TURN_SPEED);
+  EzTempChassis.pid_wait();
+  intakeVoltage1(12000);
+  EzTempChassis.pid_drive_set(10_in, DRIVE_SPEED, false, true);
+  EzTempChassis.pid_wait();
+  EzTempChassis.drive_set(0, 0);
+  pros::delay(3000);
+  intakeVoltage1(-12000);
+  EzTempChassis.pid_turn_set(-90_deg, TURN_SPEED);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_drive_set(20_in, 80, false, true);
+  EzTempChassis.pid_wait();
+}
+
+void EzQualsRight() {
+    EzTempChassis.pid_drive_set(-9_in, DRIVE_SPEED, false, true);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_turn_set(-30_deg, TURN_SPEED, false);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_drive_set(-4_in, DRIVE_SPEED);
+  EzTempChassis.pid_wait();
+  clampActivate();
+  pros::delay(250);
+  EzTempChassis.pid_turn_set(-95_deg, TURN_SPEED);
+  EzTempChassis.pid_wait();
+  intakeVoltage1(12000);
+  EzTempChassis.pid_drive_set(10_in, DRIVE_SPEED, false, true);
+  EzTempChassis.pid_wait();
+  EzTempChassis.drive_set(0, 0);
+  pros::delay(3000);
+  intakeVoltage1(-12000);
+  EzTempChassis.pid_turn_set(90_deg, TURN_SPEED);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_drive_set(20_in, 80, false, true);
+  EzTempChassis.pid_wait();
 }
 
 //default auto for qualification matches on the left side, but using strictly EzTempChassis
@@ -117,16 +164,6 @@ void EzAWPRight() {
   arm.move_relative(-90, 127); 
   pros::delay(500);                                            //scores ring on alliance stake
   EzTempChassis.pid_drive_set(-10_in, DRIVE_SPEED);
-}
-
-//default auto for elimination matches on the left side, but using strictly EzTempChassis
-// (1 stake, 2 rings, ladder touch, 4pts.)
-void EzElimsLeft() {
-
-}
-
-void EzElimsRight() {
-
 }
 
 //default auto for qualification matches on the left side 
