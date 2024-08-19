@@ -22,7 +22,7 @@ void noAuto() {
 //auto used if no others work and the alliance can get other awp criteria
 //(0 stakes, 0 rings, touches ladder, 0pts.)
 void driveToLadder() {
-  EzTempChassis.pid_drive_set(-48_in, DRIVE_SPEED);
+  EzTempChassis.pid_drive_set(20_in, DRIVE_SPEED);
 }
 
 void EzQualsLeft() {
@@ -44,8 +44,10 @@ void EzQualsLeft() {
   intakeVoltage1(-12000);
   EzTempChassis.pid_turn_set(-90_deg, TURN_SPEED);
   EzTempChassis.pid_wait();
-  EzTempChassis.pid_drive_set(20_in, 80, false, true);
+  // EzTempChassis.pid_drive_set(20_in, 80, false, true);
+  EzTempChassis.pid_drive_set(10_in, 80, false, true);
   EzTempChassis.pid_wait();
+  clampRetract();
 }
 
 void EzQualsRight() {
@@ -67,8 +69,10 @@ void EzQualsRight() {
   intakeVoltage1(-12000);
   EzTempChassis.pid_turn_set(90_deg, TURN_SPEED);
   EzTempChassis.pid_wait();
-  EzTempChassis.pid_drive_set(20_in, 80, false, true);
+  // EzTempChassis.pid_drive_set(20_in, 80, false, true);
+  EzTempChassis.pid_drive_set(10_in, 80, false, true);
   EzTempChassis.pid_wait();
+  clampRetract();
 }
 
 //default auto for qualification matches on the left side, but using strictly EzTempChassis
@@ -78,7 +82,7 @@ void EzAWPLeft() {
   EzTempChassis.pid_wait();
   EzTempChassis.pid_turn_set(30_deg, TURN_SPEED);
   EzTempChassis.pid_wait();
-  EzTempChassis.pid_drive_set(-4_in, DRIVE_SPEED);
+  EzTempChassis.pid_drive_set(-4.5_in, DRIVE_SPEED);
   EzTempChassis.pid_wait();
   clampActivate();
   pros::delay(250);                                       //clamps the goal
@@ -117,7 +121,9 @@ void EzAWPLeft() {
   EzTempChassis.pid_wait();
   arm.move_relative(-90, 127); 
   pros::delay(500);                                           
-  EzTempChassis.pid_drive_set(-10_in, DRIVE_SPEED);                                             //scores ring on alliance stake
+  EzTempChassis.pid_drive_set(-10_in, DRIVE_SPEED);    
+  EzTempChassis.pid_wait();
+  clampRetract();                                         //scores ring on alliance stake
 }
 
 //auto which can score all criteria for AWP by itself on the right side using only EzTempChassis (2 stakes, 3 rings, touches ladder, 7 pts.)
@@ -126,13 +132,13 @@ void EzAWPRight() {
   EzTempChassis.pid_wait();
   EzTempChassis.pid_turn_set(-30_deg, TURN_SPEED);
   EzTempChassis.pid_wait();
-  EzTempChassis.pid_drive_set(-4_in, DRIVE_SPEED);
+  EzTempChassis.pid_drive_set(-4.5_in, DRIVE_SPEED);
   EzTempChassis.pid_wait();
   clampActivate();
   pros::delay(250);                                       //clamps the goal
   EzTempChassis.pid_turn_set(-105_deg, TURN_SPEED);
   EzTempChassis.pid_wait();
-  intakeVoltage1(12000);
+  intakeVoltage(12000);
   EzTempChassis.pid_drive_set(10_in, DRIVE_SPEED);
   EzTempChassis.pid_wait();
   EzTempChassis.drive_set(0, 0);
@@ -148,8 +154,10 @@ void EzAWPRight() {
   controlla.rumble(".");
   EzTempChassis.pid_drive_set(5_in, 20);
   EzTempChassis.pid_wait();
+  armVoltage(6000);
   intakeLiftDown();
   pros::delay(500);
+  armVoltage(0);
   EzTempChassis.pid_drive_set(-6_in, DRIVE_SPEED);
   EzTempChassis.pid_wait();
   pros::delay(1500);
@@ -164,6 +172,97 @@ void EzAWPRight() {
   arm.move_relative(-90, 127); 
   pros::delay(500);                                            //scores ring on alliance stake
   EzTempChassis.pid_drive_set(-10_in, DRIVE_SPEED);
+  EzTempChassis.pid_wait();
+  clampRetract();
+
+}
+
+void EzQualLeftSafe() {
+  EzTempChassis.pid_drive_set(-9_in, DRIVE_SPEED, false);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_turn_set(30_deg, TURN_SPEED);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_drive_set(-4.5_in, DRIVE_SPEED);
+  EzTempChassis.pid_wait();
+  clampActivate();
+  pros::delay(250);                                       //clamps the goal
+  EzTempChassis.pid_turn_set(-100_deg, TURN_SPEED);
+  EzTempChassis.pid_wait();
+  intakeVoltage(12000);
+  EzTempChassis.pid_drive_set(10_in, DRIVE_SPEED);
+  EzTempChassis.pid_wait();
+  pros::delay(500);
+  intakeVoltage1(-12000);
+  pros::delay(1000);
+  clampRetract();
+
+}
+
+void EzQualRightSafe() {
+  EzTempChassis.pid_drive_set(-9_in, DRIVE_SPEED, false);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_turn_set(-30_deg, TURN_SPEED);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_drive_set(-4.5_in, DRIVE_SPEED);
+  EzTempChassis.pid_wait();
+  clampActivate();
+  pros::delay(250);                                       //clamps the goal
+  EzTempChassis.pid_turn_set(100_deg, TURN_SPEED);
+  EzTempChassis.pid_wait();
+  intakeVoltage(12000);
+  EzTempChassis.pid_drive_set(10_in, DRIVE_SPEED);
+  EzTempChassis.pid_wait();
+  pros::delay(500);
+  intakeVoltage1(-12000);
+  pros::delay(1000);
+  clampRetract();
+}
+
+void AllianceStakeLeft() {
+
+  EzTempChassis.pid_drive_set(4_in, DRIVE_SPEED);
+  EzTempChassis.pid_wait();
+
+  EzTempChassis.pid_turn_set(45_deg, TURN_SPEED);
+  intakeVoltage1(12000);
+  armVoltage(10000);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_drive_set(5_in, DRIVE_SPEED);
+  intakeVoltage1(-12000);
+  EzTempChassis.pid_wait();
+  armVoltage(-12000);
+  pros::delay(500);
+  armVoltage(0);
+  EzTempChassis.pid_drive_set(-4_in, DRIVE_SPEED);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_turn_set(135_deg, TURN_SPEED);
+  EzTempChassis.pid_wait();
+  intakeVoltage1(12000);
+  clampRetract();
+}
+
+void AllianceStakeRight() {
+
+    EzTempChassis.pid_drive_set(4_in, DRIVE_SPEED);
+  EzTempChassis.pid_wait();
+
+  EzTempChassis.pid_turn_set(-45_deg, TURN_SPEED);
+  intakeVoltage1(12000);
+  armVoltage(10000);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_drive_set(5_in, DRIVE_SPEED);
+  intakeVoltage1(-12000);
+  EzTempChassis.pid_wait();
+  armVoltage(-12000);
+  pros::delay(500);
+  armVoltage(0);
+  EzTempChassis.pid_drive_set(-4_in, DRIVE_SPEED);
+  EzTempChassis.pid_wait();
+  EzTempChassis.pid_turn_set(-135_deg, TURN_SPEED);
+  EzTempChassis.pid_wait();
+  intakeVoltage1(12000);
+  clampRetract();
+
 }
 
 //default auto for qualification matches on the left side 

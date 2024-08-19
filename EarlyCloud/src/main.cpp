@@ -8,8 +8,12 @@ rd::Selector autoSelector1( {
 	{"drive to ladder", &driveToLadder},
 	{"EzQualLeft", &EzQualsLeft},
 	{"EzQualRight", &EzQualsRight},
+		{"EzQualLeftSafe", &EzQualLeftSafe},
+	{"EzQualRightSafe", &EzQualRightSafe},
 	{"Ez AWP Left", &EzAWPLeft},
 	{"Ez AWP Right", &EzAWPRight},
+	{"alliance stake left", &AllianceStakeLeft},
+	{"alliance stake right", &AllianceStakeRight},
 	{"Skills", &Skills},
 	}
 );
@@ -244,5 +248,3 @@ void opcontrol() {
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations
   }
 }
-
-

@@ -42,20 +42,18 @@ pros::adi::DigitalOut intake_lift(PORT_INTAKE_LIFT, LOW);
 pros::adi::DigitalOut clamp_left(PORT_CLAMP_LEFT, LOW);
 pros::adi::DigitalOut clamp_right(PORT_CLAMP_RIGHT, LOW);
 // pros::adi::DigitalOut claw(PORT_CLAW, LOW);                                /*SCRAPPED*/
-pros::adi::DigitalOut doinker(PORT_DOINKER, LOW);
-pros::adi::DigitalOut ring_stopper(PORT_RING_STOPPER,LOW);
+// pros::adi::DigitalOut doinker(PORT_DOINKER, LOW);                          /*SCRAPPED*/
+// pros::adi::DigitalOut ring_stopper(PORT_RING_STOPPER,LOW);                 /*SCRAPPED*/
 
 //creates drivetrain with certain variables listed below
 lemlib::Drivetrain drivetrain(&left_chassis, // left motor group
                               &right_chassis, // right motor group
                               13.5, // 13.5 inch track width
-                              lemlib::Omniwheel::NEW_275, // using new 2.75" diameter omni wheels
-                              480, // drivetrain rpm is 480
-                              8 // horizontal drift is 8 since a tracking wheel is used, 2 if all omnis are used
+                              lemlib::Omniwheel::NEW_325, // using new 3.25" diameter omni wheels
+                              450, // drivetrain rpm is 480
+                              2 // horizontal drift is 8 since a tracking wheel is used, 2 if all omnis are used
 );
 
-
-/*NOT CURRENTLY IN USE
 //creates rotation sensors for odom with specified ports
 pros::Rotation odom_vert_sensor(PORT_ODOM_VERT);
 pros::Rotation odom_hozi_sensor(PORT_ODOM_HORI);
@@ -64,13 +62,12 @@ pros::Rotation odom_hozi_sensor(PORT_ODOM_HORI);
 lemlib::TrackingWheel odom_vert_wheel(&odom_vert_sensor, lemlib::Omniwheel::NEW_2, VERTICAL_OFFSET);
 lemlib::TrackingWheel odom_hori_wheel(&odom_hozi_sensor, lemlib::Omniwheel::NEW_2, HORIZONTAL_OFFSET);
 
-*/
 
 //creates odom sensor group with the sensors crated above
 lemlib::OdomSensors odom_sensors(
+    &odom_vert_wheel, // vertical tracking wheel
     nullptr, // N/A
-    nullptr, // N/A
-    nullptr, // N/A
+    &odom_hori_wheel, //horiztonal tracking wheel
     nullptr, // N/A
     &IMU // inertial sensor
 );
@@ -104,8 +101,8 @@ lemlib::ControllerSettings angular_controller(
 //constants used for functions that the EzTempChassis uses
 void default_constants() {
   EzTempChassis.pid_heading_constants_set(11, 0, 20);
+//   EzTempChassis.pid_drive_constants_set(4, 0, 3);
   EzTempChassis.pid_drive_constants_set(4, 0, 3);
-  // EzTempChassis.pid_drive_constants_set(6, 0, 75);
   EzTempChassis.pid_turn_constants_set(6, 0.05, 75, 15);
   EzTempChassis.pid_swing_constants_set(6, 0, 65);
 

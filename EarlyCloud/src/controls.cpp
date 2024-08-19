@@ -171,13 +171,13 @@ void arm_task() {
 void intakeControl() {
 
 if (controlla.get_digital(intakeButton)) {
-	intakeVoltage1(12000);
+	intakeVoltage(12000);
     }
 else if (controlla.get_digital(intakeReverseButton)) {
-	intakeVoltage1(-12000);
+	intakeVoltage(-12000);
     }
 else {
-	intakeVoltage1(0);
+	intakeVoltage(0);
     }
 }
 
