@@ -34,15 +34,17 @@
  */
 #define PROS_USE_LITERALS
 
-#include "api.h"                // IWYU pragma: keep
-#include "Lemlib/api.hpp"       // IWYU pragma: keep
-#include "Ez-Template/api.hpp"  // IWYU pragma: keep
-#include "robodash/api.h"       // IWYU pragma: keep
-
 /**
  * You should add more #includes here
  */
 //#include "okapi/api.hpp"
+#include "api.h"                // IWYU pragma: keep
+#include "autos.hpp"            // IWYU pragma: keep
+#include "constants.hpp"        // IWYU pragma: keep
+#include "controls.hpp"         // IWYU pragma: keep
+#include "Lemlib/api.hpp"       // IWYU pragma: keep
+#include "Ez-Template/api.hpp"  // IWYU pragma: keep
+#include "robodash/api.h"       // IWYU pragma: keep
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
@@ -54,7 +56,7 @@
  */
 // using namespace pros;
 // using namespace pros::literals;
-// using namespace okapi;
+using namespace okapi;
 
 /**
  * Prototypes for the competition control tasks are redefined here to ensure
