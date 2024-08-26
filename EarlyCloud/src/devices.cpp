@@ -36,14 +36,14 @@ pros::Motor arm(PORT_ARM, pros::MotorGearset::rpm_100);
 
 //tw devices (pistons)
 pros::adi::DigitalOut intake_lift(PORT_INTAKE_LIFT, LOW);
-// pros::adi::DigitalOut intake_lift_left(PORT_INTAKE_LIFT_LEFT, LOW);        /*SCRAPPED*/
-// pros::adi::DigitalOut intake_lift_right(PORTS_INTAKE_LIFT_RIGHT, LOW);     /*SCRAPPED*/
-// pros::adi::DigitalOut clamp(PORT_CLAMP, LOW);                              /*SCRAPPED*/
+pros::adi::DigitalOut intake_lift_left(PORT_INTAKE_LIFT_LEFT, LOW);        /*SCRAPPED*/
+pros::adi::DigitalOut intake_lift_right(PORTS_INTAKE_LIFT_RIGHT, LOW);     /*SCRAPPED*/
+pros::adi::DigitalOut clamp(PORT_CLAMP, LOW);                              /*SCRAPPED*/
 pros::adi::DigitalOut clamp_left(PORT_CLAMP_LEFT, LOW);
 pros::adi::DigitalOut clamp_right(PORT_CLAMP_RIGHT, LOW);
-// pros::adi::DigitalOut claw(PORT_CLAW, LOW);                                /*SCRAPPED*/
-// pros::adi::DigitalOut doinker(PORT_DOINKER, LOW);                          /*SCRAPPED*/
-// pros::adi::DigitalOut ring_stopper(PORT_RING_STOPPER,LOW);                 /*SCRAPPED*/
+pros::adi::DigitalOut claw(PORT_CLAW, LOW);                                /*SCRAPPED*/
+pros::adi::DigitalOut doinker(PORT_DOINKER, LOW);                          /*SCRAPPED*/
+pros::adi::DigitalOut ring_stopper(PORT_RING_STOPPER,LOW);                 /*SCRAPPED*/
 
 //creates drivetrain with certain variables listed below
 lemlib::Drivetrain drivetrain(&left_chassis, // left motor group

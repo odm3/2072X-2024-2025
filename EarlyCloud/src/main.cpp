@@ -230,9 +230,7 @@ void opcontrol() {
     EzTempChassis.opcontrol_tank();  // Tank control
 	//EzTempChassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
  	//EzTempChassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
-    // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
-    // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
-
+	
     //functions from controls.cpp/.hpp that let the user control the mechanims
     intakeControl();
     armControl();

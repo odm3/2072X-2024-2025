@@ -10,6 +10,16 @@ bool toggleHoodLift = false;
 bool toggleArmPivot = false;
 bool toggleArmClamp = false;
 
+void intakeVoltage(int vltg)    {
+    MotorIntakeLeft.move_voltage(vltg);
+    MotorIntakeRight.move_voltage(vltg);
+}
+
+void armVoltage(int vltg)   {
+    MotorArm.move_voltage(vltg);
+}
+
+
 //activates the intake lift
 void activateIntakeLift() {
     pistonIntakeLift.set_value(true);
@@ -20,14 +30,6 @@ void activateIntakeLift() {
 void deActivateIntakeLift() {
     pistonIntakeLift.set_value(false);
     toggleIntakeLift = false;
-}
-
-//controls the intake lift in driver control
-void controlIntakeLift() {
-    if (controlla.get_digital(buttonIntakeLift)) {
-        toggleIntakeLift = !toggleIntakeLift;
-    }
-    pistonIntakeLift.set_value(toggleIntakeLift);
 }
 
 //activates the clamp
@@ -44,15 +46,6 @@ void deActivateClamp() {
     toggleClamp = false;
 }
 
-//controls the clamp in driver control
-void controlClamp() {
-    if (controlla.get_digital(buttonClamp)) {
-    toggleClamp = !toggleClamp;
-    }
-    pistonClampLeft.set_value(toggleClamp);
-    pistonClampRight.set_value(toggleClamp);
-}
-
 //activates the hammer
 void activateHammer() {
     pistonHammer.set_value(true);
@@ -63,14 +56,6 @@ void deActivateHammer() {
     pistonHammer.set_value(false);
 }
 
-//controls the hammer in driver control
-void controlHammer() {
-    if (controlla.get_digital(buttonHammer)) {
-    toggleHammer = !toggleHammer;
-    }
-    pistonHammer.set_value(toggleHammer);
-}
-
 //activates the hang
 void activateHang() {
     pistonHang.set_value(true);
@@ -79,14 +64,6 @@ void activateHang() {
 //deactivates the hang
 void deActivateHang() {
     pistonHang.set_value(false);
-}
-
-//controls the hang in driver control
-void controlHang() {
-    if (controlla.get_digital(buttonHang)) {
-    toggleHang = !toggleHang;
-    }
-    pistonHang.set_value(toggleHang);
 }
 
 // void activate() {
@@ -101,29 +78,59 @@ void controlHang() {
     
 // }
 
-void intakevoltage(int vltg)    {
-    MotorIntakeLeft.move_voltage(vltg);
-    MotorIntakeRight.move_voltage(vltg);
-}
-
-void armVoltage(int vltg)   {
-    MotorArm.move_voltage(vltg);
-}
-
-void intakeControl(int vltg)    {
+void controlIntake()    {
     if (controlla.get_digital(buttonIntake)) {
-        intakevoltage(12000);
+        intakeVoltage(12000);
     }
     else if (controlla.get_digital(buttonIntakeReverse)) {
-        intakevoltage(-12000);
+        intakeVoltage(-12000);
+    }
+    else {
+        intakeVoltage(0);
     }
 }
 
-void armControl(int vltg)   {
+void controlArm()   {
     if (controlla.get_digital(buttonArm)) {
         armVoltage(12000);
     }
     else if (controlla.get_digital(buttonArmReverse)) {
         armVoltage(-12000);
     }
+    else {
+        armVoltage(0);
+    }
+}
+
+//controls the intake lift in driver control
+void controlIntakeLift() {
+    if (controlla.get_digital(buttonIntakeLift)) {
+        toggleIntakeLift = !toggleIntakeLift;
+    }
+    pistonIntakeLift.set_value(toggleIntakeLift);
+}
+
+//controls the clamp in driver control
+void controlClamp() {
+    if (controlla.get_digital(buttonClamp)) {
+    toggleClamp = !toggleClamp;
+    }
+    pistonClampLeft.set_value(toggleClamp);
+    pistonClampRight.set_value(toggleClamp);
+}
+
+//controls the hammer in driver control
+void controlHammer() {
+    if (controlla.get_digital(buttonHammer)) {
+    toggleHammer = !toggleHammer;
+    }
+    pistonHammer.set_value(toggleHammer);
+}
+
+//controls the hang in driver control
+void controlHang() {
+    if (controlla.get_digital(buttonHang)) {
+    toggleHang = !toggleHang;
+    }
+    pistonHang.set_value(toggleHang);
 }

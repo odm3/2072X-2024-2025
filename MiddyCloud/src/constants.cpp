@@ -1,3 +1,4 @@
+#include "constants.hpp"
 #include "main.h"   //IWYU pragma: keep
 #include "pros/abstract_motor.hpp"
 #include "pros/motor_group.hpp"
@@ -37,7 +38,7 @@ pros::adi::DigitalOut pistonHoodLift(PORT_PISTON_HOOD_LIFT, false);
 pros::adi::DigitalOut pistonArmPivot(PORT_PISTON_ARM_PIVOT, false);
 pros::adi::DigitalOut pistonArmClamp(PORT_PISTON_ARM_CLAMP, false);
 
-//creates chassis configs
+//creates EzTempChassis configs
 
 //creates left motor groups with motors and gearsets
 pros::MotorGroup left_chassis({ PORT_MOTOR_LF, PORT_MOTOR_LM, PORT_MOTOR_LB }, pros::MotorGearset::blue);
@@ -95,7 +96,25 @@ lemlib::ControllerSettings LLAngular_controller(
     0 // maximum acceleration (slew)
 );
 
-//creates LemLib chassis
+//constants used for functions that the EzTempChassis uses
+void default_constants() {
+  EzTempChassis.pid_heading_constants_set(11, 0, 20);
+  EzTempChassis.pid_drive_constants_set(20, 0, 100);
+  EzTempChassis.pid_turn_constants_set(3, 0.05, 20, 15);
+  EzTempChassis.pid_swing_constants_set(6, 0, 65);
+
+  EzTempChassis.pid_turn_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
+  EzTempChassis.pid_swing_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
+  EzTempChassis.pid_drive_exit_condition_set(80_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
+
+  EzTempChassis.pid_turn_chain_constant_set(3_deg);
+  EzTempChassis.pid_swing_chain_constant_set(5_deg);
+  EzTempChassis.pid_drive_chain_constant_set(3_in);
+
+  EzTempChassis.slew_drive_constants_set(7_in, 80);
+}
+
+//creates LemLib EzTempChassis
 lemlib::Chassis LemLibChassis(
     LLDrivetrain,
     LLLateral_controller,
@@ -103,7 +122,7 @@ lemlib::Chassis LemLibChassis(
     LLOdomSensors
 );
 
-//creates EzTemp chassis
+//creates EzTemp EzTempChassis
 ez::Drive EzTempChassis(
     {PORT_MOTOR_LF, PORT_MOTOR_LM, PORT_MOTOR_LB},
     {PORT_MOTOR_RF, PORT_MOTOR_RM, PORT_MOTOR_RB},

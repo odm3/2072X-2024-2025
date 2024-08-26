@@ -1,20 +1,13 @@
 #include "main.h"
 
-/**
- * A callback function for LLEMU's center button.
- *
- * When this callback is fired, it will toggle line 2 of the LCD text between
- * "I was pressed!" and nothing.
- */
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
+//create an autonomous selector using robodash for compitiion paths
+rd::Selector autoSelector1( {
+
 	}
-}
+);
+
+rd::Console(mainConsole);
+
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -23,10 +16,22 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello PROS User!");
+	//the following 4 commands calibrate both the LemLib and EzTemp chassis'
+	EzTempChassis.drive_imu_calibrate();
+	LemLibChassis.calibrate(false); 
+    EzTempChassis.opcontrol_curve_sd_initialize();
+    EzTempChassis.opcontrol_drive_sensors_reset();
 
-	pros::lcd::register_btn1_cb(on_center_button);
+	pros::delay(500); //a wait time of 500ms so the user cannot do anything while the chassis' are initializing
+
+	EzTempChassis.opcontrol_curve_default_set(3, 3); 		//Drive curve so the user can have better control in driver control
+	EzTempChassis.opcontrol_curve_buttons_toggle(false); // Disables modifying the controller curve with buttons
+    // EzTempChassis.opcontrol_drive_activebrake_set(activeBreak_kp); // Sets the active brake kP
+    default_constants(); // Set the drive to your my constants from autons.cpp
+
+	// autoSelector1.focus(); //makes the compition auton selector prioritized to select before a match
+
+	pros::c::controller_rumble(pros::E_CONTROLLER_MASTER, ".");
 }
 
 /**
@@ -58,7 +63,13 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+	EzTempChassis.pid_targets_reset();                					// Resets PID targets to 0
+  	EzTempChassis.drive_imu_reset();                					  // Reset gyro position to 0
+  	EzTempChassis.drive_sensor_reset();              					 // Reset drive sensors to 0
+  	EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);  // Set motors to hold for EzTemp
+	LemLibChassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);			  // Set motors to hold for LemLib
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -74,21 +85,58 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::MotorGroup left_mg({1, -2, 3});    // Creates a motor group with forwards ports 1 & 3 and reversed port 2
-	pros::MotorGroup right_mg({-4, 5, -6});  // Creates a motor group with forwards port 5 and reversed ports 4 & 6
 
+	EzTempChassis.opcontrol_tank();
+	EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
+	MotorIntakeLeft.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	MotorIntakeRight.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	
+	// PID/Auton Tuner
+    if (!pros::competition::is_connected()) {
+      // Enable / Disable PID/Auton Tuner
+      // When enabled:
+      // * use A and Y to increment / decrement the constants
+      // * use the arrow keys to navigate the constants
+      if (master.get_digital_new_press(DIGITAL_X))
+        EzTempChassis.pid_tuner_toggle();
+
+      // Trigger the selected autonomous routine
+      if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) {
+        autonomous();
+        // EzTempChassis.drive_brake_set(driver_preference_brake);
+      }
+
+      EzTempChassis.pid_tuner_iterate();  // Allow PID Tuner to iterate
+    }
 
 	while (true) {
-		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
-		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);  // Prints status of the emulated screen LCDs
 
-		// Arcade control scheme
-		int dir = master.get_analog(ANALOG_LEFT_Y);    // Gets amount forward/backward from left joystick
-		int turn = master.get_analog(ANALOG_RIGHT_X);  // Gets the turn left/right from right joystick
-		left_mg.move(dir - turn);                      // Sets left motor voltage
-		right_mg.move(dir + turn);                     // Sets right motor voltage
-		pros::delay(20);                               // Run for 20 ms then update
+		// PID Tuner / Auton Tester
+    	if (!pros::competition::is_connected()) {
+      		// Enable / Disable PID Tuner
+      		// When enabled:
+      		// * use A and Y to increment / decrement the constants
+      		// * use the arrow keys to navigate the constants
+      		if (master.get_digital_new_press(DIGITAL_X))
+        	EzTempChassis.pid_tuner_toggle();
+
+      		// Trigger the selected autonomous routine
+      		if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) {
+        		autonomous();
+        		// EzTempChassis.drive_brake_set(driver_preference_brake);
+      }
+
+      EzTempChassis.pid_tuner_iterate();  // Allow PID Tuner to iterate
+    }
+
+		//controls functions from controls.cpp/.hpp which let the user control all devices in opcontrol
+		controlIntake();
+		controlArm();
+		controlIntakeLift();
+		controlClamp();
+		controlHammer();
+		controlHang();
+
+		pros::delay(ez::util::DELAY_TIME);                               // Run for 20 ms then update
 	}
 }

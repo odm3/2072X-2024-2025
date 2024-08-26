@@ -32,12 +32,12 @@ extern pros::Rotation conveyorRotation;
 
 //tw ports
 extern pros::adi::DigitalOut intake_lift;
-// extern pros::adi::DigitalOut intake_lift_left;
-// extern pros::adi::DigitalOut intake_lift_right;
-// extern pros::adi::DigitalOut clamp;
+extern pros::adi::DigitalOut intake_lift_left;
+extern pros::adi::DigitalOut intake_lift_right;
+extern pros::adi::DigitalOut clamp;
 extern pros::adi::DigitalOut clamp_left;
 extern pros::adi::DigitalOut clamp_right;
-// extern pros::adi::DigitalOut claw;
+extern pros::adi::DigitalOut claw;
 extern pros::adi::DigitalOut doinker;
 extern pros::adi::DigitalOut ring_stopper;
 extern pros::Rotation odom_vert_sensor;
@@ -76,30 +76,29 @@ extern ez::Drive EzTempChassis;
 #define PORT_RB 13
 
 //other motor ports
-#define PORT_INTAKE_LEFT 18
-#define PORTS_INTAKE_RIGHT 19
-// #define PORT_CONVEYOR -20        /*SCRAPPED*/
-// #define PORT_ARM 4               /*SCRAPPED*/
-// #define PORT_ARM_LEFT 5          /*SCRAPPED*/
-// #define PORT_ARM_RIGHT -10       /*SCRAPPED*/
+#define PORT_INTAKE 18
+#define PORT_CONVEYOR -20        /*SCRAPPED*/
+#define PORT_ARM 4               /*SCRAPPED*/
+#define PORT_ARM_LEFT 5          /*SCRAPPED*/
+#define PORT_ARM_RIGHT -10       /*SCRAPPED*/
 
 //sensor ports
 #define PORT_IMU 16
-// #define PORT_ARM_ROTATION -2     /*SCRAPPED*/
-// #define PORT_CONVEYOR_ROTATION 3 /*SCRAPPED*/
+#define PORT_ARM_ROTATION -2     /*SCRAPPED*/
+#define PORT_CONVEYOR_ROTATION 3 /*SCRAPPED*/
 #define PORT_ODOM_VERT 10
 #define PORT_ODOM_HORI 11
 
 //tw ports
 #define PORT_INTAKE_LIFT 'G'
-// #define PORT_INTAKE_LIFT_LEFT 'A'    /*SCRAPPED*/
-// #define PORTS_INTAKE_LIFT_RIGHT 'B'  /*SCRAPPED*/
-// #define PORT_CLAMP 'H'               /*SCRAPPED*/
+#define PORT_INTAKE_LIFT_LEFT 'A'    /*SCRAPPED*/
+#define PORTS_INTAKE_LIFT_RIGHT 'B'  /*SCRAPPED*/
+#define PORT_CLAMP 'H'               /*SCRAPPED*/
 #define PORT_CLAMP_LEFT 'H'
 #define PORT_CLAMP_RIGHT 'E'
-// #define PORT_CLAW 'E'                /*SCRAPPED*/
-// #define PORT_DOINKER 'B'             /*SCRAPPED*/
-// #define PORT_RING_STOPPER 'A'        /*SCRAPPED*/
+#define PORT_CLAW 'E'                /*SCRAPPED*/
+#define PORT_DOINKER 'B'             /*SCRAPPED*/
+#define PORT_RING_STOPPER 'A'        /*SCRAPPED*/
 
 //buttons
 #define intakeButton pros::E_CONTROLLER_DIGITAL_L1
@@ -108,5 +107,5 @@ extern ez::Drive EzTempChassis;
 #define ArmUpButton pros::E_CONTROLLER_DIGITAL_R1
 #define ArmDownButton pros::E_CONTROLLER_DIGITAL_R2
 #define clampButton pros::E_CONTROLLER_DIGITAL_B
-// #define doinkerButton pros::E_CONTROLLER_DIGITAL_RIGHT           /*SCRAPPED*/
-// #define ringStopperButton pros::E_CONTROLLER_DIGITAL_DOWN        /*SCRAPPED*/
+#define doinkerButton pros::E_CONTROLLER_DIGITAL_RIGHT           /*SCRAPPED*/
+#define ringStopperButton pros::E_CONTROLLER_DIGITAL_DOWN        /*SCRAPPED*/

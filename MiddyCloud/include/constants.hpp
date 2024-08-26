@@ -17,34 +17,34 @@
 //creates motor smart wire port implementations
 
 //creates drive motor smart wire port implementations
-#define PORT_MOTOR_LF 1
-#define PORT_MOTOR_LM 2
-#define PORT_MOTOR_LB 3
-#define PORT_MOTOR_RF 4
-#define PORT_MOTOR_RM 5
-#define PORT_MOTOR_RB 6
+#define PORT_MOTOR_LF 11
+#define PORT_MOTOR_LM 12
+#define PORT_MOTOR_LB 14
+#define PORT_MOTOR_RF -20
+#define PORT_MOTOR_RM -19
+#define PORT_MOTOR_RB -17
 
 //creates mechanism motor smart wire port implementations
-#define PORT_MOTOR_INTAKE_LEFT 7
-#define PORT_MOTOR_INTAKE_RIGHT 8
+#define PORT_MOTOR_INTAKE_LEFT -13
+#define PORT_MOTOR_INTAKE_RIGHT -18
 #define PORT_MOTOR_ARM 9
 
 //creates sensor smart wire port implementations
 #define PORT_IMU 10
-#define PORT_ROTATION_ARM 11
-#define PORT_ODOM_VERT 12
-#define PORT_ODOM_HORI 13
-#define PORT_OPTICAL_HOOD_RING 14
+#define PORT_ROTATION_ARM 1
+#define PORT_ODOM_VERT 15
+#define PORT_ODOM_HORI 16
+#define PORT_OPTICAL_HOOD_RING 2
 
 //creates three wire port device implementations
-#define PORT_PISTON_INTAKE_LIFT 'A'
-#define PORT_PISTON_CLAMP_LEFT 'B'
-#define PORT_PISTON_CLAMP_RIGHT 'C'
-#define PORT_PISTON_HAMMER 'D'
-#define PORT_PISTON_HANG 'E'
-#define PORT_PISTON_HOOD_LIFT 'F'
-#define PORT_PISTON_ARM_PIVOT 'G'
-#define PORT_PISTON_ARM_CLAMP 'H'
+#define PORT_PISTON_INTAKE_LIFT 'H'
+#define PORT_PISTON_CLAMP_LEFT 'F'
+#define PORT_PISTON_CLAMP_RIGHT 'E'
+#define PORT_PISTON_HAMMER 'G'
+#define PORT_PISTON_HANG 'D'
+#define PORT_PISTON_HOOD_LIFT 'A'
+#define PORT_PISTON_ARM_PIVOT 'B'
+#define PORT_PISTON_ARM_CLAMP 'C'
 
 //creates constant floats implementations
 #define OFFSET_ODOM_VERT 1
@@ -116,6 +116,7 @@ extern lemlib::OdomSensors LLOdomSensors;
 //creates PID controller implementations
 extern lemlib::ControllerSettings LLLateral_controller;
 extern lemlib::ControllerSettings LLAngular_controller;
+void default_constants();
 
 //creates full chassis implementations for both libs
 extern lemlib::Chassis LemLibChassis;
