@@ -86,7 +86,6 @@ void autonomous() {
  */
 void opcontrol() {
 
-	EzTempChassis.opcontrol_tank();
 	EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
 	MotorIntakeLeft.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	MotorIntakeRight.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
@@ -128,6 +127,11 @@ void opcontrol() {
 
       EzTempChassis.pid_tuner_iterate();  // Allow PID Tuner to iterate
     }
+
+		//drive chassis styles whichever is uncommented is active
+		EzTempChassis.opcontrol_tank();
+		// EzTempChassis.opcontrol_arcade_standard(ez::SINGLE);
+		// EzTempChassis.opcontrol_arcade_standard(ez::SPLIT);
 
 		//controls functions from controls.cpp/.hpp which let the user control all devices in opcontrol
 		controlIntake();
