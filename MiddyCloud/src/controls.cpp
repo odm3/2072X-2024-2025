@@ -34,15 +34,13 @@ void deActivateIntakeLift() {
 
 //activates the clamp
 void activateClamp() {
-    pistonClampLeft.set_value(true);
-    pistonClampRight.set_value(true);
+    pistonClamp.set_value(true);
     toggleClamp = true;
 }
 
 //deactivates the clamp
 void deActivateClamp() {
-    pistonClampLeft.set_value(false);
-    pistonClampRight.set_value(false);
+    pistonClamp.set_value(false);
     toggleClamp = false;
 }
 
@@ -104,7 +102,7 @@ void controlArm()   {
 
 //controls the intake lift in driver control
 void controlIntakeLift() {
-    if (controlla.get_digital(buttonIntakeLift)) {
+    if (controlla.get_digital_new_press(buttonIntakeLift)) {
         toggleIntakeLift = !toggleIntakeLift;
     }
     pistonIntakeLift.set_value(toggleIntakeLift);
@@ -112,16 +110,15 @@ void controlIntakeLift() {
 
 //controls the clamp in driver control
 void controlClamp() {
-    if (controlla.get_digital(buttonClamp)) {
+    if (controlla.get_digital_new_press(buttonClamp)) {
     toggleClamp = !toggleClamp;
     }
-    pistonClampLeft.set_value(toggleClamp);
-    pistonClampRight.set_value(toggleClamp);
+    pistonClamp.set_value(toggleClamp);
 }
 
 //controls the hammer in driver control
 void controlHammer() {
-    if (controlla.get_digital(buttonHammer)) {
+    if (controlla.get_digital_new_press(buttonHammer)) {
     toggleHammer = !toggleHammer;
     }
     pistonHammer.set_value(toggleHammer);
@@ -129,7 +126,7 @@ void controlHammer() {
 
 //controls the hang in driver control
 void controlHang() {
-    if (controlla.get_digital(buttonHang)) {
+    if (controlla.get_digital_new_press(buttonHang)) {
     toggleHang = !toggleHang;
     }
     pistonHang.set_value(toggleHang);

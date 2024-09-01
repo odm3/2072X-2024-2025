@@ -2,11 +2,13 @@
 
 //create an autonomous selector using robodash for compitiion paths
 rd::Selector autoSelector1( {
-
+	{"redPos", &redPos},
 	}
 );
 
 rd::Console(mainConsole);
+
+
 
 
 /**
@@ -24,6 +26,7 @@ void initialize() {
 
 	pros::delay(500); //a wait time of 500ms so the user cannot do anything while the chassis' are initializing
 
+	mainConsole.focus();
 	EzTempChassis.opcontrol_curve_default_set(3, 3); 		//Drive curve so the user can have better control in driver control
 	EzTempChassis.opcontrol_curve_buttons_toggle(false); // Disables modifying the controller curve with buttons
     // EzTempChassis.opcontrol_drive_activebrake_set(activeBreak_kp); // Sets the active brake kP
@@ -69,6 +72,7 @@ void autonomous() {
   	EzTempChassis.drive_sensor_reset();              					 // Reset drive sensors to 0
   	EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);  // Set motors to hold for EzTemp
 	LemLibChassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);			  // Set motors to hold for LemLib
+	autoSelector1.run_auton();
 }
 
 /**
@@ -100,7 +104,7 @@ void opcontrol() {
         EzTempChassis.pid_tuner_toggle();
 
       // Trigger the selected autonomous routine
-      if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) {
+      if (master.get_digital(pros::E_CONTROLLER_DIGITAL_A) && master.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)) {
         autonomous();
         // EzTempChassis.drive_brake_set(driver_preference_brake);
       }
@@ -109,6 +113,9 @@ void opcontrol() {
     }
 
 	while (true) {
+
+		// get the pose of the chassis
+		lemlib::Pose Cpose = LemLibChassis.getPose();
 
 		// PID Tuner / Auton Tester
     	if (!pros::competition::is_connected()) {
@@ -126,6 +133,7 @@ void opcontrol() {
       }
 
       EzTempChassis.pid_tuner_iterate();  // Allow PID Tuner to iterate
+
     }
 
 		//drive chassis styles whichever is uncommented is active
@@ -140,6 +148,18 @@ void opcontrol() {
 		controlClamp();
 		controlHammer();
 		controlHang();
+
+		  	if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1))	{
+			
+		// print the x, y, and theta values of the pose
+			mainConsole.printf("X: %f, Y: %f, Theta: %f\n", Cpose.x, Cpose.y, Cpose.theta);
+		}
+
+		else if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_R2))	{
+				LemLibChassis.resetLocalPosition();
+				intertialIMU.tare();
+				mainConsole.clear();
+			}
 
 		pros::delay(ez::util::DELAY_TIME);                               // Run for 20 ms then update
 	}

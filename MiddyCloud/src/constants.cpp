@@ -30,8 +30,7 @@ pros::Optical opticalHoodRingSensor(PORT_OPTICAL_HOOD_RING);
 
 //creates three wire port devices with ports and init states
 pros::adi::DigitalOut pistonIntakeLift(PORT_PISTON_INTAKE_LIFT, false);
-pros::adi::DigitalOut pistonClampLeft(PORT_PISTON_CLAMP_LEFT, false);
-pros::adi::DigitalOut pistonClampRight(PORT_PISTON_CLAMP_RIGHT, false);
+pros::adi::DigitalOut pistonClamp(PORT_PISTON_CLAMP, false);
 pros::adi::DigitalOut pistonHammer(PORT_PISTON_HAMMER, false);
 pros::adi::DigitalOut pistonHang(PORT_PISTON_HANG, false);
 pros::adi::DigitalOut pistonHoodLift(PORT_PISTON_HOOD_LIFT, false);

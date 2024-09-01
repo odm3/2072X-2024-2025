@@ -17,49 +17,48 @@
 //creates motor smart wire port implementations
 
 //creates drive motor smart wire port implementations
-#define PORT_MOTOR_LF 11
-#define PORT_MOTOR_LM 12
-#define PORT_MOTOR_LB 14
-#define PORT_MOTOR_RF -20
-#define PORT_MOTOR_RM -19
-#define PORT_MOTOR_RB -17
+#define PORT_MOTOR_LF -11
+#define PORT_MOTOR_LM -12
+#define PORT_MOTOR_LB -14
+#define PORT_MOTOR_RF 20
+#define PORT_MOTOR_RM 19
+#define PORT_MOTOR_RB 17
 
 //creates mechanism motor smart wire port implementations
-#define PORT_MOTOR_INTAKE_LEFT -13
+#define PORT_MOTOR_INTAKE_LEFT 13
 #define PORT_MOTOR_INTAKE_RIGHT -18
-#define PORT_MOTOR_ARM 9
+#define PORT_MOTOR_ARM 5
 
 //creates sensor smart wire port implementations
-#define PORT_IMU 10
+#define PORT_IMU 8
 #define PORT_ROTATION_ARM 1
-#define PORT_ODOM_VERT 15
-#define PORT_ODOM_HORI 16
+#define PORT_ODOM_VERT -15
+#define PORT_ODOM_HORI -16
 #define PORT_OPTICAL_HOOD_RING 2
 
 //creates three wire port device implementations
 #define PORT_PISTON_INTAKE_LIFT 'H'
-#define PORT_PISTON_CLAMP_LEFT 'F'
-#define PORT_PISTON_CLAMP_RIGHT 'E'
+#define PORT_PISTON_CLAMP 'F'
 #define PORT_PISTON_HAMMER 'G'
 #define PORT_PISTON_HANG 'D'
+
 #define PORT_PISTON_HOOD_LIFT 'A'
 #define PORT_PISTON_ARM_PIVOT 'B'
 #define PORT_PISTON_ARM_CLAMP 'C'
 
 //creates constant floats implementations
-#define OFFSET_ODOM_VERT 1
-#define OFFSET_ODOM_HORI 1
+#define OFFSET_ODOM_VERT -0.5
+#define OFFSET_ODOM_HORI 2
 
 //creates controller button implementations
 #define buttonIntake pros::E_CONTROLLER_DIGITAL_L1
 #define buttonIntakeReverse pros::E_CONTROLLER_DIGITAL_L2
 #define buttonArm pros::E_CONTROLLER_DIGITAL_R1
 #define buttonArmReverse pros::E_CONTROLLER_DIGITAL_R2
-#define buttonIntakeLift pros::E_CONTROLLER_DIGITAL_DOWN
+#define buttonIntakeLift pros::E_CONTROLLER_DIGITAL_LEFT
 #define buttonClamp pros::E_CONTROLLER_DIGITAL_RIGHT
-#define buttonHammer pros::E_CONTROLLER_DIGITAL_Y
+#define buttonHammer pros::E_CONTROLLER_DIGITAL_A
 #define buttonHang pros::E_CONTROLLER_DIGITAL_B
-
 
 //creates controller implementation
 extern pros::Controller controlla;
@@ -91,8 +90,7 @@ extern pros::Optical opticalHoodRingSensor;
 
 //creates soleniods for pneumatic piston implementations
 extern pros::adi::DigitalOut pistonIntakeLift;
-extern pros::adi::DigitalOut pistonClampLeft;
-extern pros::adi::DigitalOut pistonClampRight;
+extern pros::adi::DigitalOut pistonClamp;
 extern pros::adi::DigitalOut pistonHammer;
 extern pros::adi::DigitalOut pistonHang;
 extern pros::adi::DigitalOut pistonHoodLift;
