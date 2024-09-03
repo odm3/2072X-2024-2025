@@ -155,7 +155,7 @@ void opcontrol() {
 			mainConsole.printf("X: %f, Y: %f, Theta: %f\n", Cpose.x, Cpose.y, Cpose.theta);
 		}
 
-		else if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_R2))	{
+					else if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_R2))	{
 				LemLibChassis.resetLocalPosition();
 				intertialIMU.tare();
 				mainConsole.clear();
