@@ -47,7 +47,11 @@
 #define PORT_PISTON_ARM_PIVOT 'B'
 #define PORT_PISTON_ARM_CLAMP 'C'
 
+<<<<<<< HEAD
 //creates constant float implementations
+=======
+//creates odom pod constants implementations
+>>>>>>> 0c0088f7a1e8c23f9c3a313ff019e58e535e6cd4
 #define OFFSET_ODOM_VERT -0.5
 #define OFFSET_ODOM_HORI 2
 
