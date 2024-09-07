@@ -6,8 +6,8 @@ void activateIntakeLift();
 void deActivateIntakeLift();
 void activateClamp();
 void deActivateClamp();
-void activateHammer();
-void deActivateHammer();
+void activateDoinker();
+void deActivateDoinker();
 void activateHang();
 void deActivateHang();
 
@@ -15,5 +15,6 @@ void controlIntake();
 void controlArm();
 void controlIntakeLift();
 void controlClamp();
-void controlHammer();
+void controlDoinker();
 void controlHang();
+void controlHoodLift();

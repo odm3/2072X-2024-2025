@@ -146,8 +146,9 @@ void opcontrol() {
 		controlArm();
 		controlIntakeLift();
 		controlClamp();
-		controlHammer();
+		controlDoinker();
 		controlHang();
+		controlHoodLift();
 
 		  	if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1))	{
 			

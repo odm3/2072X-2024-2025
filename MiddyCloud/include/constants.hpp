@@ -27,6 +27,7 @@
 //creates mechanism motor smart wire port implementations
 #define PORT_MOTOR_INTAKE_LEFT 13
 #define PORT_MOTOR_INTAKE_RIGHT -18
+//unused
 #define PORT_MOTOR_ARM 5
 
 //creates sensor smart wire port implementations
@@ -39,26 +40,28 @@
 //creates three wire port device implementations
 #define PORT_PISTON_INTAKE_LIFT 'H'
 #define PORT_PISTON_CLAMP 'F'
-#define PORT_PISTON_HAMMER 'G'
+#define PORT_PISTON_DOINKER 'G'
 #define PORT_PISTON_HANG 'D'
-
 #define PORT_PISTON_HOOD_LIFT 'A'
+//not currently used
 #define PORT_PISTON_ARM_PIVOT 'B'
 #define PORT_PISTON_ARM_CLAMP 'C'
 
-//creates constant floats implementations
+//creates constant float implementations
 #define OFFSET_ODOM_VERT -0.5
 #define OFFSET_ODOM_HORI 2
 
 //creates controller button implementations
 #define buttonIntake pros::E_CONTROLLER_DIGITAL_L1
 #define buttonIntakeReverse pros::E_CONTROLLER_DIGITAL_L2
-#define buttonArm pros::E_CONTROLLER_DIGITAL_R1
-#define buttonArmReverse pros::E_CONTROLLER_DIGITAL_R2
-#define buttonIntakeLift pros::E_CONTROLLER_DIGITAL_LEFT
-#define buttonClamp pros::E_CONTROLLER_DIGITAL_RIGHT
-#define buttonHammer pros::E_CONTROLLER_DIGITAL_A
-#define buttonHang pros::E_CONTROLLER_DIGITAL_B
+#define buttonIntakeLift pros::E_CONTROLLER_DIGITAL_Y
+#define buttonClamp pros::E_CONTROLLER_DIGITAL_B
+#define buttonDoinker pros::E_CONTROLLER_DIGITAL_R1
+#define buttonHang pros::E_CONTROLLER_DIGITAL_RIGHT
+#define buttonHoodLift pros::E_CONTROLLER_DIGITAL_DOWN
+//not currently used
+#define buttonArm pros::E_CONTROLLER_DIGITAL_UP
+#define buttonArmReverse pros::E_CONTROLLER_DIGITAL_X
 
 //creates controller implementation
 extern pros::Controller controlla;
@@ -91,7 +94,7 @@ extern pros::Optical opticalHoodRingSensor;
 //creates soleniods for pneumatic piston implementations
 extern pros::adi::DigitalOut pistonIntakeLift;
 extern pros::adi::DigitalOut pistonClamp;
-extern pros::adi::DigitalOut pistonHammer;
+extern pros::adi::DigitalOut pistonDoinker;
 extern pros::adi::DigitalOut pistonHang;
 extern pros::adi::DigitalOut pistonHoodLift;
 extern pros::adi::DigitalOut pistonArmPivot;

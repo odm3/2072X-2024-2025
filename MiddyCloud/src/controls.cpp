@@ -4,7 +4,7 @@
 
 bool toggleIntakeLift = false;
 bool toggleClamp = false;
-bool toggleHammer = false;
+bool toggleDoinker = false;
 bool toggleHang = false;
 bool toggleHoodLift = false;
 bool toggleArmPivot = false;
@@ -44,14 +44,14 @@ void deActivateClamp() {
     toggleClamp = false;
 }
 
-//activates the hammer
-void activateHammer() {
-    pistonHammer.set_value(true);
+//activates the Doinker
+void activateDoinker() {
+    pistonDoinker.set_value(true);
 }
 
-//deactivates the hammer
-void deActivateHammer() {
-    pistonHammer.set_value(false);
+//deactivates the Doinker
+void deActivateDoinker() {
+    pistonDoinker.set_value(false);
 }
 
 //activates the hang
@@ -76,6 +76,16 @@ void deActivateHang() {
     
 // }
 
+void activateHoodLift() {
+    pistonHoodLift.set_value(true);
+    toggleHoodLift = true;
+}
+
+void deActivateHoodLift() {
+    pistonHoodLift.set_value(false);
+    toggleHoodLift = false;
+}
+
 void controlIntake()    {
     if (controlla.get_digital(buttonIntake)) {
         intakeVoltage(12000);
@@ -88,17 +98,17 @@ void controlIntake()    {
     }
 }
 
-void controlArm()   {
-    if (controlla.get_digital(buttonArm)) {
-        armVoltage(12000);
-    }
-    else if (controlla.get_digital(buttonArmReverse)) {
-        armVoltage(-12000);
-    }
-    else {
-        armVoltage(0);
-    }
-}
+// void controlArm()   {
+//     if (controlla.get_digital(buttonArm)) {
+//         armVoltage(12000);
+//     }
+//     else if (controlla.get_digital(buttonArmReverse)) {
+//         armVoltage(-12000);
+//     }
+//     else {
+//         armVoltage(0);
+//     }
+// }
 
 //controls the intake lift in driver control
 void controlIntakeLift() {
@@ -116,12 +126,12 @@ void controlClamp() {
     pistonClamp.set_value(toggleClamp);
 }
 
-//controls the hammer in driver control
-void controlHammer() {
-    if (controlla.get_digital_new_press(buttonHammer)) {
-    toggleHammer = !toggleHammer;
+//controls the Doinker in driver control
+void controlDoinker() {
+    if (controlla.get_digital_new_press(buttonDoinker)) {
+    toggleDoinker = !toggleDoinker;
     }
-    pistonHammer.set_value(toggleHammer);
+    pistonDoinker.set_value(toggleDoinker);
 }
 
 //controls the hang in driver control
@@ -130,4 +140,11 @@ void controlHang() {
     toggleHang = !toggleHang;
     }
     pistonHang.set_value(toggleHang);
+}
+
+void controlHoodLift() {
+    if (controlla.get_digital_new_press(buttonHoodLift)) {
+        toggleHang = !toggleHang;
+    }
+    pistonHoodLift.set_value(toggleHoodLift);
 }
