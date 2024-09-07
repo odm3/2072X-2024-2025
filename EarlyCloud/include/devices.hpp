@@ -5,6 +5,9 @@
 #include "pros/imu.hpp"
 #include "pros/rotation.hpp"
 #include "Ez-Template/api.hpp"
+#include "Timer.h"
+
+extern Timer timer;
 
 //controller
 extern pros::Controller controlla;
@@ -29,23 +32,25 @@ extern pros::Rotation conveyorRotation;
 
 //tw ports
 extern pros::adi::DigitalOut intake_lift;
-// extern pros::adi::DigitalOut intake_lift_left;
-// extern pros::adi::DigitalOut intake_lift_right;
-// extern pros::adi::DigitalOut clamp;
+extern pros::adi::DigitalOut intake_lift_left;
+extern pros::adi::DigitalOut intake_lift_right;
+extern pros::adi::DigitalOut clamp;
 extern pros::adi::DigitalOut clamp_left;
 extern pros::adi::DigitalOut clamp_right;
-// extern pros::adi::DigitalOut claw;
+extern pros::adi::DigitalOut claw;
 extern pros::adi::DigitalOut doinker;
 extern pros::adi::DigitalOut ring_stopper;
 extern pros::Rotation odom_vert_sensor;
 extern pros::Rotation odom_hozi_sensor;
 
-//algo inputs
-#define activeBreak_kp 0
+//algo input variables
+#define activeBreak_kp 0.1
 #define arm_kp 0.5
 
+// 
 void default_constants();
 void mogo_constants();
+void mogo_rings_constants();
 
 //chassis'
 extern lemlib::Chassis LemLibChassis;
@@ -55,7 +60,7 @@ extern ez::Drive EzTempChassis;
 #define VERTICAL_OFFSET 0
 #define HORIZONTAL_OFFSET 0
 
-//drive curve
+//drive curves for both chassis, values are vastly different as different equations are used
 #define LEMLIB_DRIVE_CURVE 1.25
 #define EZTEMP_DRIVE_CURVE 5
 
@@ -72,38 +77,35 @@ extern ez::Drive EzTempChassis;
 
 //other motor ports
 #define PORT_INTAKE 18
-#define PORT_CONVEYOR -20
-#define PORT_ARM 4
-
-/*SCRAPPED*/
-// #define PORT_ARM_LEFT 5
-// #define PORT_ARM_RIGHT -10
+#define PORT_CONVEYOR -20        /*SCRAPPED*/
+#define PORT_ARM 4               /*SCRAPPED*/
+#define PORT_ARM_LEFT 5          /*SCRAPPED*/
+#define PORT_ARM_RIGHT -10       /*SCRAPPED*/
 
 //sensor ports
 #define PORT_IMU 16
-#define PORT_ARM_ROTATION 2
-#define PORT_CONVEYOR_ROTATION 3
-/*NOT IN CURRENT USE*/
-// #define PORT_ODOM_VERT #
-// #define PORT_ODOM_HORI #
+#define PORT_ARM_ROTATION -2     /*SCRAPPED*/
+#define PORT_CONVEYOR_ROTATION 3 /*SCRAPPED*/
+#define PORT_ODOM_VERT 10
+#define PORT_ODOM_HORI 11
 
 //tw ports
 #define PORT_INTAKE_LIFT 'G'
-// #define PORT_INTAKE_LIFT_LEFT 'A'    /*SCRAPPED*/
-// #define PORTS_INTAKE_LIFT_RIGHT 'B'  /*SCRAPPED*/
-// #define PORT_CLAMP 'H'               /*SCRAPPED*/
+#define PORT_INTAKE_LIFT_LEFT 'A'    /*SCRAPPED*/
+#define PORTS_INTAKE_LIFT_RIGHT 'B'  /*SCRAPPED*/
+#define PORT_CLAMP 'H'               /*SCRAPPED*/
 #define PORT_CLAMP_LEFT 'H'
 #define PORT_CLAMP_RIGHT 'E'
-// #define PORT_CLAW 'E'                /*SCRAPPED*/
-#define PORT_DOINKER 'B'
-#define PORT_RING_STOPPER 'A'
+#define PORT_CLAW 'E'                /*SCRAPPED*/
+#define PORT_DOINKER 'B'             /*SCRAPPED*/
+#define PORT_RING_STOPPER 'A'        /*SCRAPPED*/
 
 //buttons
 #define intakeButton pros::E_CONTROLLER_DIGITAL_L1
 #define intakeReverseButton pros::E_CONTROLLER_DIGITAL_L2
-#define intakeLifTButton pros::E_CONTROLLER_DIGITAL_DOWN
+#define intakeLifTButton pros::E_CONTROLLER_DIGITAL_Y
 #define ArmUpButton pros::E_CONTROLLER_DIGITAL_R1
 #define ArmDownButton pros::E_CONTROLLER_DIGITAL_R2
 #define clampButton pros::E_CONTROLLER_DIGITAL_B
-#define doinkerButton pros::E_CONTROLLER_DIGITAL_Y
-#define ringStopperButton pros::E_CONTROLLER_DIGITAL_Y  
+#define doinkerButton pros::E_CONTROLLER_DIGITAL_RIGHT           /*SCRAPPED*/
+#define ringStopperButton pros::E_CONTROLLER_DIGITAL_DOWN        /*SCRAPPED*/

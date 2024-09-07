@@ -6,22 +6,33 @@ void default_constants();
 
 void noAuto();
 void driveToLadder();
-void qualLeft();
-void qualRight();
-void qualLeftEz();
-void soloAWPLeft();
-void soloAWPRight();
-void elimsLeft();
-void elimsRight();
+void EzQualsLeft();
+void EzQualsRight();
+void EzQualLeftSafe();
+void EzQualRightSafe();
+void EzAWPLeft();
+void AllianceStakeLeft();
+void AllianceStakeRight();
+void EzAWPRight();
 void Skills();
-void mogoRushRed();
-void mogoRushRedAllianceStake();
-void mogoRushBlue();
-void mogoRushBlueAllianceStake();
-void ringRushRed();
-void ringRushRedAllianceStake();
-void ringRushBlue();
-void ringRushBlueAllianceStake();
+// void EzElimsLeft();
+// void EzElimsRight();
+// void qualLeft();
+// void qualRight();
+// void soloAWPLeft();
+// void soloAWPRight();
+// void elimsLeft();
+// void elimsRight();
+// void mogoRushRed();
+// void mogoRushRedAllianceStake();
+// void mogoRushBlue();
+// void mogoRushBlueAllianceStake();
+// void ringRushRed();
+// void ringRushRedAllianceStake();
+// void ringRushBlue();
+// void ringRushBlueAllianceStake();
+
+
 // tuning pid autos
 
 void tuneLateralLemLib();
