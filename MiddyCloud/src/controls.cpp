@@ -98,17 +98,17 @@ void controlIntake()    {
     }
 }
 
-// void controlArm()   {
-//     if (controlla.get_digital(buttonArm)) {
-//         armVoltage(12000);
-//     }
-//     else if (controlla.get_digital(buttonArmReverse)) {
-//         armVoltage(-12000);
-//     }
-//     else {
-//         armVoltage(0);
-//     }
-// }
+void controlArm()   {
+    if (controlla.get_digital(buttonArm)) {
+        armVoltage(12000);
+    }
+    else if (controlla.get_digital(buttonArmReverse)) {
+        armVoltage(-12000);
+    }
+    else {
+        armVoltage(0);
+    }
+}
 
 //controls the intake lift in driver control
 void controlIntakeLift() {
@@ -144,7 +144,7 @@ void controlHang() {
 
 void controlHoodLift() {
     if (controlla.get_digital_new_press(buttonHoodLift)) {
-        toggleHang = !toggleHang;
+        toggleHoodLift = !toggleHoodLift;
     }
     pistonHoodLift.set_value(toggleHoodLift);
 }

@@ -1,4 +1,17 @@
 #pragma once
 
 void noAuto();
-void redPos();
+void testEzDrive();
+void testEzTurn();
+void testLLDrive();
+void testLLTurn();
+void redNeg();
+void driveToLadder();
+void RedPosBlueNeg2AWP();
+void RedNegBluePos2AWP();
+void RedPosBlueNeg3AWP();
+void RedNegBluePos3AWP();
+void redPosRush();
+void bluePosRush();
+void redNegRush();
+void blueNegRush();

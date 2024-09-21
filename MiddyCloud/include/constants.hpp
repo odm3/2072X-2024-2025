@@ -56,11 +56,11 @@
 #define buttonIntakeReverse pros::E_CONTROLLER_DIGITAL_L2
 #define buttonIntakeLift pros::E_CONTROLLER_DIGITAL_Y
 #define buttonClamp pros::E_CONTROLLER_DIGITAL_B
-#define buttonDoinker pros::E_CONTROLLER_DIGITAL_R1
+#define buttonDoinker pros::E_CONTROLLER_DIGITAL_R1            //E_CONTROLLER_DIGITAL_R1
 #define buttonHang pros::E_CONTROLLER_DIGITAL_RIGHT
 #define buttonHoodLift pros::E_CONTROLLER_DIGITAL_DOWN
 //not currently used
-#define buttonArm pros::E_CONTROLLER_DIGITAL_UP
+#define buttonArm pros::E_CONTROLLER_DIGITAL_X
 #define buttonArmReverse pros::E_CONTROLLER_DIGITAL_X
 
 //creates controller implementation
@@ -115,9 +115,12 @@ extern lemlib::TrackingWheel odom_hori_wheel;
 extern lemlib::OdomSensors LLOdomSensors;
 
 //creates PID controller implementations
-extern lemlib::ControllerSettings LLLateral_controller;
-extern lemlib::ControllerSettings LLAngular_controller;
-void default_constants();
+extern lemlib::ControllerSettings LLLateral_controller_Carpet;
+extern lemlib::ControllerSettings LLAngular_controller_Carpet;
+extern lemlib::ControllerSettings LLLateral_controller_Floor;
+extern lemlib::ControllerSettings LLAngular_controller_Floor;
+void default_constants_floor();
+void default_constants_carpet();
 
 //creates full chassis implementations for both libs
 extern lemlib::Chassis LemLibChassis;
