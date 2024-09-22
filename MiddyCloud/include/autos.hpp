@@ -15,3 +15,5 @@ void redPosRush();
 void bluePosRush();
 void redNegRush();
 void blueNegRush();
+void Skills();
+void Skills1();

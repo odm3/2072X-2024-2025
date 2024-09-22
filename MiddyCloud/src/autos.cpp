@@ -80,6 +80,9 @@ void redPos()   {
     LemLibChassis.moveToPoint(-20, -25, 9999);
     LemLibChassis.waitUntilDone();
 
+    deActivateClamp();
+
+
 }
 
 void redNeg()  {
@@ -119,10 +122,13 @@ void RedPosBlueNeg2AWP()  {
     EzTempChassis.pid_drive_set(10_in, DRIVE_SPEED);
     EzTempChassis.pid_wait();
 
-    // EzTempChassis.pid_turn_set(90_deg, TURN_SPEED, true);
-    // EzTempChassis.pid_wait();
-    // EzTempChassis.pid_drive_set(18_in, 127);
-    // EzTempChassis.pid_wait();
+    deActivateClamp();
+
+
+    EzTempChassis.pid_turn_set(90_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(18_in, 127);
+    EzTempChassis.pid_wait();
 }
 
 void RedNegBluePos2AWP()  {
@@ -143,6 +149,9 @@ void RedNegBluePos2AWP()  {
     EzTempChassis.pid_wait();
     EzTempChassis.pid_drive_set(18_in, 127);
     EzTempChassis.pid_wait();
+
+    deActivateClamp();
+
     
 }
 
@@ -175,6 +184,9 @@ void RedNegBluePos3AWP()   {
     EzTempChassis.pid_drive_set(12_in, DRIVE_SPEED);
     EzTempChassis.pid_wait();
     activateHang();
+
+    deActivateClamp();
+
 }
 
 void RedPosBlueNeg3AWP()   {
@@ -198,27 +210,98 @@ void RedPosBlueNeg3AWP()   {
     pros::delay(250);
     deActivateIntakeLift();
     pros::delay(100);
-    EzTempChassis.pid_drive_set(-6_in,DRIVE_SPEED);
+    EzTempChassis.pid_drive_set(-6_in,60);
     EzTempChassis.pid_wait();
     EzTempChassis.pid_turn_set(130_deg, TURN_SPEED, true);
     EzTempChassis.pid_wait();
     EzTempChassis.pid_drive_set(12_in, DRIVE_SPEED);
     EzTempChassis.pid_wait();
     activateHang();
-}
 
-void bluePosRush()  {
-
-}
-
-void redPosRush()   {
+    deActivateClamp();
 
 }
 
-void blueNegRush()  {
+void Skills()   {
+
+EzTempChassis.pid_drive_set(-12_in, DRIVE_SPEED);
+EzTempChassis.pid_wait();
+activateClamp();
+intakeVoltage(12000);
+EzTempChassis.pid_turn_set(180_deg, TURN_SPEED, true);
+EzTempChassis.pid_wait();
+EzTempChassis.pid_drive_set(24_in, DRIVE_SPEED);
+EzTempChassis.pid_wait();
+EzTempChassis.pid_turn_set(90_deg, TURN_SPEED, true);
+EzTempChassis.pid_wait();
+EzTempChassis.pid_drive_set(24_in, DRIVE_SPEED);
+EzTempChassis.pid_wait();
+EzTempChassis.pid_turn_set(0_deg, TURN_SPEED, true);
+EzTempChassis.pid_wait();
+EzTempChassis.pid_drive_set(36_in, DRIVE_SPEED);
+EzTempChassis.pid_wait();
+EzTempChassis.pid_turn_set(-90_deg, TURN_SPEED, true);
+EzTempChassis.pid_wait();
+deActivateClamp();
+EzTempChassis.pid_drive_set(-26_in, DRIVE_SPEED);
+EzTempChassis.pid_wait();
+EzTempChassis.pid_drive_set(60_in, DRIVE_SPEED);
+EzTempChassis.pid_wait();
+EzTempChassis.pid_turn_set(100_deg, TURN_SPEED, true);
+EzTempChassis.pid_wait();
+EzTempChassis.pid_drive_set(-27_in, DRIVE_SPEED);
+EzTempChassis.pid_wait();
+activateClamp();
+EzTempChassis.pid_turn_set(180_deg, TURN_SPEED, true);
+EzTempChassis.pid_wait();
+EzTempChassis.pid_drive_set(25_in, DRIVE_SPEED);
+EzTempChassis.pid_wait();
+EzTempChassis.pid_turn_set(-90_deg, TURN_SPEED, true);
+EzTempChassis.pid_wait();
+EzTempChassis.pid_drive_set(25_in, DRIVE_SPEED);
+EzTempChassis.pid_wait();
+EzTempChassis.pid_turn_set(0_deg, TURN_SPEED, true);
+EzTempChassis.pid_wait();
+EzTempChassis.pid_drive_set(40_in, DRIVE_SPEED);
+EzTempChassis.pid_wait();
+EzTempChassis.pid_turn_set(90_deg, TURN_SPEED, true);
+EzTempChassis.pid_wait();
+deActivateClamp();
+EzTempChassis.pid_drive_set(-30_in, DRIVE_SPEED);
+}
+
+void Skills1()  {
+
+    EzTempChassis.pid_drive_set(12_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_turn_set(-110_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(36_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+
+    EzTempChassis.pid_drive_set(-36_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_turn_set(105_deg, TURN_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(40_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(-50_in, DRIVE_SPEED);
+
 
 }
 
-void redNegRush()   {
+// void bluePosRush()  {
 
-}
+// }
+
+// void redPosRush()   {
+
+// }
+
+// void blueNegRush()  {
+
+// }
+
+// void redNegRush()   {
+
+// }

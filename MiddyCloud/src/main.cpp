@@ -3,15 +3,17 @@
 //create an autonomous selector using robodash for compitiion paths
 rd::Selector autoSelector1( {
 	{"Drive to ladder", &driveToLadder},
-	{"Red Neg", &redNeg},
-	{"RedPosBlueNeg2AWP", &RedPosBlueNeg2AWP},
-	{"RedNegBluePos2AWP", &RedNegBluePos2AWP},
-	{"RedPosBlueNeg3AWP", &RedPosBlueNeg3AWP},
-	{"RedNegBluePos3AWP", &RedNegBluePos3AWP},
+	{"Left Sexy ", &redNeg},
+	{"Right 2AWP", &RedPosBlueNeg2AWP},
+	{"Left 2AWP", &RedNegBluePos2AWP},
+	{"Right 3AWP", &RedPosBlueNeg3AWP},
+	{"Left 3AWP", &RedNegBluePos3AWP},
 	{"test Ez Drive", &testEzDrive},
 	{"test Ez Turn", &testEzTurn},
 	{"test LL Drive", &testLLDrive},
 	{"test LL Turn", &testLLTurn},
+	{"Skills", Skills},
+	{"Devin Skills", &Skills1},
 	}
 );
 
@@ -32,7 +34,7 @@ void initialize() {
 
 	pros::delay(500); //a wait time of 500ms so the user cannot do anything while the chassis' are initializing
 
-	mainConsole.focus();
+	autoSelector1.focus();
 	EzTempChassis.opcontrol_curve_default_set(3, 3); 		//Drive curve so the user can have better control in driver control
 	EzTempChassis.opcontrol_curve_buttons_toggle(false); // Disables modifying the controller curve with buttons
     // EzTempChassis.opcontrol_drive_activebrake_set(activeBreak_kp); // Sets the active brake kP
