@@ -276,17 +276,42 @@ void Skills1()  {
     EzTempChassis.pid_wait();
     EzTempChassis.pid_turn_set(-110_deg, TURN_SPEED, true);
     EzTempChassis.pid_wait();
-    EzTempChassis.pid_drive_set(36_in, DRIVE_SPEED);
+    EzTempChassis.pid_drive_set(45_in, DRIVE_SPEED);
     EzTempChassis.pid_wait();
 
     EzTempChassis.pid_drive_set(-36_in, DRIVE_SPEED);
     EzTempChassis.pid_wait();
-    EzTempChassis.pid_turn_set(105_deg, TURN_SPEED);
+    EzTempChassis.pid_turn_set(115_deg, TURN_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(50_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(-10_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_turn_set(0_deg, TURN_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(96_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_turn_set(-45_deg, TURN_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(34_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_turn_set(-90_deg, TURN_SPEED);
     EzTempChassis.pid_wait();
     EzTempChassis.pid_drive_set(40_in, DRIVE_SPEED);
     EzTempChassis.pid_wait();
-    EzTempChassis.pid_drive_set(-50_in, DRIVE_SPEED);
-
+    EzTempChassis.pid_drive_set(-10_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(40_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_turn_set(75_deg, TURN_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(40_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_turn_set(115_deg, TURN_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(42_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(-42_in, DRIVE_SPEED);
 
 }
 
