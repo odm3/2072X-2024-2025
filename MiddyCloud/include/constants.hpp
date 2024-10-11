@@ -115,12 +115,9 @@ extern lemlib::TrackingWheel odom_hori_wheel;
 extern lemlib::OdomSensors LLOdomSensors;
 
 //creates PID controller implementations
-extern lemlib::ControllerSettings LLLateral_controller_Carpet;
-extern lemlib::ControllerSettings LLAngular_controller_Carpet;
-extern lemlib::ControllerSettings LLLateral_controller_Floor;
-extern lemlib::ControllerSettings LLAngular_controller_Floor;
-void default_constants_floor();
-void default_constants_carpet();
+extern lemlib::ControllerSettings LLLateral_controller;
+extern lemlib::ControllerSettings LLAngular_controller;
+void default_constants();
 
 //creates full chassis implementations for both libs
 extern lemlib::Chassis LemLibChassis;

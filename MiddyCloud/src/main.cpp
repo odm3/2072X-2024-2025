@@ -38,7 +38,7 @@ void initialize() {
 	EzTempChassis.opcontrol_curve_default_set(3, 3); 		//Drive curve so the user can have better control in driver control
 	EzTempChassis.opcontrol_curve_buttons_toggle(false); // Disables modifying the controller curve with buttons
     // EzTempChassis.opcontrol_drive_activebrake_set(activeBreak_kp); // Sets the active brake kP
-    default_constants_carpet(); // Set the drive to  my constants from constants.cpp		//change to floor
+    default_constants(); // Set the drive to  my constants from constants.cpp		//change to floor
 
 	// autoSelector1.focus(); //makes the compition auton selector prioritized to select before a match
 

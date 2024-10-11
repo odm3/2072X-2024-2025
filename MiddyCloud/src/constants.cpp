@@ -70,7 +70,7 @@ lemlib::OdomSensors LLOdomSensors(
 );
 
 //creates lateral drive PID controllers
-lemlib::ControllerSettings LLLateral_controller_Floor(
+lemlib::ControllerSettings LLLateral_controller(
     10, // proportional gain (kP)
     0, // integral gain (kI)
     3, // derivative gain (kD)
@@ -83,32 +83,7 @@ lemlib::ControllerSettings LLLateral_controller_Floor(
 );
 
 //creates angular drive PID controller 
-lemlib::ControllerSettings LLAngular_controller_Floor(
-    2, // proportional gain (kP)
-    0, // integral gain (kI)
-    10, // derivative gain (kD)
-    3, // anti windup
-    1, // small error range, in degrees
-    100, // small error range timeout, in milliseconds
-    3, // large error range, in degrees
-    500, // large error range timeout, in milliseconds
-    0 // maximum acceleration (slew)
-);
-
-lemlib::ControllerSettings LLLateral_controller_Carpet(
-    10, // proportional gain (kP)
-    0, // integral gain (kI)
-    3, // derivative gain (kD)
-    3, // anti windup
-    1, // small error range, in inches
-    100, // small error range timeout, in milliseconds
-    3, // large error range, in inches
-    500, // large error range timeout, in milliseconds
-    20 // maximum acceleration (slew)
-);
-
-//creates angular drive PID controller 
-lemlib::ControllerSettings LLAngular_controller_Carpet(
+lemlib::ControllerSettings LLAngular_controller(
     2, // proportional gain (kP)
     0, // integral gain (kI)
     10, // derivative gain (kD)
@@ -121,7 +96,7 @@ lemlib::ControllerSettings LLAngular_controller_Carpet(
 );
 
 //constants used for functions that the EzTempChassis uses
-void default_constants_floor() {
+void default_constants() {
   EzTempChassis.pid_heading_constants_set(11, 0, 20);
   EzTempChassis.pid_drive_constants_set(20, 0, 100);
   EzTempChassis.pid_turn_constants_set(3, 0.05, 20, 15);
@@ -138,29 +113,11 @@ void default_constants_floor() {
   EzTempChassis.slew_drive_constants_set(7_in, 80);
 }
 
-//constants used for functions that the EzTempChassis uses
-void default_constants_carpet() {
-  EzTempChassis.pid_heading_constants_set(11, 0, 20);
-  EzTempChassis.pid_drive_constants_set(20, 0, 100);
-  EzTempChassis.pid_turn_constants_set(7.5, 0.05, 45, 15);
-  EzTempChassis.pid_swing_constants_set(6, 0, 65);
-
-  EzTempChassis.pid_turn_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  EzTempChassis.pid_swing_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  EzTempChassis.pid_drive_exit_condition_set(80_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
-
-  EzTempChassis.pid_turn_chain_constant_set(3_deg);
-  EzTempChassis.pid_swing_chain_constant_set(5_deg);
-  EzTempChassis.pid_drive_chain_constant_set(3_in);
-
-  EzTempChassis.slew_drive_constants_set(7_in, 80);
-}
-
 //creates LemLib EzTempChassis
 lemlib::Chassis LemLibChassis(
     LLDrivetrain,
-    LLLateral_controller_Carpet,            //change to floor
-    LLAngular_controller_Carpet,           //change to floor
+    LLLateral_controller,            //change to floor
+    LLAngular_controller,           //change to floor
     LLOdomSensors
 );
 
