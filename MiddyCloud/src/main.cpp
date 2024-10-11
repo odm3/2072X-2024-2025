@@ -2,14 +2,22 @@
 
 //create an autonomous selector using robodash for compitiion paths
 rd::Selector autoSelector1( {
-	{"redPos", &redPos},
+	{"Drive to ladder", &driveToLadder},
+	{"Left Sexy ", &redNeg},
+	{"Right 2AWP", &RedPosBlueNeg2AWP},
+	{"Left 2AWP", &RedNegBluePos2AWP},
+	{"Right 3AWP", &RedPosBlueNeg3AWP},
+	{"Left 3AWP", &RedNegBluePos3AWP},
+	{"test Ez Drive", &testEzDrive},
+	{"test Ez Turn", &testEzTurn},
+	{"test LL Drive", &testLLDrive},
+	{"test LL Turn", &testLLTurn},
+	{"Skills", Skills},
+	{"Devin Skills", &Skills1},
 	}
 );
 
 rd::Console(mainConsole);
-
-
-
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -26,11 +34,11 @@ void initialize() {
 
 	pros::delay(500); //a wait time of 500ms so the user cannot do anything while the chassis' are initializing
 
-	mainConsole.focus();
+	autoSelector1.focus();
 	EzTempChassis.opcontrol_curve_default_set(3, 3); 		//Drive curve so the user can have better control in driver control
 	EzTempChassis.opcontrol_curve_buttons_toggle(false); // Disables modifying the controller curve with buttons
     // EzTempChassis.opcontrol_drive_activebrake_set(activeBreak_kp); // Sets the active brake kP
-    default_constants(); // Set the drive to your my constants from autons.cpp
+    default_constants_carpet(); // Set the drive to  my constants from constants.cpp		//change to floor
 
 	// autoSelector1.focus(); //makes the compition auton selector prioritized to select before a match
 
@@ -93,24 +101,6 @@ void opcontrol() {
 	EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
 	MotorIntakeLeft.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	MotorIntakeRight.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-	
-	// PID/Auton Tuner
-    if (!pros::competition::is_connected()) {
-      // Enable / Disable PID/Auton Tuner
-      // When enabled:
-      // * use A and Y to increment / decrement the constants
-      // * use the arrow keys to navigate the constants
-      if (master.get_digital_new_press(DIGITAL_X))
-        EzTempChassis.pid_tuner_toggle();
-
-      // Trigger the selected autonomous routine
-      if (master.get_digital(pros::E_CONTROLLER_DIGITAL_A) && master.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)) {
-        autonomous();
-        // EzTempChassis.drive_brake_set(driver_preference_brake);
-      }
-
-      EzTempChassis.pid_tuner_iterate();  // Allow PID Tuner to iterate
-    }
 
 	while (true) {
 
@@ -127,7 +117,7 @@ void opcontrol() {
         	EzTempChassis.pid_tuner_toggle();
 
       		// Trigger the selected autonomous routine
-      		if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) {
+      		if (master.get_digital(DIGITAL_LEFT) && master.get_digital(DIGITAL_A)) {
         		autonomous();
         		// EzTempChassis.drive_brake_set(driver_preference_brake);
       }
@@ -150,7 +140,7 @@ void opcontrol() {
 		controlHang();
 		controlHoodLift();
 
-		  	if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1))	{
+		  	if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))	{
 			
 		// print the x, y, and theta values of the pose
 			mainConsole.printf("X: %f, Y: %f, Theta: %f\n", Cpose.x, Cpose.y, Cpose.theta);

@@ -349,7 +349,7 @@
     "upload_options": {
       "slot": 2,
       "description": "Cloud is Mid",
-      "icon": "alien"
+      "icon": "X"
     },
     "use_early_access": false
   }

@@ -142,7 +142,7 @@ void default_constants_floor() {
 void default_constants_carpet() {
   EzTempChassis.pid_heading_constants_set(11, 0, 20);
   EzTempChassis.pid_drive_constants_set(20, 0, 100);
-  EzTempChassis.pid_turn_constants_set(3, 0.05, 20, 15);
+  EzTempChassis.pid_turn_constants_set(7.5, 0.05, 45, 15);
   EzTempChassis.pid_swing_constants_set(6, 0, 65);
 
   EzTempChassis.pid_turn_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
@@ -159,8 +159,8 @@ void default_constants_carpet() {
 //creates LemLib EzTempChassis
 lemlib::Chassis LemLibChassis(
     LLDrivetrain,
-    LLLateral_controller,
-    LLAngular_controller,
+    LLLateral_controller_Carpet,            //change to floor
+    LLAngular_controller_Carpet,           //change to floor
     LLOdomSensors
 );
 
