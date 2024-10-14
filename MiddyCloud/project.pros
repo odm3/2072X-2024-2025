@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "MiddyCloud",
+    "project_name": "BurntCloud",
     "target": "v5",
     "templates": {
       "EZ-Template": {
@@ -347,8 +347,8 @@
       }
     },
     "upload_options": {
-      "slot": 2,
-      "description": "Cloud is Mid",
+      "slot": 3,
+      "description": "Cloud is cracked",
       "icon": "X"
     },
     "use_early_access": false
