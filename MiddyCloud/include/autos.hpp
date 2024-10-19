@@ -17,3 +17,5 @@ void redNegRush();
 void blueNegRush();
 void Skills();
 void Skills1();
+void soloAWPelim();
+void soloAWPreg();
