@@ -3,14 +3,6 @@
 //create an autonomous selector using robodash for compitiion paths
 rd::Selector autoSelector1( { 
 	{"Drive to ladder", &driveToLadder},
-	{"AWP Reg", &soloAWPreg},
-	{"Left Sexy ", &redNeg},
-	{"Right 2AWP", &RedPosBlueNeg2AWP},
-	{"Left 2AWP", &RedNegBluePos2AWP},
-	{"Right 3AWP", &RedPosBlueNeg3AWP},
-	{"Left 3AWP", &RedNegBluePos3AWP},
-	{"Devin Skills", &Skills1},
-	{"Solo AWP", &soloAWPelim},
 	{"Test Drive", &testEzDrive},
 	{"Test Turn", &testEzTurn},
 }
