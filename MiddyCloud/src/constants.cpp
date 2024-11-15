@@ -62,9 +62,11 @@ lemlib::TrackingWheel odom_hori_wheel(&rotationOdomHori, lemlib::Omniwheel::NEW_
 
 //creates a lemlib odom sensors class
 lemlib::OdomSensors LLOdomSensors(
-    &odom_vert_wheel, 
+    // &odom_vert_wheel, 
     nullptr,
-    &odom_hori_wheel,
+    nullptr,
+    // &odom_hori_wheel,
+    nullptr,
     nullptr,
     &intertialIMU
 );

@@ -11,7 +11,9 @@ rd::Selector autoSelector1( {
 	{"Left 3AWP", &RedNegBluePos3AWP},
 	{"Devin Skills", &Skills1},
 	{"Solo AWP", &soloAWPelim},
-	}
+	{"Test Drive", &testEzDrive},
+	{"Test Turn", &testEzTurn},
+}
 );
 
 rd::Console(mainConsole);
@@ -32,8 +34,8 @@ void initialize() {
 	pros::delay(500); //a wait time of 500ms so the user cannot do anything while the chassis' are initializing
 
 	autoSelector1.focus();
-	EzTempChassis.opcontrol_curve_default_set(3, 3); 		//Drive curve so the user can have better control in driver control
-	EzTempChassis.opcontrol_curve_buttons_toggle(false); // Disables modifying the controller curve with buttons
+	// EzTempChassis.opcontrol_curve_default_set(CURVE_THRUST, CURVE_TURN); 		//Drive curve so the user can have better control in driver control
+	EzTempChassis.opcontrol_curve_buttons_toggle(true); // Disables modifying the controller curve with buttons
     // EzTempChassis.opcontrol_drive_activebrake_set(activeBreak_kp); // Sets the active brake kP
     default_constants(); // Set the drive to  my constants from constants.cpp		//change to floor
 
@@ -114,7 +116,7 @@ void opcontrol() {
         	EzTempChassis.pid_tuner_toggle();
 
       		// Trigger the selected autonomous routine
-      		if (master.get_digital(DIGITAL_LEFT) && master.get_digital(DIGITAL_A)) {
+      		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
         		autonomous();
         		// EzTempChassis.drive_brake_set(driver_preference_brake);
       }
@@ -124,9 +126,9 @@ void opcontrol() {
     }
 
 		//drive chassis styles whichever is uncommented is active
-		EzTempChassis.opcontrol_tank();
+		// EzTempChassis.opcontrol_tank();
 		// EzTempChassis.opcontrol_arcade_standard(ez::SINGLE);
-		// EzTempChassis.opcontrol_arcade_standard(ez::SPLIT);
+		EzTempChassis.opcontrol_arcade_standard(ez::SPLIT);
 
 		//controls functions from controls.cpp/.hpp which let the user control all devices in opcontrol
 		controlIntake();

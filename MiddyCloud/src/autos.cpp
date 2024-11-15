@@ -6,7 +6,7 @@
 #include "pros/rtos.hpp"
 
 // a universal speed for the EzTempChassis to follow. These are out of 127
-const int DRIVE_SPEED = 110;
+const int DRIVE_SPEED = 90;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 90;
 
@@ -17,11 +17,11 @@ void noAuto()   {
 }
 
 void testEzDrive()  {
-    EzTempChassis.pid_drive_set(24_in, DRIVE_SPEED, false);
+    EzTempChassis.pid_drive_set(24_in, DRIVE_SPEED, true);
     EzTempChassis.pid_wait();
     pros::delay(250);
-    EzTempChassis.pid_drive_set(-24_in, DRIVE_SPEED, false);
-    EzTempChassis.pid_wait();
+    // EzTempChassis.pid_drive_set(-24_in, DRIVE_SPEED, true);
+    // EzTempChassis.pid_wait();
 }
 
 void testEzTurn()   {
