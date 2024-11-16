@@ -5,6 +5,8 @@ rd::Selector autoSelector1( {
 	{"Drive to ladder", &driveToLadder},
 	{"Test Drive", &testEzDrive},
 	{"Test Turn", &testEzTurn},
+	{"Left 2 ring", &left2},
+	{"Right 2 ring", &right2},
 }
 );
 

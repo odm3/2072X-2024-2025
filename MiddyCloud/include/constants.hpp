@@ -57,8 +57,8 @@
 #define buttonIntake pros::E_CONTROLLER_DIGITAL_L1
 #define buttonIntakeReverse pros::E_CONTROLLER_DIGITAL_L2
 #define buttonIntakeLift pros::E_CONTROLLER_DIGITAL_DOWN
-#define buttonClamp pros::E_CONTROLLER_DIGITAL_R2
-#define buttonDoinker pros::E_CONTROLLER_DIGITAL_R1            //E_CONTROLLER_DIGITAL_R1
+#define buttonClamp pros::E_CONTROLLER_DIGITAL_R1
+#define buttonDoinker pros::E_CONTROLLER_DIGITAL_R2            //E_CONTROLLER_DIGITAL_R1
 #define buttonHang pros::E_CONTROLLER_DIGITAL_B
 #define buttonHoodLift pros::E_CONTROLLER_DIGITAL_DOWN
 //not currently used

@@ -44,6 +44,57 @@ void driveToLadder()    {
     EzTempChassis.drive_set(0, 0);
 }
 
+void left2()    {
+
+    EzTempChassis.pid_drive_set(-4_in, DRIVE_SPEED, true);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(-2_in, 60, true);
+    EzTempChassis.pid_wait();
+    activateClamp();
+
+    EzTempChassis.pid_turn_set(60_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+
+    intakeVoltage(12000);
+
+    EzTempChassis.pid_drive_set(6_in, 75);
+    EzTempChassis.pid_wait();
+
+    EzTempChassis.pid_turn_set(240_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+
+    EzTempChassis.pid_drive_set(40_in, DRIVE_SPEED, true);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(40_in, DRIVE_SPEED, true);
+    EzTempChassis.pid_wait();
+}
+
+void right2()   {
+  
+    EzTempChassis.pid_drive_set(-4_in, DRIVE_SPEED, true);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(-2_in, 60, true);
+    EzTempChassis.pid_wait();
+    activateClamp();
+
+    EzTempChassis.pid_turn_set(300_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+
+    intakeVoltage(12000);
+
+    EzTempChassis.pid_drive_set(3_in, 75);
+    EzTempChassis.pid_wait();
+
+    EzTempChassis.pid_turn_set(120_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+
+    EzTempChassis.pid_drive_set(40_in, DRIVE_SPEED, true);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(40_in, DRIVE_SPEED, true);
+    EzTempChassis.pid_wait();  
+}
+
+
 void Skills()   {
 
 EzTempChassis.pid_drive_set(-12_in, DRIVE_SPEED);

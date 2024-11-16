@@ -6,3 +6,5 @@ void testEzTurn();
 void driveToLadder();
 void Skills();
 void Skills1();
+void left2();
+void right2();
