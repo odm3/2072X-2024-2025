@@ -7,6 +7,9 @@ rd::Selector autoSelector1( {
 	{"Test Turn", &testEzTurn},
 	{"Left 2 ring", &left2},
 	{"Right 2 ring", &right2},
+	{"Solo AWP Elim", &soloAWPelim},
+	{"Solo AWP reg", &soloAWPreg},
+	{"Left 4", &left4},
 }
 );
 
