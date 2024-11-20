@@ -151,3 +151,4 @@ void opcontrol() {
 		pros::delay(ez::util::DELAY_TIME);                               // Run for 20 ms then update
 	}
 }
+

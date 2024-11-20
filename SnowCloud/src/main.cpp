@@ -1,19 +1,8 @@
 #include "main.h"
+#include "constants.hpp"
+#include "pros/abstract_motor.hpp"
+#include "pros/motors.h"
 
-/////
-// For installation, upgrading, documentations, and tutorials, check out our website!
-// https://ez-robotics.github.io/EZ-Template/
-/////
-
-// Chassis constructor
-ez::Drive chassis(
-    // These are your drive motors, the first motor is used for sensing!
-    {1, 2, 3},     // Left Chassis Ports (negative port will reverse it!)
-    {-4, -5, -6},  // Right Chassis Ports (negative port will reverse it!)
-
-    7,      // IMU Port
-    4.125,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
-    343);   // Wheel RPM
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -52,9 +41,12 @@ void initialize() {
   });
 
   // Initialize chassis and auton selector
-  chassis.initialize();
+  EzTempChassis.initialize();
+  LemLibChassis.calibrate();
   ez::as::initialize();
-  master.rumble(".");
+  MOTOR_INTAKE.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+  MOTORGROUP_ARM.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
+  master.rumble("_");
 }
 
 /**
@@ -91,10 +83,12 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-  chassis.pid_targets_reset();                // Resets PID targets to 0
-  chassis.drive_imu_reset();                  // Reset gyro position to 0
-  chassis.drive_sensor_reset();               // Reset drive sensors to 0
-  chassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
+  EzTempChassis.pid_targets_reset();                // Resets PID targets to 0
+  EzTempChassis.drive_imu_reset();                  // Reset gyro position to 0
+  EzTempChassis.drive_sensor_reset();               // Reset drive sensors to 0
+  EzTempChassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
+  LemLibChassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
+
 
   ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
@@ -114,9 +108,8 @@ void autonomous() {
  */
 void opcontrol() {
   // This is preference to what you like to drive on
-  pros::motor_brake_mode_e_t driver_preference_brake = MOTOR_BRAKE_COAST;
-
-  chassis.drive_brake_set(driver_preference_brake);
+  EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
+  LemLibChassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
 
   while (true) {
     // PID Tuner
@@ -132,14 +125,15 @@ void opcontrol() {
       // Trigger the selected autonomous routine
       if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) {
         autonomous();
-        chassis.drive_brake_set(driver_preference_brake);
+          EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
+          LemLibChassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
       }
 
       chassis.pid_tuner_iterate();  // Allow PID Tuner to iterate
     }
 
-    chassis.opcontrol_tank();  // Tank control
-    // chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
+    //chassis.opcontrol_tank();  // Tank control
+    chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade

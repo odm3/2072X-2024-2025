@@ -42,10 +42,13 @@
 //#include "okapi/api.hpp"
 //#include "pros/api_legacy.h"
 #include "EZ-Template/api.hpp"
+#include "robodash/api.h"
+#include "lemlib/api.hpp"
 
 // More includes here...
 #include "autons.hpp"
-#include "subsystems.hpp"
+#include "constants.hpp"
+#include "controls.hpp"
 
 
 /**

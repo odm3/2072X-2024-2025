@@ -115,7 +115,7 @@ void default_constants() {
   EzTempChassis.slew_drive_constants_set(7_in, 80);
 }
 
-//creates LemLib EzTempChassis
+//creates LemLib Chassis
 lemlib::Chassis LemLibChassis(
     LLDrivetrain,
     LLLateral_controller,            //change to floor

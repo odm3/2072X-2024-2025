@@ -82,7 +82,7 @@ extern pros::Motor MotorRB;
 extern pros::Motor MotorIntakeLeft;
 extern pros::Motor MotorIntakeRight;
 extern pros::Motor MotorArm;
-extern pros::MotorGroup MotorGroupIntake;
+extern pros::MotorGroup MotorGroupIntake;   
 
 //creates smart wire sensor implementations
 extern pros::IMU intertialIMU;
