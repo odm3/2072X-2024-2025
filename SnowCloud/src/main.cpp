@@ -17,9 +17,9 @@ void initialize() {
   pros::delay(500);  // Stop the user from doing anything while legacy ports configure
 
   // Configure your chassis controls
-  chassis.opcontrol_curve_buttons_toggle(true);  // Enables modifying the controller curve with buttons on the joysticks
-  chassis.opcontrol_drive_activebrake_set(0);    // Sets the active brake kP. We recommend ~2.  0 will disable.
-  chassis.opcontrol_curve_default_set(0, 0);     // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)
+  EZ_CHASSIS.opcontrol_curve_buttons_toggle(true);  // Enables modifying the controller curve with buttons on the joysticks
+  EZ_CHASSIS.opcontrol_drive_activebrake_set(0);    // Sets the active brake kP. We recommend ~2.  0 will disable.
+  // EZ_CHASSIS.opcontrol_curve_default_set(0, 0);     // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)
 
   // Set the drive to your own constants from autons.cpp!
   default_constants();
@@ -41,8 +41,8 @@ void initialize() {
   });
 
   // Initialize chassis and auton selector
-  EzTempChassis.initialize();
-  LemLibChassis.calibrate();
+  EZ_CHASSIS.initialize();
+  LL_CHASSIS.calibrate();
   ez::as::initialize();
   MOTOR_INTAKE.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   MOTORGROUP_ARM.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
@@ -83,11 +83,11 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-  EzTempChassis.pid_targets_reset();                // Resets PID targets to 0
-  EzTempChassis.drive_imu_reset();                  // Reset gyro position to 0
-  EzTempChassis.drive_sensor_reset();               // Reset drive sensors to 0
-  EzTempChassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
-  LemLibChassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
+  EZ_CHASSIS.pid_targets_reset();                // Resets PID targets to 0
+  EZ_CHASSIS.drive_imu_reset();                  // Reset gyro position to 0
+  EZ_CHASSIS.drive_sensor_reset();               // Reset drive sensors to 0
+  EZ_CHASSIS.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
+  LL_CHASSIS.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
 
 
   ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
@@ -108,8 +108,8 @@ void autonomous() {
  */
 void opcontrol() {
   // This is preference to what you like to drive on
-  EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
-  LemLibChassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
+  EZ_CHASSIS.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
+  LL_CHASSIS.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
 
   while (true) {
     // PID Tuner
@@ -120,20 +120,20 @@ void opcontrol() {
       //  * use A and Y to increment / decrement the constants
       //  * use the arrow keys to navigate the constants
       if (master.get_digital_new_press(DIGITAL_X))
-        chassis.pid_tuner_toggle();
+        EZ_CHASSIS.pid_tuner_toggle();
 
       // Trigger the selected autonomous routine
       if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) {
         autonomous();
-          EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
-          LemLibChassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
+          EZ_CHASSIS.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
+          LL_CHASSIS.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
       }
 
-      chassis.pid_tuner_iterate();  // Allow PID Tuner to iterate
+      EZ_CHASSIS.pid_tuner_iterate();  // Allow PID Tuner to iterate
     }
 
     //chassis.opcontrol_tank();  // Tank control
-    chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
+    EZ_CHASSIS.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
@@ -141,6 +141,13 @@ void opcontrol() {
     // . . .
     // Put more user control code here!
     // . . .
+    controlIntake();
+    controlArm();
+    controlArmStates();
+    controlClamp();
+    controlDoinker();
+    controlLift();
+    controlHang();
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }

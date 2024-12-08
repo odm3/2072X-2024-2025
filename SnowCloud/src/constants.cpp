@@ -3,6 +3,8 @@
 #include "lemlib/chassis/trackingWheel.hpp"
 #include "main.h"
 #include "pros/abstract_motor.hpp"
+#include "pros/adi.h"
+#include "pros/adi.hpp"
 #include "pros/imu.hpp"
 #include "pros/misc.h"
 #include "pros/misc.hpp"
@@ -31,6 +33,12 @@ pros::Rotation ROTATION_ODOM_HORI(PORT_ROTATION_ODOM_HORI);
 pros::Rotation ROTATION_ODOM_VERT(PORT_ROTATION_ODOM_VERT);
 pros::Rotation ROTATION_ARM(PORT_ROTATION_ARM);
 pros::Rotation ROTATION_INTAKE(PORT_ROTATION_INTAKE);
+
+pros::adi::DigitalOut PISTON_CLAMP(PORT__CLAMP, LOW);
+pros::adi::DigitalOut PISTON_DOINKER(PORT_DOINKER, LOW);
+pros::adi::DigitalOut PISTON_LIFT(PORT_LIFT, LOW);
+pros::adi::DigitalOut PISTON_HANG(PORT_HANG, LOW);
+pros::adi::DigitalIn LIMIT_AUTO_CLAMP(PORT_AUTO_CLAMP);
 
 lemlib::TrackingWheel ODOM_HORI(&ROTATION_ODOM_HORI, lemlib::Omniwheel::NEW_2, OFFSET_HORI);
 lemlib::TrackingWheel ODOM_VERT(&ROTATION_ODOM_VERT, lemlib::Omniwheel::NEW_2, OFFSET_VERT);
@@ -75,31 +83,31 @@ lemlib::ControllerSettings LL_ANG_CONTROLLER(2, // proportional gain (kP)
                                               0 // maximum acceleration (slew)
 );
 
-lemlib::Chassis LL_cHASSIS(LL_DRIVETRAIN, // drivetrain settings
+lemlib::Chassis LL_CHASSIS(LL_DRIVETRAIN, // drivetrain settings
                         LL_LAT_CONTROLLER, // lateral PID settings
                         LL_ANG_CONTROLLER, // angular PID settings
                         ODOM_SENSORS // odometry sensors
 );
 
 void default_constants() {
-  chassis.pid_heading_constants_set(11, 0, 20);
-  chassis.pid_drive_constants_set(20, 0, 100);
-  chassis.pid_turn_constants_set(3, 0.05, 20, 15);
-  chassis.pid_swing_constants_set(6, 0, 65);
+  EZ_CHASSIS.pid_heading_constants_set(11, 0, 20);
+  EZ_CHASSIS.pid_drive_constants_set(20, 0, 100);
+  EZ_CHASSIS.pid_turn_constants_set(3, 0.05, 20, 15);
+  EZ_CHASSIS.pid_swing_constants_set(6, 0, 65);
 
-  chassis.pid_turn_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  chassis.pid_swing_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  chassis.pid_drive_exit_condition_set(80_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
+  EZ_CHASSIS.pid_turn_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
+  EZ_CHASSIS.pid_swing_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
+  EZ_CHASSIS.pid_drive_exit_condition_set(80_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
 
-  chassis.pid_turn_chain_constant_set(3_deg);
-  chassis.pid_swing_chain_constant_set(5_deg);
-  chassis.pid_drive_chain_constant_set(3_in);
+  EZ_CHASSIS.pid_turn_chain_constant_set(3_deg);
+  EZ_CHASSIS.pid_swing_chain_constant_set(5_deg);
+  EZ_CHASSIS.pid_drive_chain_constant_set(3_in);
 
-  chassis.slew_drive_constants_set(7_in, 80);
+  EZ_CHASSIS.slew_drive_constants_set(7_in, 80);
 }
 
 // EzTemp Chassis constructor
-ez::Drive EzTempChassis(
+ez::Drive EZ_CHASSIS(
     {PORT_LF, PORT_LM, PORT_LB},      // Left Chassis Ports 
     {PORT_RF, PORT_RM, PORT_RB},  // Right Chassis Ports
     PORT_IMU,      // IMU Port

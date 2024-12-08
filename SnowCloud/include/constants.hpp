@@ -17,32 +17,34 @@
 #define PORT_RM -5
 #define PORT_RB 6
 
-#define PORT_INTAKE     7
-#define PORT_ARM_LEFT   8
-#define PORT_ARM_RIGHT  -9
+#define PORT_INTAKE     -8
+#define PORT_ARM_LEFT   -9
+#define PORT_ARM_RIGHT  10
 
-#define PORT_IMU 10
+#define PORT_IMU 7
 #define PORT_ROTATION_ODOM_HORI 11
 #define PORT_ROTATION_ODOM_VERT 12
 #define PORT_ROTATION_ARM       13
 #define PORT_ROTATION_INTAKE    14
 #define PORT_OPTICAL_COLOR      15
 
-#define PORT__CLAMP       'A'
+#define PORT__CLAMP      'A'
 #define PORT_DOINKER     'B'
-#define PORT_INTAKE_LIFT 'C'
+#define PORT_LIFT        'C'
 #define PORT_HANG        'D'
-#define PORT_AUTO_CLAMP   'E'
+#define PORT_AUTO_CLAMP  'E'
 
 #define OFFSET_HORI 0
 #define OFFSET_VERT 0
 
 #define BUTTON_INTAKE           pros::E_CONTROLLER_DIGITAL_L1
 #define BUTTON_INTAKE_REVERSE   pros::E_CONTROLLER_DIGITAL_L2
-#define BUTTON_DOINKER          pros::E_CONTROLLER_DIGITAL_R1
-#define BUTTON_ARM              pros::E_CONTROLLER_DIGITAL_R2
+#define BUTTON_ARM              pros::E_CONTROLLER_DIGITAL_R1
+#define BUTTON_ARM_REVERSE      pros::E_CONTROLLER_DIGITAL_R2
+#define BUTTON_DOINKER          pros::E_CONTROLLER_DIGITAL_A
 #define BUTTON_CLAMP            pros::E_CONTROLLER_DIGITAL_B
-#define BUTTON_HANG             pros::E_CONTROLLER_DIGITAL_DOWN
+#define BUTTON_HANG             pros::E_CONTROLLER_DIGITAL_X
+#define BUTTON_LIFT             pros::E_CONTROLLER_DIGITAL_Y
 
 extern pros::Controller controlla;
 
@@ -67,7 +69,7 @@ extern pros::Optical  OPTICAL_COLOR;
 
 extern pros::adi::DigitalOut PISTON_CLAMP;
 extern pros::adi::DigitalOut PISTON_DOINKER;
-extern pros::adi::DigitalOut PISTON_INTAKE_LIFT;
+extern pros::adi::DigitalOut PISTON_LIFT;
 extern pros::adi::DigitalOut PISTON_HANG;
 extern pros::adi::DigitalIn  LIMIT_AUTO_CLAMP;
 
@@ -77,6 +79,6 @@ extern lemlib::TrackingWheel      ODOM_VERT;
 extern lemlib::OdomSensors        ODOM_SENSORS;
 extern lemlib::ControllerSettings LL_LAT_CONTROLLER;
 extern lemlib::ControllerSettings LL_ANG_CONTROLLER;
-extern lemlib::Chassis            LemLibChassis;
+extern lemlib::Chassis            LL_CHASSIS;
 
-extern ez::Drive EzTempChassis;
+extern ez::Drive EZ_CHASSIS;
