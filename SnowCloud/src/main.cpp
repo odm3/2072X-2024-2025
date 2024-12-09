@@ -1,5 +1,6 @@
 #include "main.h"
 #include "constants.hpp"
+#include "controls.hpp"
 #include "pros/abstract_motor.hpp"
 #include "pros/motors.h"
 
@@ -46,6 +47,9 @@ void initialize() {
   ez::as::initialize();
   MOTOR_INTAKE.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   MOTORGROUP_ARM.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
+  ROTATION_ARM.reset_position();
+  MOTORGROUP_ARM.tare_position();
+
   master.rumble("_");
 }
 
@@ -132,7 +136,7 @@ void opcontrol() {
       EZ_CHASSIS.pid_tuner_iterate();  // Allow PID Tuner to iterate
     }
 
-    //chassis.opcontrol_tank();  // Tank control
+    // EZ_CHASSIS.opcontrol_tank();  // Tank control
     EZ_CHASSIS.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
@@ -142,12 +146,13 @@ void opcontrol() {
     // Put more user control code here!
     // . . .
     controlIntake();
-    controlArm();
+    //controlArm();
     controlArmStates();
     controlClamp();
     controlDoinker();
     controlLift();
     controlHang();
+    controlArmStates();
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }

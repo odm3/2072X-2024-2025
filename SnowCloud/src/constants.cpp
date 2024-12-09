@@ -1,10 +1,12 @@
 #include "constants.hpp"
+#include "EZ-Template/PID.hpp"
 #include "controls.hpp"
 #include "lemlib/chassis/trackingWheel.hpp"
 #include "main.h"
 #include "pros/abstract_motor.hpp"
 #include "pros/adi.h"
 #include "pros/adi.hpp"
+#include "pros/distance.hpp"
 #include "pros/imu.hpp"
 #include "pros/misc.h"
 #include "pros/misc.hpp"
@@ -38,7 +40,7 @@ pros::adi::DigitalOut PISTON_CLAMP(PORT__CLAMP, LOW);
 pros::adi::DigitalOut PISTON_DOINKER(PORT_DOINKER, LOW);
 pros::adi::DigitalOut PISTON_LIFT(PORT_LIFT, LOW);
 pros::adi::DigitalOut PISTON_HANG(PORT_HANG, LOW);
-pros::adi::DigitalIn LIMIT_AUTO_CLAMP(PORT_AUTO_CLAMP);
+pros::Distance DISTANCE_AUTO_CLAMP(PORT_AUTO_CLAMP);
 
 lemlib::TrackingWheel ODOM_HORI(&ROTATION_ODOM_HORI, lemlib::Omniwheel::NEW_2, OFFSET_HORI);
 lemlib::TrackingWheel ODOM_VERT(&ROTATION_ODOM_VERT, lemlib::Omniwheel::NEW_2, OFFSET_VERT);
@@ -88,6 +90,8 @@ lemlib::Chassis LL_CHASSIS(LL_DRIVETRAIN, // drivetrain settings
                         LL_ANG_CONTROLLER, // angular PID settings
                         ODOM_SENSORS // odometry sensors
 );
+
+ez::PID armPID(1.0, 0.0, 0,0, "Lady Brown");
 
 void default_constants() {
   EZ_CHASSIS.pid_heading_constants_set(11, 0, 20);

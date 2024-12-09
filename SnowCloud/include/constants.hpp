@@ -1,33 +1,34 @@
 #pragma once
 
+#include "EZ-Template/PID.hpp"
 #include "EZ-Template/drive/drive.hpp"
 #include "lemlib/chassis/chassis.hpp"
 #include "lemlib/chassis/trackingWheel.hpp"
 #include "pros/adi.hpp"
+#include "pros/distance.hpp"
 #include "pros/imu.hpp"
 #include "pros/misc.hpp"
 #include "pros/motor_group.hpp"
 #include "pros/motors.hpp"
 #include "pros/optical.hpp"
 #include "pros/rotation.hpp"
-#define PORT_LF 1
-#define PORT_LM -2
-#define PORT_LB 3
-#define PORT_RF 4
-#define PORT_RM -5
-#define PORT_RB 6
+#define PORT_LF -8
+#define PORT_LM 9
+#define PORT_LB -10
+#define PORT_RF 2
+#define PORT_RM -4
+#define PORT_RB 3
 
-#define PORT_INTAKE     -8
-#define PORT_ARM_LEFT   -9
-#define PORT_ARM_RIGHT  10
+#define PORT_INTAKE     -1
+#define PORT_ARM_LEFT   -6
+#define PORT_ARM_RIGHT  5
 
-#define PORT_IMU 7
+#define PORT_IMU 11
 #define PORT_ROTATION_ODOM_HORI 11
 #define PORT_ROTATION_ODOM_VERT 12
-#define PORT_ROTATION_ARM       13
+#define PORT_ROTATION_ARM       7
 #define PORT_ROTATION_INTAKE    14
 #define PORT_OPTICAL_COLOR      15
-
 #define PORT__CLAMP      'A'
 #define PORT_DOINKER     'B'
 #define PORT_LIFT        'C'
@@ -71,7 +72,7 @@ extern pros::adi::DigitalOut PISTON_CLAMP;
 extern pros::adi::DigitalOut PISTON_DOINKER;
 extern pros::adi::DigitalOut PISTON_LIFT;
 extern pros::adi::DigitalOut PISTON_HANG;
-extern pros::adi::DigitalIn  LIMIT_AUTO_CLAMP;
+extern pros::Distance        DISTANCE_AUTO_CLAMP;
 
 extern lemlib::Drivetrain         LL_DRIVETRAIN;
 extern lemlib::TrackingWheel      ODOM_HORI;
@@ -79,6 +80,8 @@ extern lemlib::TrackingWheel      ODOM_VERT;
 extern lemlib::OdomSensors        ODOM_SENSORS;
 extern lemlib::ControllerSettings LL_LAT_CONTROLLER;
 extern lemlib::ControllerSettings LL_ANG_CONTROLLER;
-extern lemlib::Chassis            LL_CHASSIS;
 
+extern ez::PID armPID;
+
+extern lemlib::Chassis            LL_CHASSIS;
 extern ez::Drive EZ_CHASSIS;
