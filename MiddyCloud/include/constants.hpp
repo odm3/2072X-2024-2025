@@ -50,14 +50,16 @@
 //creates constant float implementations
 #define OFFSET_ODOM_VERT -0.5
 #define OFFSET_ODOM_HORI 2
+#define CURVE_THRUST 3
+#define CURVE_TURN 3
 
 //creates controller button implementations
 #define buttonIntake pros::E_CONTROLLER_DIGITAL_L1
 #define buttonIntakeReverse pros::E_CONTROLLER_DIGITAL_L2
-#define buttonIntakeLift pros::E_CONTROLLER_DIGITAL_Y
-#define buttonClamp pros::E_CONTROLLER_DIGITAL_B
-#define buttonDoinker pros::E_CONTROLLER_DIGITAL_R1            //E_CONTROLLER_DIGITAL_R1
-#define buttonHang pros::E_CONTROLLER_DIGITAL_RIGHT
+#define buttonIntakeLift pros::E_CONTROLLER_DIGITAL_DOWN
+#define buttonClamp pros::E_CONTROLLER_DIGITAL_R1
+#define buttonDoinker pros::E_CONTROLLER_DIGITAL_R2            //E_CONTROLLER_DIGITAL_R1
+#define buttonHang pros::E_CONTROLLER_DIGITAL_B
 #define buttonHoodLift pros::E_CONTROLLER_DIGITAL_DOWN
 //not currently used
 #define buttonArm pros::E_CONTROLLER_DIGITAL_X
@@ -80,7 +82,7 @@ extern pros::Motor MotorRB;
 extern pros::Motor MotorIntakeLeft;
 extern pros::Motor MotorIntakeRight;
 extern pros::Motor MotorArm;
-extern pros::MotorGroup MotorGroupIntake;
+extern pros::MotorGroup MotorGroupIntake;   
 
 //creates smart wire sensor implementations
 extern pros::IMU intertialIMU;
