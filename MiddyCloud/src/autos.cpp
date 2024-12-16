@@ -6,7 +6,7 @@
 #include "pros/rtos.hpp"
 
 // a universal speed for the EzTempChassis to follow. These are out of 127
-const int DRIVE_SPEED = 110;
+const int DRIVE_SPEED = 90;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 90;
 
@@ -17,10 +17,10 @@ void noAuto()   {
 }
 
 void testEzDrive()  {
-    EzTempChassis.pid_drive_set(24_in, DRIVE_SPEED, false);
+    EzTempChassis.pid_drive_set(24_in, DRIVE_SPEED, true);
     EzTempChassis.pid_wait();
     pros::delay(250);
-    EzTempChassis.pid_drive_set(-24_in, DRIVE_SPEED, false);
+    EzTempChassis.pid_drive_set(-24_in, DRIVE_SPEED, true);
     EzTempChassis.pid_wait();
 }
 
@@ -37,24 +37,6 @@ void testEzTurn()   {
     EzTempChassis.pid_wait();
 }
 
-void testLLDrive()  {
-    LemLibChassis.setPose(0,0,0);
-    LemLibChassis.moveToPoint(0, 24, 9999);
-    LemLibChassis.waitUntilDone();
-    LemLibChassis.moveToPose(0, 0, 0, 9999, {false});
-    LemLibChassis.waitUntilDone();
-}
-
-void testLLTurn()   {
-    LemLibChassis.setPose(0,0,0);
-    LemLibChassis.turnToHeading(90, 9999);
-    LemLibChassis.waitUntilDone();
-    LemLibChassis.turnToHeading(-45, 9999);
-    LemLibChassis.waitUntilDone();
-    LemLibChassis.turnToHeading(0, 9999);
-    LemLibChassis.waitUntilDone();
-}
-
 
 void driveToLadder()    {
     EzTempChassis.drive_set(50, 50);
@@ -62,164 +44,79 @@ void driveToLadder()    {
     EzTempChassis.drive_set(0, 0);
 }
 
-void redPos()   {
+void left2()    {
 
-    LemLibChassis.setPose(0,0,0);
-    LemLibChassis.moveToPoint(0, -15, 999, {false});
-    LemLibChassis.waitUntilDone();
-    LemLibChassis.moveToPose(3, -23.5, -27, 999, {false});
-    LemLibChassis.waitUntilDone();
+    EzTempChassis.pid_drive_set(-4_in, DRIVE_SPEED, true);
+    EzTempChassis.pid_wait();
+
+    EzTempChassis.pid_drive_set(-2_in, 60, true);
+    EzTempChassis.pid_wait();
+
     activateClamp();
-    pros::delay(250);
+
+    EzTempChassis.pid_turn_set(-300_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+
     intakeVoltage(12000);
-    LemLibChassis.waitUntilDone();
-    LemLibChassis.moveToPoint(-8.5, -30, 999);
-    LemLibChassis.waitUntilDone();
-    LemLibChassis.turnToHeading(275, 999);
-    LemLibChassis.waitUntilDone();
-    LemLibChassis.moveToPoint(-20, -25, 9999);
-    LemLibChassis.waitUntilDone();
 
-    deActivateClamp();
+    EzTempChassis.pid_drive_set(10_in, 75);
+    EzTempChassis.pid_wait();
 
+    EzTempChassis.drive_set(0, 0);
+    pros::delay(5000);
 
 }
 
-void redNeg()  {
+void left4()    {
 
-    LemLibChassis.setPose(0,0,0);
-    LemLibChassis.moveToPoint(0, -15, 999, {false});
-    LemLibChassis.waitUntilDone();
-    LemLibChassis.moveToPose(-3, -23.5, 27, 999, {false});
-    LemLibChassis.waitUntilDone();
+    EzTempChassis.pid_drive_set(-4_in, DRIVE_SPEED, true);
+    EzTempChassis.pid_wait();
+
+    EzTempChassis.pid_drive_set(-2_in, 60, true);
+    EzTempChassis.pid_wait();
+
     activateClamp();
-    pros::delay(250);
-    intakeVoltage(12000);
-    LemLibChassis.waitUntilDone();
-    LemLibChassis.moveToPoint(8.5, -30, 999);
-    LemLibChassis.waitUntilDone();
-    LemLibChassis.turnToHeading(-275, 999);
-    LemLibChassis.waitUntilDone();
-    LemLibChassis.moveToPoint(-20, -25, 9999);
-    LemLibChassis.waitUntilDone();
-    
-    deActivateClamp();
 
+    EzTempChassis.pid_turn_set(-300_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+
+    intakeVoltage(12000);
+
+    EzTempChassis.pid_drive_set(16_in, 80);
+    EzTempChassis.pid_wait();
+
+    EzTempChassis.drive_set(0, 0);
+
+    EzTempChassis.pid_turn_set(-230_deg, 60, true);
+    EzTempChassis.pid_wait();
+
+    EzTempChassis.pid_drive_set(16.5_in, 60, true);
+    EzTempChassis.pid_wait();
+
+    EzTempChassis.drive_set(0, 0);
+    pros::delay(5000);
 }
 
+void right2()   {
 
-void RedPosBlueNeg2AWP()  {
-    EzTempChassis.pid_drive_set(-12_in, DRIVE_SPEED);
+    EzTempChassis.pid_drive_set(-4_in, DRIVE_SPEED, true);
     EzTempChassis.pid_wait();
-    EzTempChassis.pid_turn_set(-27_deg, TURN_SPEED);
+
+    EzTempChassis.pid_drive_set(-2_in, 60, true);
     EzTempChassis.pid_wait();
-    EzTempChassis.pid_drive_set(-3.5_in, DRIVE_SPEED);
-    EzTempChassis.pid_wait();
+
     activateClamp();
-    EzTempChassis.pid_turn_set(-85_deg, TURN_SPEED);
-    EzTempChassis.pid_wait();
-    intakeVoltage(12000);
-    EzTempChassis.pid_drive_set(10_in, DRIVE_SPEED);
-    EzTempChassis.pid_wait();
 
-    deActivateClamp();
-
-
-    EzTempChassis.pid_turn_set(90_deg, TURN_SPEED, true);
-    EzTempChassis.pid_wait();
-    EzTempChassis.pid_drive_set(18_in, 127);
-    EzTempChassis.pid_wait();
-}
-
-void RedNegBluePos2AWP()  {
-    EzTempChassis.pid_drive_set(-12_in, DRIVE_SPEED);
-    EzTempChassis.pid_wait();
-    EzTempChassis.pid_turn_set(27_deg, TURN_SPEED);
-    EzTempChassis.pid_wait();
-    EzTempChassis.pid_drive_set(-3.5_in, DRIVE_SPEED);
-    EzTempChassis.pid_wait();
-    activateClamp();
-    EzTempChassis.pid_turn_set(85_deg, TURN_SPEED);
-    EzTempChassis.pid_wait();
-    intakeVoltage(12000);
-    EzTempChassis.pid_drive_set(10_in, DRIVE_SPEED);
-    EzTempChassis.pid_wait();
-
-    EzTempChassis.pid_turn_set(-90_deg, TURN_SPEED, true);
-    EzTempChassis.pid_wait();
-    EzTempChassis.pid_drive_set(18_in, 127);
-    EzTempChassis.pid_wait();
-
-    deActivateClamp();
-
-    
-}
-
-
-void RedNegBluePos3AWP()   {
-    EzTempChassis.pid_drive_set(-12_in, DRIVE_SPEED);
-    EzTempChassis.pid_wait();
-    EzTempChassis.pid_turn_set(27_deg, TURN_SPEED);
-    EzTempChassis.pid_wait();
-    EzTempChassis.pid_drive_set(-3.5_in, DRIVE_SPEED);
-    EzTempChassis.pid_wait();
-    activateClamp();
-    EzTempChassis.pid_turn_set(85_deg, TURN_SPEED);
-    EzTempChassis.pid_wait();
-    intakeVoltage(12000);
-    EzTempChassis.pid_drive_set(10_in, DRIVE_SPEED);
-    EzTempChassis.pid_wait();
     EzTempChassis.pid_turn_set(-60_deg, TURN_SPEED, true);
     EzTempChassis.pid_wait();
-    EzTempChassis.pid_drive_set(22_in, DRIVE_SPEED, true);
-    activateIntakeLift();
-    EzTempChassis.pid_wait();
-    pros::delay(250);
-    deActivateIntakeLift();
-    pros::delay(100);
-    EzTempChassis.pid_drive_set(-6_in,DRIVE_SPEED);
-    EzTempChassis.pid_wait();
-    EzTempChassis.pid_turn_set(-130_deg, TURN_SPEED, true);
-    EzTempChassis.pid_wait();
-    EzTempChassis.pid_drive_set(12_in, DRIVE_SPEED);
-    EzTempChassis.pid_wait();
-    activateHang();
 
-    deActivateClamp();
-
-}
-
-void RedPosBlueNeg3AWP()   {
-    EzTempChassis.pid_drive_set(-12_in, DRIVE_SPEED);
-    EzTempChassis.pid_wait();
-    EzTempChassis.pid_turn_set(-27_deg, TURN_SPEED);
-    EzTempChassis.pid_wait();
-    EzTempChassis.pid_drive_set(-3.5_in, DRIVE_SPEED);
-    EzTempChassis.pid_wait();
-    activateClamp();
-    EzTempChassis.pid_turn_set(-85_deg, TURN_SPEED);
-    EzTempChassis.pid_wait();
     intakeVoltage(12000);
-    EzTempChassis.pid_drive_set(10_in, DRIVE_SPEED);
-    EzTempChassis.pid_wait();
-    EzTempChassis.pid_turn_set(60_deg, TURN_SPEED, true);
-    EzTempChassis.pid_wait();
-    EzTempChassis.pid_drive_set(22_in, DRIVE_SPEED, true);
-    activateIntakeLift();
-    EzTempChassis.pid_wait();
-    pros::delay(250);
-    deActivateIntakeLift();
-    pros::delay(100);
-    EzTempChassis.pid_drive_set(-6_in,60);
-    EzTempChassis.pid_wait();
-    EzTempChassis.pid_turn_set(130_deg, TURN_SPEED, true);
-    EzTempChassis.pid_wait();
-    EzTempChassis.pid_drive_set(12_in, DRIVE_SPEED);
-    EzTempChassis.pid_wait();
-    activateHang();
 
-    deActivateClamp();
+    EzTempChassis.pid_drive_set(12_in, 75);
+    EzTempChassis.pid_wait();
 
+    EzTempChassis.drive_set(0, 0);
+    pros::delay(5000);
 }
 
 void Skills()   {
@@ -315,18 +212,104 @@ void Skills1()  {
 
 }
 
-// void bluePosRush()  {
+void soloAWPelim()  {
 
-// }
+    EzTempChassis.pid_drive_set(-18_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_turn_set(-45_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(-8_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    activateClamp();
+    EzTempChassis.pid_turn_set(6_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+    intakeVoltage(12000);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(8_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    intakeVoltage(0);
+    EzTempChassis.pid_wait();
+    deActivateClamp();
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(14_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_turn_set(-52_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(-15_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    activateClamp();
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_turn_set(56_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+    intakeVoltage(12000);
+    EzTempChassis.pid_wait();
+    activateIntakeLift();
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(20_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    deActivateIntakeLift();
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(4_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_turn_set(-160_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(18_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    deActivateClamp();
+    EzTempChassis.pid_wait();
+    activateHang();
+   
+}
 
-// void redPosRush()   {
+void soloAWPreg()  {
+    EzTempChassis.pid_turn_set(-25_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(-13_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    activateClamp();
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_turn_set(-105_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+    intakeVoltage(12000);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(10_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_turn_set(-204_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
 
-// }
+    EzTempChassis.pid_drive_set(-12_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    deActivateClamp(); //CUT OFF HERE FOR NO MIDDLE AUTO, STOPS AT STACK        
 
-// void blueNegRush()  {
+    pros::delay(200);
+    EzTempChassis.pid_drive_set(6_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_turn_set(-3_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(-15_in, DRIVE_SPEED);
+    EzTempChassis.pid_wait();
 
-// }
+    
 
-// void redNegRush()   {
+    activateClamp();
 
-// }
+
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_turn_set(53_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(34_in, DRIVE_SPEED, true);
+    activateIntakeLift();
+    EzTempChassis.pid_wait();
+    pros::delay(250);
+    deActivateIntakeLift();
+    pros::delay(100);
+    EzTempChassis.pid_drive_set(-6_in,DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_turn_set(135_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(6_in,DRIVE_SPEED);
+    EzTempChassis.pid_wait();
+    intakeVoltage(0);
+    deActivateClamp();
+    EzTempChassis.pid_wait();
+}

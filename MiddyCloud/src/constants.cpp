@@ -62,9 +62,11 @@ lemlib::TrackingWheel odom_hori_wheel(&rotationOdomHori, lemlib::Omniwheel::NEW_
 
 //creates a lemlib odom sensors class
 lemlib::OdomSensors LLOdomSensors(
-    &odom_vert_wheel, 
+    // &odom_vert_wheel, 
     nullptr,
-    &odom_hori_wheel,
+    nullptr,
+    // &odom_hori_wheel,
+    nullptr,
     nullptr,
     &intertialIMU
 );
@@ -102,9 +104,9 @@ void default_constants() {
   EzTempChassis.pid_turn_constants_set(3, 0.05, 20, 15);
   EzTempChassis.pid_swing_constants_set(6, 0, 65);
 
-  EzTempChassis.pid_turn_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  EzTempChassis.pid_swing_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  EzTempChassis.pid_drive_exit_condition_set(80_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
+  EzTempChassis.pid_turn_exit_condition_set(250_ms, 3_deg, 400_ms, 7_deg, 500_ms, 500_ms);
+  EzTempChassis.pid_swing_exit_condition_set(250_ms, 3_deg, 400_ms, 7_deg, 500_ms, 500_ms);
+  EzTempChassis.pid_drive_exit_condition_set(250_ms, 1_in, 400_ms, 3_in, 500_ms, 500_ms);
 
   EzTempChassis.pid_turn_chain_constant_set(3_deg);
   EzTempChassis.pid_swing_chain_constant_set(5_deg);
@@ -113,7 +115,7 @@ void default_constants() {
   EzTempChassis.slew_drive_constants_set(7_in, 80);
 }
 
-//creates LemLib EzTempChassis
+//creates LemLib Chassis
 lemlib::Chassis LemLibChassis(
     LLDrivetrain,
     LLLateral_controller,            //change to floor
