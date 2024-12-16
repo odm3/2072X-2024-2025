@@ -1,12 +1,13 @@
-#pragma once
-
+#include "devices.hpp"
 #include "main.h" // IWYU pragma: keep
 #include "pros/abstract_motor.hpp"
 #include "pros/adi.h"
 #include "pros/adi.hpp"
+#include "pros/rotation.hpp"
 
-namespace devices {
-    //creates controller
+//creates a new namespace for devices
+
+//creates controller
 pros::Controller controlla (pros::E_CONTROLLER_MASTER);
 
 //creates drive motors with specified ports and gearsets
@@ -100,11 +101,50 @@ pros::Motor conveyor(PORT_CONVEYOR, pros::MotorGears::rpm_200);
 pros::Motor arm(PORT_ARM, pros::MotorGearset::rpm_100);
 
 //pistons
-pros::adi::DigitalOut intake_lift_left(PORT_INTAKE_LIFT_LEFT, LOW);
-pros::adi::DigitalOut intake_lift_right(PORTS_INTAKE_LIFT_RIGHT, LOW);
+pros::adi::DigitalOut intake_lift(PORT_INTAKE_LIFT, LOW);
+// pros::adi::DigitalOut intake_lift_left(PORT_INTAKE_LIFT_LEFT, LOW);
+// pros::adi::DigitalOut intake_lift_right(PORTS_INTAKE_LIFT_RIGHT, LOW);
+// pros::adi::DigitalOut clamp(PORT_CLAMP, LOW);
 pros::adi::DigitalOut clamp_left(PORT_CLAMP_LEFT, LOW);
 pros::adi::DigitalOut clamp_right(PORT_CLAMP_RIGHT, LOW);
 // pros::adi::DigitalOut claw(PORT_CLAW, LOW);
 pros::adi::DigitalOut doinker(PORT_DOINKER, LOW);
 pros::adi::DigitalOut ring_stopper(PORT_RING_STOPPER,LOW);
+
+pros::Rotation armRotation(PORT_ARM_ROTATION);
+
+bool isConnected(int port) {
+    if ((pros::Device::get_plugged_type(port) == pros::v5::DeviceType::none) ||(pros::Device::get_plugged_type(port) == pros::DeviceType::undefined))  {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+void checkIfConnected(int port, std::string deviceName) {
+    if ((isConnected(port)) == false) {
+        controlla.rumble(".....");
+        controlla.set_text(0,0, deviceName + "is unplugged!");
+        // console.println((deviceName + "is unplugged!").c_str());
+    }
+}
+
+void checkAllDevices() {
+    checkIfConnected(PORT_LF, "LF_motor");
+    checkIfConnected(PORT_LB, "LM_motor");
+    checkIfConnected(PORT_LM, "LM_motor");
+    checkIfConnected(PORT_RF, "RF_motor");
+    checkIfConnected(PORT_RM, "RM_motor");
+    checkIfConnected(PORT_RB, "RB_motor");
+    checkIfConnected(PORT_INTAKE, "intake");
+    checkIfConnected(PORT_CONVEYOR, "conveyor");
+    checkIfConnected(PORT_ARM, "arm");
+    checkIfConnected(PORT_IMU, "IMU");
+    checkIfConnected(PORT_INTAKE_LIFT, "intake_lift");
+    checkIfConnected(PORT_CLAMP_LEFT, "clamp_left");
+    checkIfConnected(PORT_CLAMP_RIGHT, "clamp_right");
+    // checkIfConnected(PORT_DOINKER, "doinker");
+    // checkIfConnected(PORT_RING_STOPPER, "ring_stopper");
+    checkIfConnected(PORT_ARM_ROTATION, "armRotation");
 }
