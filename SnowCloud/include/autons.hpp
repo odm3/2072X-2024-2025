@@ -12,4 +12,14 @@ void motion_chaining();
 void combining_movements();
 void interfered_example();
 
-void default_constants();
+void redNeg2();
+void redNeg3();
+void redNeg4();
+void redNeg5();
+void blueNeg2();
+void blueNeg3();
+void blueNeg4();
+void blueNeg5();
+void goalRush();
+void skills();
+void elims();

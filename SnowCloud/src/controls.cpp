@@ -11,6 +11,9 @@ bool toggleDoinker   = false;
 bool toggleLift      = false;
 bool toggleHang      = false;
 bool toggleArmStates = false;
+int lbDriverIndex = 0; 
+
+int lbArray [2] = { ARM_DOWN, ARM_PRIME};
 
 void moveIntake(double vltg)    {
     MOTOR_INTAKE.move_voltage(vltg);
@@ -20,8 +23,36 @@ void moveArm(double vltg)  {
     MOTORGROUP_ARM.move_voltage(vltg);
 }
 
-void moveArmStates(int state)    {
+void activateClamp()    {
+    toggleClamp = true;
+    PISTON_CLAMP.set_value(toggleClamp);
+    pros::delay(150);
+}
 
+void deactivateClamp()  {
+    toggleClamp = false;
+    PISTON_CLAMP.set_value(toggleClamp);
+    pros::delay(150);
+}
+
+void activateDoinker()    {
+    toggleDoinker = true;
+    PISTON_DOINKER.set_value(toggleDoinker);
+}
+
+void deactivateDoinker()  {
+    toggleDoinker = false;
+    PISTON_DOINKER.set_value(toggleDoinker);
+}
+
+void activateLift()    {
+    toggleLift = true;
+    PISTON_LIFT.set_value(toggleLift);
+}
+
+void deactivateLift()  {
+    toggleLift = false;
+    PISTON_LIFT.set_value(toggleLift);
 }
 
 void controlIntake()    {
@@ -38,39 +69,38 @@ void controlIntake()    {
 
 void controlArm()   {
     if (controlla.get_digital(BUTTON_ARM)) {
-        moveArm(12000);
+        if (ROTATION_ARM.get_position() < 23000) {
+        armPID.target_set(armPID.target_get() + 300);
+        }
+        else {
+        armPID.target_set(24000);
+        }
     }
-    // else if (controlla.get_digital(BUTTON_ARM_REVERSE)) {
-    //     moveArm(-12000);
-    // }
+    else if (controlla.get_digital(BUTTON_ARM_REVERSE)) {
+        if (ROTATION_ARM.get_position() > 1000) {
+        armPID.target_set(armPID.target_get() - 300);
+        }
+        else {
+        armPID.target_set(1000);
+        }
+    }
     else {
-        moveArm(0);
+        armPID.target_set(armPID.target_get());
+
     }
 }
 
-void controlArmStates() {
-    // if  (controlla.get_digital_new_press(BUTTON_ARM_REVERSE))   {
-    //     armPID.target_set(100);
-    // }
-    // while (ROTATION_ARM.get_position() != 0) {
-    //     MOTORGROUP_ARM.move(armPID.compute(ROTATION_ARM.get_position()));
-    //     pros::delay(ez::util::DELAY_TIME);
-    // }
-
-    if(controlla.get_digital(BUTTON_ARM_REVERSE)) {
-        armPID.target_set(500);
-    } else if(controlla.get_digital(pros::E_CONTROLLER_DIGITAL_UP)){
-        armPID.target_set(0);
-
+void controlArmPrime() {
+    if  (controlla.get_digital_new_press(BUTTON_ARM_PRIME))   {
+        lbDriverIndex = (lbDriverIndex + 1) % (sizeof(lbArray) / sizeof(lbArray[0]));
+        armPID.target_set(lbArray[lbDriverIndex]);
     }
+}
 
-    double angle = 0.0;
-    double error = MOTORGROUP_ARM.get_position() - armPID.target_get();
-    pros::lcd::print(4,"Rotation Value: %.2f", MOTORGROUP_ARM.get_position());
-    pros::lcd::print(5, "PID Value: %.2f", armPID.target_get());
-    pros::lcd::print(6, "Computed Value: %.2f", fabs(armPID.compute(MOTORGROUP_ARM.get_position())));
-    pros::lcd::print(7, "Computed Error: %.2f", fabs(armPID.compute_error(error, MOTORGROUP_ARM.get_position() )));
-    MOTORGROUP_ARM.move(armPID.compute_error(error, MOTORGROUP_ARM.get_position()));
+void controlArmScore()  {
+    if  (controlla.get_digital_new_press(BUTTON_ARM_SCORE))   {
+        armPID.target_set(ARM_SCORE);
+    }
 }
 
 void controlClamp() {
@@ -91,8 +121,11 @@ void controlLift() {
     }   PISTON_LIFT.set_value(toggleLift);
 }
 
-void controlHang() {
-    if (controlla.get_digital_new_press(BUTTON_HANG)) {
-        toggleHang = !toggleHang;
-    }   PISTON_HANG.set_value(toggleHang);
+void controlArmTask() {
+    pros::delay(1000);
+    while(true) {
+        moveArm(armPID.compute(ROTATION_ARM.get_position()));
+        printf("LB Value: %d", ROTATION_ARM.get_position());
+        pros::delay(ez::util::DELAY_TIME);
+    }
 }

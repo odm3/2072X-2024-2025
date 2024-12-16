@@ -12,7 +12,7 @@
 #include "pros/motors.hpp"
 #include "pros/optical.hpp"
 #include "pros/rotation.hpp"
-#define PORT_LF -8
+#define PORT_LF -19
 #define PORT_LM 9
 #define PORT_LB -10
 #define PORT_RF 2
@@ -24,16 +24,16 @@
 #define PORT_ARM_RIGHT  5
 
 #define PORT_IMU 11
-#define PORT_ROTATION_ODOM_HORI 11
-#define PORT_ROTATION_ODOM_VERT 12
+#define PORT_ROTATION_ODOM_HORI 12
+#define PORT_ROTATION_ODOM_VERT 13
 #define PORT_ROTATION_ARM       7
 #define PORT_ROTATION_INTAKE    14
 #define PORT_OPTICAL_COLOR      15
+#define PORT_AUTO_CLAMP  16 
 #define PORT__CLAMP      'A'
 #define PORT_DOINKER     'B'
 #define PORT_LIFT        'C'
 #define PORT_HANG        'D'
-#define PORT_AUTO_CLAMP  'E'
 
 #define OFFSET_HORI 0
 #define OFFSET_VERT 0
@@ -42,9 +42,10 @@
 #define BUTTON_INTAKE_REVERSE   pros::E_CONTROLLER_DIGITAL_L2
 #define BUTTON_ARM              pros::E_CONTROLLER_DIGITAL_R1
 #define BUTTON_ARM_REVERSE      pros::E_CONTROLLER_DIGITAL_R2
+#define BUTTON_ARM_PRIME        pros::E_CONTROLLER_DIGITAL_DOWN
+#define BUTTON_ARM_SCORE        pros::E_CONTROLLER_DIGITAL_X
 #define BUTTON_DOINKER          pros::E_CONTROLLER_DIGITAL_A
 #define BUTTON_CLAMP            pros::E_CONTROLLER_DIGITAL_B
-#define BUTTON_HANG             pros::E_CONTROLLER_DIGITAL_X
 #define BUTTON_LIFT             pros::E_CONTROLLER_DIGITAL_Y
 
 extern pros::Controller controlla;
@@ -85,3 +86,8 @@ extern ez::PID armPID;
 
 extern lemlib::Chassis            LL_CHASSIS;
 extern ez::Drive EZ_CHASSIS;
+
+extern int lbDriverIndex;
+enum ladybrown_states { ARM_DOWN = 0, ARM_PRIME = 3200,  ARM_SCORE = 16500, ALLIANCE_SCORE = 20500 };
+
+void default_constants();

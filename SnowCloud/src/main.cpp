@@ -1,7 +1,12 @@
 #include "main.h"
+#include "EZ-Template/auton.hpp"
+#include "EZ-Template/util.hpp"
+#include "autons.hpp"
 #include "constants.hpp"
 #include "controls.hpp"
 #include "pros/abstract_motor.hpp"
+#include "pros/llemu.hpp"
+#include "pros/misc.h"
 #include "pros/motors.h"
 
 
@@ -18,9 +23,9 @@ void initialize() {
   pros::delay(500);  // Stop the user from doing anything while legacy ports configure
 
   // Configure your chassis controls
-  EZ_CHASSIS.opcontrol_curve_buttons_toggle(true);  // Enables modifying the controller curve with buttons on the joysticks
+  EZ_CHASSIS.opcontrol_curve_buttons_toggle(false);  // Enables modifying the controller curve with buttons on the joysticks
   EZ_CHASSIS.opcontrol_drive_activebrake_set(0);    // Sets the active brake kP. We recommend ~2.  0 will disable.
-  // EZ_CHASSIS.opcontrol_curve_default_set(0, 0);     // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)
+  EZ_CHASSIS.opcontrol_curve_default_set(1, 10);     // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)
 
   // Set the drive to your own constants from autons.cpp!
   default_constants();
@@ -31,14 +36,25 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+      Auton("Neg Red 2 ring", redNeg2),
+      Auton("Neg Red 3 ring", redNeg3), 
+      Auton("Neg Red 4 ring", redNeg4),
+      Auton("Neg Red 5 ring", redNeg5),
+      Auton("Red goal elims", blueNeg2),
+      Auton("Blue goal elims", elims),
+      Auton("Neg Blue 3 ring", blueNeg3), 
+      Auton("Neg Blue 4 ring", blueNeg4),
+      Auton("Neg Blue 5 ring", blueNeg5),
+      Auton("Goal Rush", goalRush),
       Auton("Example Drive\n\nDrive forward and come back.", drive_example),
       Auton("Example Turn\n\nTurn 3 times.", turn_example),
-      Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
-      Auton("Drive and Turn\n\nSlow down during drive.", wait_until_change_speed),
-      Auton("Swing Example\n\nSwing in an 'S' curve", swing_example),
-      Auton("Motion Chaining\n\nDrive forward, turn, and come back, but blend everything together :D", motion_chaining),
-      Auton("Combine all 3 movements", combining_movements),
-      Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
+      Auton("Skills", skills),
+      // Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
+      // Auton("Drive and Turn\n\nSlow down during drive.", wait_until_change_speed),
+      // Auton("Swing Example\n\nSwing in an 'S' curve", swing_example),
+      // Auton("Motion Chaining\n\nDrive forward, turn, and come back, but blend everything together :D", motion_chaining),
+      // Auton("Combine all 3 movements", combining_movements),
+      // Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
   });
 
   // Initialize chassis and auton selector
@@ -48,7 +64,8 @@ void initialize() {
   MOTOR_INTAKE.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   MOTORGROUP_ARM.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
   ROTATION_ARM.reset_position();
-  MOTORGROUP_ARM.tare_position();
+  pros::Task lbTask(controlArmTask);
+  // MOTORGROUP_ARM.tare_position();
 
   master.rumble("_");
 }
@@ -115,6 +132,7 @@ void opcontrol() {
   EZ_CHASSIS.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
   LL_CHASSIS.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
 
+
   while (true) {
     // PID Tuner
     // After you find values that you're happy with, you'll have to set them in auton.cpp
@@ -123,11 +141,11 @@ void opcontrol() {
       //  When enabled:
       //  * use A and Y to increment / decrement the constants
       //  * use the arrow keys to navigate the constants
-      if (master.get_digital_new_press(DIGITAL_X))
+      if (master.get_digital_new_press(DIGITAL_LEFT))
         EZ_CHASSIS.pid_tuner_toggle();
 
       // Trigger the selected autonomous routine
-      if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) {
+      if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)/* && master.get_digital(DIGITAL_UP)*/) {
         autonomous();
           EZ_CHASSIS.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
           LL_CHASSIS.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
@@ -146,13 +164,15 @@ void opcontrol() {
     // Put more user control code here!
     // . . .
     controlIntake();
-    //controlArm();
-    controlArmStates();
+    controlArm();
     controlClamp();
     controlDoinker();
     controlLift();
-    controlHang();
-    controlArmStates();
+    controlArmPrime();
+    controlArmScore();
+    pros::lcd::print(6, "Rotation Value: %d", ROTATION_ARM.get_position());
+    pros::lcd::print(7, "PID target get: %d",armPID.target_get());
+    pros::lcd::print(8, "Lady Brown State: %d Value: %d", lbArray[lbDriverIndex], lbDriverIndex);
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }

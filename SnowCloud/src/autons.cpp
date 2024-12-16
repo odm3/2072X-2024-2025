@@ -1,5 +1,8 @@
+#include "EZ-Template/drive/drive.hpp"
 #include "constants.hpp"
+#include "controls.hpp"
 #include "main.h"
+#include "pros/rtos.hpp"
 
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
@@ -26,12 +29,15 @@ void drive_example() {
 
   EZ_CHASSIS.pid_drive_set(24_in, DRIVE_SPEED, true);
   EZ_CHASSIS.pid_wait();
+  pros::delay(500);
 
   EZ_CHASSIS.pid_drive_set(-12_in, DRIVE_SPEED);
   EZ_CHASSIS.pid_wait();
+  pros::delay(500);
 
   EZ_CHASSIS.pid_drive_set(-12_in, DRIVE_SPEED);
   EZ_CHASSIS.pid_wait();
+  pros::delay(500);
 }
 
 ///
@@ -206,3 +212,383 @@ void interfered_example() {
 // . . .
 // Make your own autonomous functions here!
 // . . .
+
+void redNeg2() {
+  EZ_CHASSIS.pid_drive_set(-30_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  activateClamp();
+
+  EZ_CHASSIS.pid_turn_set(80_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  moveIntake(12000);
+  EZ_CHASSIS.pid_drive_set(16_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(275_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(26_in, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+}
+
+void redNeg3() {
+  EZ_CHASSIS.pid_drive_set(-30_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  activateClamp();
+
+  EZ_CHASSIS.pid_turn_set(80_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  moveIntake(12000);
+  EZ_CHASSIS.pid_drive_set(16_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(310_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  pros::delay(250);
+
+  EZ_CHASSIS.pid_drive_set(32_in, DRIVE_SPEED, true);
+  activateLift();
+  EZ_CHASSIS.pid_wait();
+
+  deactivateLift();
+  pros::delay(500);
+  EZ_CHASSIS.pid_turn_set(195_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(10.5_in,DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+}
+
+void redNeg4() {
+  EZ_CHASSIS.pid_drive_set(-30_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  activateClamp();
+
+  EZ_CHASSIS.pid_turn_set(80_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  moveIntake(12000);
+  EZ_CHASSIS.pid_drive_set(16_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(170_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(8_in, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(140_deg, 127);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(8_in, DRIVE_SPEED,true);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(-16_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(270_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(18_in, DRIVE_SPEED);
+  EZ_CHASSIS.pid_wait();
+}
+
+void redNeg5()  {
+  EZ_CHASSIS.pid_drive_set(-30_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  activateClamp();
+
+  EZ_CHASSIS.pid_turn_set(80_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  moveIntake(12000);
+  EZ_CHASSIS.pid_drive_set(16_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(170_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(8_in, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(135_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(8_in, DRIVE_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(-28_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  activateLift();
+  EZ_CHASSIS.pid_turn_set(300_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+}
+
+void blueNeg2() {
+  EZ_CHASSIS.pid_drive_set(-30_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  activateClamp();
+
+  EZ_CHASSIS.pid_turn_set(-80_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  moveIntake(12000);
+  EZ_CHASSIS.pid_drive_set(16_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(240_deg - 180_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(40_in, DRIVE_SPEED, true);
+  activateLift();
+  EZ_CHASSIS.pid_wait();
+
+  deactivateLift();
+  armPID.target_set(ARM_PRIME);
+  pros::delay(500);
+  EZ_CHASSIS.pid_turn_set(6_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(8.25_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+  pros::delay(500);
+  moveIntake(0);
+
+  armPID.target_set(ALLIANCE_SCORE);
+  pros::delay(1000);
+
+  EZ_CHASSIS.pid_drive_set(-16_in, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+}
+
+void elims()  {
+    EZ_CHASSIS.pid_drive_set(-30_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  activateClamp();
+
+  EZ_CHASSIS.pid_turn_set(80_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  moveIntake(12000);
+  EZ_CHASSIS.pid_drive_set(16_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(-50_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(40_in, DRIVE_SPEED, true);
+  activateLift();
+  EZ_CHASSIS.pid_wait();
+
+  deactivateLift();
+  armPID.target_set(ARM_PRIME);
+  pros::delay(500);
+  EZ_CHASSIS.pid_turn_set(6_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(6_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+  pros::delay(500);
+  moveIntake(0);
+
+  armPID.target_set(ALLIANCE_SCORE);
+  pros::delay(1000);
+
+  EZ_CHASSIS.pid_drive_set(-16_in, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+}
+
+void blueNeg3() {
+  EZ_CHASSIS.pid_drive_set(-30_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  activateClamp();
+
+  EZ_CHASSIS.pid_turn_set(70_deg - 180_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  moveIntake(12000);
+  EZ_CHASSIS.pid_drive_set(16_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(310_deg - 180_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  pros::delay(250);
+
+  EZ_CHASSIS.pid_drive_set(32_in, DRIVE_SPEED, true);
+  activateLift();
+  EZ_CHASSIS.pid_wait();
+
+  deactivateLift();
+  pros::delay(500);
+  EZ_CHASSIS.pid_turn_set(195_deg - 180_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(10.5_in,DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+}
+
+void blueNeg4() {
+  EZ_CHASSIS.pid_drive_set(-30_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  activateClamp();
+
+  EZ_CHASSIS.pid_turn_set(80_deg - 180_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  moveIntake(12000);
+  EZ_CHASSIS.pid_drive_set(16_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(170_deg - 180_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(8_in, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(140_deg - 180_deg, 127);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(8_in, DRIVE_SPEED,true);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(-16_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(270_deg - 180_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(18_in, DRIVE_SPEED);
+  EZ_CHASSIS.pid_wait();
+}
+
+void blueNeg5()  {
+  EZ_CHASSIS.pid_drive_set(-30_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  activateClamp();
+
+  EZ_CHASSIS.pid_turn_set(80_deg - 180_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  moveIntake(12000);
+  EZ_CHASSIS.pid_drive_set(16_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(170_deg - 180_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(8_in, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(135_deg - 180_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(8_in, DRIVE_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(-28_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  activateLift();
+  EZ_CHASSIS.pid_turn_set(300_deg - 180_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+}
+
+void goalRush()  
+{
+    EZ_CHASSIS.pid_drive_set(-40_in, DRIVE_SPEED);
+    EZ_CHASSIS.pid_wait();
+    EZ_CHASSIS.pid_turn_set(-45_deg, TURN_SPEED, true);
+    EZ_CHASSIS.pid_wait();
+    EZ_CHASSIS.pid_drive_set(-8_in, DRIVE_SPEED);
+    EZ_CHASSIS.pid_wait();
+    activateClamp();
+    EZ_CHASSIS.pid_turn_set(6_deg, TURN_SPEED, true);
+    EZ_CHASSIS.pid_wait();
+    moveIntake(12000);
+    EZ_CHASSIS.pid_wait();
+    EZ_CHASSIS.pid_drive_set(8_in, DRIVE_SPEED);
+    EZ_CHASSIS.pid_wait();
+    moveIntake(0);
+    EZ_CHASSIS.pid_wait();
+    deactivateClamp();
+    EZ_CHASSIS.pid_wait();
+    EZ_CHASSIS.pid_drive_set(14_in, DRIVE_SPEED);
+    EZ_CHASSIS.pid_wait();
+    EZ_CHASSIS.pid_turn_set(-52_deg, TURN_SPEED, true);
+    EZ_CHASSIS.pid_wait();
+    EZ_CHASSIS.pid_drive_set(-15_in, DRIVE_SPEED);
+    EZ_CHASSIS.pid_wait();
+    activateClamp();
+    EZ_CHASSIS.pid_wait();
+    EZ_CHASSIS.pid_turn_set(56_deg, TURN_SPEED, true);
+    EZ_CHASSIS.pid_wait();
+    moveIntake(12000);
+    EZ_CHASSIS.pid_wait();
+    activateLift();
+    EZ_CHASSIS.pid_wait();
+    EZ_CHASSIS.pid_drive_set(20_in, DRIVE_SPEED);
+    EZ_CHASSIS.pid_wait();
+    deactivateLift();
+    EZ_CHASSIS.pid_wait();
+    EZ_CHASSIS.pid_drive_set(4_in, DRIVE_SPEED);
+    EZ_CHASSIS.pid_wait();
+    EZ_CHASSIS.pid_turn_set(-160_deg, TURN_SPEED, true);
+    EZ_CHASSIS.pid_wait();
+    EZ_CHASSIS.pid_drive_set(18_in, DRIVE_SPEED);
+    EZ_CHASSIS.pid_wait();
+    deactivateClamp();
+    EZ_CHASSIS.pid_wait();
+    
+   
+}
+
+
+void skills() {
+
+  armPID.target_set(ARM_PRIME);
+  pros::delay(500);
+  moveIntake(12000);
+  pros::delay(500);
+  moveIntake(0);
+  armPID.target_set(ALLIANCE_SCORE);
+  pros::delay(1000);
+
+  EZ_CHASSIS.pid_drive_set(-16_in, DRIVE_SPEED, false);
+  EZ_CHASSIS.pid_wait();
+
+  armPID.target_set(ARM_DOWN);
+
+  EZ_CHASSIS.pid_turn_set(110_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(-52_in, 127, true);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(50_in, 127, true);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(-110_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(-52_in, 127, true);
+  EZ_CHASSIS.pid_wait();
+
+  pros::delay(1000);
+
+}
