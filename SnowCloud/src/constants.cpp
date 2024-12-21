@@ -96,7 +96,7 @@ lemlib::Chassis LL_CHASSIS(LL_DRIVETRAIN, // drivetrain settings
 void default_constants() {
   EZ_CHASSIS.pid_heading_constants_set(11, 0, 20);
   EZ_CHASSIS.pid_drive_constants_set(2.7, 0, 100);
-  // EZ_CHASSIS.pid_drive_constants_set(20, 0, 900);
+  // EZ_CHASSIS.pid_drive_constants_set(20, 0, 100);
   EZ_CHASSIS.pid_turn_constants_set(3, 0.05, 20, 15);
   EZ_CHASSIS.pid_swing_constants_set(6, 0, 65);
 

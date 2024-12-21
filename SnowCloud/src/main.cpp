@@ -9,7 +9,6 @@
 #include "pros/misc.h"
 #include "pros/motors.h"
 
-
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -64,7 +63,11 @@ void initialize() {
   ez::as::initialize();
   MOTOR_INTAKE.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   MOTORGROUP_ARM.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
+<<<<<<< Updated upstream
   //ROTATION_ARM.reset_position();
+=======
+  // ROTATION_ARM.reset_position();
+>>>>>>> Stashed changes
   armPID.target_set(ROTATION_ARM.get_position());
   pros::Task lbTask(controlArmTask);
   // MOTORGROUP_ARM.tare_position();
