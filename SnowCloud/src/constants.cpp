@@ -26,9 +26,10 @@ pros::MotorGroup MOTORGROUP_DRIVE_LEFT({PORT_LF, PORT_LM, PORT_LB}, pros::v5::Mo
 pros::MotorGroup MOTORGROUP_DRIVE_RIGHT({PORT_RF, PORT_RM, PORT_RB}, pros::v5::MotorGears::blue);
 
 pros::Motor MOTOR_INTAKE(PORT_INTAKE, pros::v5::MotorGears::blue);
-pros::Motor MOTOR_ARM_LEFT(PORT_ARM_LEFT, pros::v5::MotorGears::green);
-pros::Motor MOTOR_ARM_RIGHT(PORT_ARM_RIGHT, pros::v5::MotorGears::green);
-pros::MotorGroup MOTORGROUP_ARM({PORT_ARM_LEFT, PORT_ARM_RIGHT}, pros::MotorGears::green);
+pros::Motor MOTOR_ARM(PORT_ARM, pros::v5::MotorGears::red);
+// pros::Motor MOTOR_ARM_LEFT(PORT_ARM_LEFT, pros::v5::MotorGears::green);
+// pros::Motor MOTOR_ARM_RIGHT(PORT_ARM_RIGHT, pros::v5::MotorGears::green);
+// pros::MotorGroup MOTORGROUP_ARM({PORT_ARM_LEFT, PORT_ARM_RIGHT}, pros::MotorGears::green);
 
 pros::Imu INERTIAL(PORT_IMU);
 pros::Rotation ROTATION_ODOM_HORI(PORT_ROTATION_ODOM_HORI);
@@ -95,8 +96,8 @@ lemlib::Chassis LL_CHASSIS(LL_DRIVETRAIN, // drivetrain settings
 
 void default_constants() {
   EZ_CHASSIS.pid_heading_constants_set(11, 0, 20);
+  //EZ_CHASSIS.pid_drive_constants_set(2.7, 0, 100);
   EZ_CHASSIS.pid_drive_constants_set(2.7, 0, 100);
-  // EZ_CHASSIS.pid_drive_constants_set(20, 0, 100);
   EZ_CHASSIS.pid_turn_constants_set(3, 0.05, 20, 15);
   EZ_CHASSIS.pid_swing_constants_set(6, 0, 65);
 

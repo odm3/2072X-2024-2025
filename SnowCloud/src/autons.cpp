@@ -10,7 +10,7 @@
 /////
 
 // These are out of 127
-const int DRIVE_SPEED = 110;
+const int DRIVE_SPEED = 126;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 90;
 
@@ -233,6 +233,26 @@ void redNeg2() {
   EZ_CHASSIS.pid_wait();
 }
 
+void blueNeg2() {
+  EZ_CHASSIS.pid_drive_set(-30_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  activateClamp();
+
+  EZ_CHASSIS.pid_turn_set(-80_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  moveIntake(12000);
+  EZ_CHASSIS.pid_drive_set(18_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_turn_set(95_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+
+  EZ_CHASSIS.pid_drive_set(26_in, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+}
+
 void redNeg3() {
   EZ_CHASSIS.pid_drive_set(-30_in, DRIVE_SPEED, true);
   EZ_CHASSIS.pid_wait();
@@ -281,16 +301,16 @@ void redNeg4() {
   EZ_CHASSIS.pid_turn_set(170_deg, TURN_SPEED);
   EZ_CHASSIS.pid_wait();
 
-  EZ_CHASSIS.pid_drive_set(8_in, TURN_SPEED);
+  EZ_CHASSIS.pid_drive_set(10_in, TURN_SPEED);
   EZ_CHASSIS.pid_wait();
 
-  EZ_CHASSIS.pid_turn_set(140_deg, 127);
+  EZ_CHASSIS.pid_turn_set(130_deg, 127);
   EZ_CHASSIS.pid_wait();
 
-  EZ_CHASSIS.pid_drive_set(8_in, DRIVE_SPEED,true);
+  EZ_CHASSIS.pid_drive_set(4_in, DRIVE_SPEED,true);
   EZ_CHASSIS.pid_wait();
 
-  EZ_CHASSIS.pid_drive_set(-16_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_drive_set(-17_in, DRIVE_SPEED, true);
   EZ_CHASSIS.pid_wait();
 
   EZ_CHASSIS.pid_turn_set(270_deg, TURN_SPEED);
@@ -310,19 +330,19 @@ void redNeg5()  {
   EZ_CHASSIS.pid_wait();
 
   moveIntake(12000);
-  EZ_CHASSIS.pid_drive_set(16_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_drive_set(17_in, DRIVE_SPEED, true);
   EZ_CHASSIS.pid_wait();
 
   EZ_CHASSIS.pid_turn_set(170_deg, TURN_SPEED);
   EZ_CHASSIS.pid_wait();
 
-  EZ_CHASSIS.pid_drive_set(8_in, DRIVE_SPEED);
+  EZ_CHASSIS.pid_drive_set(8_in, 127);
   EZ_CHASSIS.pid_wait();
 
   EZ_CHASSIS.pid_turn_set(133_deg, TURN_SPEED);
   EZ_CHASSIS.pid_wait();
 
-  EZ_CHASSIS.pid_drive_set(9.65_in, 127);
+  EZ_CHASSIS.pid_drive_set(9.5_in, 127);
   EZ_CHASSIS.pid_wait();
 
   EZ_CHASSIS.pid_drive_set(-28_in, DRIVE_SPEED, true);
@@ -338,8 +358,10 @@ void redNeg5()  {
   EZ_CHASSIS.pid_wait();
 
   deactivateLift();
-  EZ_CHASSIS.pid_drive_set(-5_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_turn_set(6_deg, TURN_SPEED);
   pros::delay(5000);
+  EZ_CHASSIS.pid_drive_set(-5_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_wait();
 
 
 }
@@ -354,7 +376,7 @@ void SoloAwpRedPos() {
   EZ_CHASSIS.pid_wait();
 
   moveIntake(12000);
-  EZ_CHASSIS.pid_drive_set(16_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_drive_set(16_in, 127, true);
   EZ_CHASSIS.pid_wait();
 
   EZ_CHASSIS.pid_turn_set(240_deg - 180_deg, TURN_SPEED);
@@ -367,21 +389,24 @@ void SoloAwpRedPos() {
   deactivateLift();
   armPID.target_set(ARM_PRIME);
   pros::delay(500);
-  EZ_CHASSIS.pid_turn_set(7.5_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_turn_set(6_deg, TURN_SPEED);
   EZ_CHASSIS.pid_wait();
 
-  EZ_CHASSIS.pid_drive_set(9.25_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_drive_set(8_in, DRIVE_SPEED, true);
   EZ_CHASSIS.pid_wait();
   pros::delay(500);
   moveIntake(0);
 
   armPID.target_set(ALLIANCE_SCORE);
   pros::delay(1000);
+  pros::delay(500);
 
-  EZ_CHASSIS.pid_drive_set(-16_in, TURN_SPEED);
+  EZ_CHASSIS.pid_drive_set(-16_in, DRIVE_SPEED);
   EZ_CHASSIS.pid_wait();
   deactivateClamp();
-  EZ_CHASSIS.pid_drive_set(-4_in, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+  EZ_CHASSIS.pid_drive_set(-10_in, DRIVE_SPEED);
+  EZ_CHASSIS.pid_wait();
 
 }
 
@@ -623,17 +648,17 @@ void SoloAwpRedNeg()  {
   EZ_CHASSIS.pid_turn_set(-50_deg, TURN_SPEED);
   EZ_CHASSIS.pid_wait();
 
-  EZ_CHASSIS.pid_drive_set(40_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_drive_set(34_in, DRIVE_SPEED, true);
   activateLift();
   EZ_CHASSIS.pid_wait();
 
   deactivateLift();
   armPID.target_set(ARM_PRIME);
-  pros::delay(500);
-  EZ_CHASSIS.pid_turn_set(10_deg, TURN_SPEED);
+  pros::delay(1500);
+  EZ_CHASSIS.pid_turn_set(3_deg, TURN_SPEED);
   EZ_CHASSIS.pid_wait();
 
-  EZ_CHASSIS.pid_drive_set(7_in, DRIVE_SPEED, true);
+  EZ_CHASSIS.pid_drive_set(8_in, DRIVE_SPEED, true);
   EZ_CHASSIS.pid_wait();
   pros::delay(500);
   moveIntake(0);
@@ -643,8 +668,50 @@ void SoloAwpRedNeg()  {
 
   EZ_CHASSIS.pid_drive_set(-16_in, TURN_SPEED);
   EZ_CHASSIS.pid_wait();
+  armPID.target_set(ARM_PRIME);
+  EZ_CHASSIS.pid_wait();
 
   EZ_CHASSIS.pid_turn_set(180_deg, TURN_SPEED);
   EZ_CHASSIS.pid_wait();
-  EZ_CHASSIS.pid_drive_set(2_in, TURN_SPEED);
+  EZ_CHASSIS.pid_drive_set(10_in, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+}
+
+void ladyBrownTesting() {
+
+  armPID.target_set(ARM_DOWN);
+  pros::delay(500);
+
+  armPID.target_set(ALLIANCE_SCORE);
+  pros::delay(500);
+
+  armPID.target_set(ARM_PRIME);
+  pros::delay(500);
+
+  armPID.target_set(ALLIANCE_SCORE);
+  pros::delay(500);
+
+    armPID.target_set(ARM_DOWN);
+  pros::delay(500);
+
+  armPID.target_set(ALLIANCE_SCORE);
+  pros::delay(500);
+
+  armPID.target_set(ARM_PRIME);
+  pros::delay(500);
+
+  armPID.target_set(ALLIANCE_SCORE);
+  pros::delay(500);
+
+    armPID.target_set(ARM_DOWN);
+  pros::delay(500);
+
+  armPID.target_set(ALLIANCE_SCORE);
+  pros::delay(500);
+
+  armPID.target_set(ARM_PRIME);
+  pros::delay(500);
+
+  armPID.target_set(ALLIANCE_SCORE);
+  pros::delay(500);
 }

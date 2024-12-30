@@ -20,7 +20,8 @@ void moveIntake(double vltg)    {
 }
 
 void moveArm(double vltg)  {
-    MOTORGROUP_ARM.move_voltage(vltg);
+    // MOTORGROUP_ARM.move_voltage(vltg);
+    MOTOR_ARM.move_voltage(vltg);
 }
 
 void activateClamp()    {
@@ -67,13 +68,25 @@ void controlIntake()    {
     }
 }
 
+void controlArmManual() {
+    if (controlla.get_digital(BUTTON_ARM)) {
+        moveArm(120000);
+    }
+    else if (controlla.get_digital(BUTTON_ARM_REVERSE)) {
+        moveArm(-12000);
+    }
+    else {
+        moveArm(0);
+    }
+}
+
 void controlArm()   {
     if (controlla.get_digital(BUTTON_ARM)) {
-        if (ROTATION_ARM.get_position() < 23000) {
+        if (ROTATION_ARM.get_position() < 22000) {
         armPID.target_set(armPID.target_get() + 300);
         }
         else {
-        armPID.target_set(24000);
+        armPID.target_set(22000);
         }
     }
     else if (controlla.get_digital(BUTTON_ARM_REVERSE)) {
@@ -127,6 +140,19 @@ void controlArmTask() {
         moveArm(armPID.compute(ROTATION_ARM.get_position()));
         printf("Target: %.2f\n", armPID.target_get());
         printf("LB Value: %d", ROTATION_ARM.get_position());
+        pros::delay(ez::util::DELAY_TIME);
+    }
+}
+
+void detectClamp()   {
+    pros::delay(1000);
+    while(true) {
+        if (DISTANCE_AUTO_CLAMP.get_distance() <= 40) {
+            pros::delay(250);
+            PISTON_CLAMP.set_value(true);
+            toggleClamp = true;
+            pros::delay(1000);
+        }
         pros::delay(ez::util::DELAY_TIME);
     }
 }

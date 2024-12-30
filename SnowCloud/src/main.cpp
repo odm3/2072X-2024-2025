@@ -42,6 +42,7 @@ void initialize() {
       Auton("Neg Red 5 ring", redNeg5),
       Auton("Red goal elims", SoloAwpRedPos),
       Auton("Blue goal elims", elims),
+      Auton("Neg Blue 2 ring", blueNeg2),
       Auton("Neg Blue 3 ring", blueNeg3), 
       Auton("Neg Blue 4 ring", blueNeg4),
       Auton("Neg Blue 5 ring", blueNeg5),
@@ -49,6 +50,7 @@ void initialize() {
       Auton("Example Drive\n\nDrive forward and come back.", drive_example),
       Auton("Example Turn\n\nTurn 3 times.", turn_example),
       Auton("Skills", skills),
+      Auton("LB TESTING", ladyBrownTesting),
       // Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
       // Auton("Drive and Turn\n\nSlow down during drive.", wait_until_change_speed),
       // Auton("Swing Example\n\nSwing in an 'S' curve", swing_example),
@@ -62,14 +64,12 @@ void initialize() {
   LL_CHASSIS.calibrate();
   ez::as::initialize();
   MOTOR_INTAKE.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-  MOTORGROUP_ARM.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
-<<<<<<< Updated upstream
+  // MOTORGROUP_ARM.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
+  MOTOR_ARM.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   //ROTATION_ARM.reset_position();
-=======
-  // ROTATION_ARM.reset_position();
->>>>>>> Stashed changes
   armPID.target_set(ROTATION_ARM.get_position());
-  pros::Task lbTask(controlArmTask);
+  //pros::Task lbTask(controlArmTask);
+  pros::Task clampTask(detectClamp);
   // MOTORGROUP_ARM.tare_position();
 
   master.rumble("_");
@@ -169,12 +169,12 @@ void opcontrol() {
     // Put more user control code here!
     // . . .
     controlIntake();
-    controlArm();
+    controlArmManual();
     controlClamp();
     controlDoinker();
     controlLift();
-    controlArmPrime();
-    controlArmScore();
+    // controlArmPrime();
+    // controlArmScore();
     pros::lcd::print(5, "Rotation Value: %d", ROTATION_ARM.get_position());
     pros::lcd::print(6, "Rotation Value: %d", ROTATION_ARM.get_position());
     pros::lcd::print(7, "PID target get: %d",armPID.target_get());

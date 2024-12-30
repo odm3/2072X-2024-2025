@@ -13,6 +13,7 @@ void combining_movements();
 void interfered_example();
 
 void redNeg2();
+void blueNeg2();
 void redNeg3();
 void redNeg4();
 void redNeg5();
@@ -24,3 +25,5 @@ void goalRush();
 void skills();
 void elims();
 void SoloAwpRedNeg();
+
+void ladyBrownTesting();

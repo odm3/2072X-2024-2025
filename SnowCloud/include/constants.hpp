@@ -14,16 +14,17 @@
 #include "pros/rotation.hpp"
 #define PORT_LF -19
 #define PORT_LM 9
-#define PORT_LB -10
-#define PORT_RF 2
+#define PORT_LB -8
+#define PORT_RF 5
 #define PORT_RM -4
 #define PORT_RB 3
 
 #define PORT_INTAKE     -1
-#define PORT_ARM_LEFT   -6
-#define PORT_ARM_RIGHT  5
+#define PORT_ARM        6
+// #define PORT_ARM_LEFT   -6
+// #define PORT_ARM_RIGHT  16
 
-#define PORT_IMU 11
+#define PORT_IMU 20
 #define PORT_ROTATION_ODOM_HORI 12
 #define PORT_ROTATION_ODOM_VERT 13
 #define PORT_ROTATION_ARM       7
@@ -58,6 +59,7 @@ extern pros::Motor MOTOR_RM;
 extern pros::Motor MOTOR_RB;
 
 extern pros::Motor      MOTOR_INTAKE;
+extern pros::Motor      MOTOR_ARM;
 extern pros::Motor      MOTOR_ARM_LEFT;
 extern pros::Motor      MOTOR_ARM_RIGHT;
 extern pros::MotorGroup MOTORGROUP_ARM;
@@ -85,9 +87,9 @@ extern lemlib::ControllerSettings LL_ANG_CONTROLLER;
 extern ez::PID armPID;
 
 extern lemlib::Chassis            LL_CHASSIS;
-extern ez::Drive EZ_CHASSIS;
+extern ez::Drive                  EZ_CHASSIS;
 
 extern int lbDriverIndex;
-enum ladybrown_states { ARM_DOWN = 0, ARM_PRIME = 2800,  ARM_SCORE = 16500, ALLIANCE_SCORE = 20600 };
+enum ladybrown_states { ARM_DOWN = 1250, ARM_PRIME = 2700,  ARM_SCORE = 16500, ALLIANCE_SCORE = 21000 };
 
 void default_constants();
