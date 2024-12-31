@@ -1,3 +1,4 @@
+#include <cstddef>
 #include "EZ-Template/util.hpp"
 #include "constants.hpp"
 #include "main.h"
@@ -83,7 +84,7 @@ void controlArmManual() {
 void controlArm()   {
     if (controlla.get_digital(BUTTON_ARM)) {
         if (ROTATION_ARM.get_position() < 22000) {
-        armPID.target_set(armPID.target_get() + 300);
+        armPID.target_set(armPID.target_get() + 200);
         }
         else {
         armPID.target_set(22000);
@@ -91,7 +92,7 @@ void controlArm()   {
     }
     else if (controlla.get_digital(BUTTON_ARM_REVERSE)) {
         if (ROTATION_ARM.get_position() > 1000) {
-        armPID.target_set(armPID.target_get() - 300);
+        armPID.target_set(armPID.target_get() - 200);
         }
         else {
         armPID.target_set(1000);
@@ -116,12 +117,6 @@ void controlArmScore()  {
     }
 }
 
-void controlClamp() {
-    if (controlla.get_digital_new_press(BUTTON_CLAMP)) {
-        toggleClamp = !toggleClamp;
-    }   PISTON_CLAMP.set_value(toggleClamp);
-}
-
 void controlDoinker() {
     if (controlla.get_digital_new_press(BUTTON_DOINKER)) {
         toggleDoinker = !toggleDoinker;
@@ -144,15 +139,38 @@ void controlArmTask() {
     }
 }
 
+void controlClamp() {
+    if (controlla.get_digital_new_press(BUTTON_CLAMP)) {
+        toggleClamp = !toggleClamp;
+    }
+}
+
+void autoClamp_task()   {
+    pros::delay(1000);
+    while (true) {
+        PISTON_CLAMP.set_value(toggleClamp);
+        pros::delay(ez::util::DELAY_TIME);
+    }
+}
+
 void detectClamp()   {
     pros::delay(1000);
     while(true) {
-        if (DISTANCE_AUTO_CLAMP.get_distance() <= 40) {
+        if (DISTANCE_AUTO_CLAMP.get_distance() <= 37) {
             pros::delay(250);
-            PISTON_CLAMP.set_value(true);
             toggleClamp = true;
-            pros::delay(1000);
+            pros::delay(2500);
         }
         pros::delay(ez::util::DELAY_TIME);
     }
 }
+
+int toggleClampInt()    {
+    if (toggleClamp == true) {
+        return 1;
+    }
+    if (toggleClamp == false) {
+        return 0;
+    }
+}
+

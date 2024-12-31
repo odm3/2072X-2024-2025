@@ -15,7 +15,7 @@
 #define PORT_LF -19
 #define PORT_LM 9
 #define PORT_LB -8
-#define PORT_RF 5
+#define PORT_RF 2
 #define PORT_RM -4
 #define PORT_RB 3
 
@@ -30,7 +30,7 @@
 #define PORT_ROTATION_ARM       7
 #define PORT_ROTATION_INTAKE    14
 #define PORT_OPTICAL_COLOR      15
-#define PORT_AUTO_CLAMP  16 
+#define PORT_AUTO_CLAMP  14 
 #define PORT__CLAMP      'A'
 #define PORT_DOINKER     'B'
 #define PORT_LIFT        'C'
@@ -48,6 +48,7 @@
 #define BUTTON_DOINKER          pros::E_CONTROLLER_DIGITAL_A
 #define BUTTON_CLAMP            pros::E_CONTROLLER_DIGITAL_B
 #define BUTTON_LIFT             pros::E_CONTROLLER_DIGITAL_Y
+#define BUTTON_COLOR_SORT       pros::E_CONTROLLER_DIGITAL_LEFT
 
 extern pros::Controller controlla;
 
@@ -90,6 +91,10 @@ extern lemlib::Chassis            LL_CHASSIS;
 extern ez::Drive                  EZ_CHASSIS;
 
 extern int lbDriverIndex;
-enum ladybrown_states { ARM_DOWN = 1250, ARM_PRIME = 2700,  ARM_SCORE = 16500, ALLIANCE_SCORE = 21000 };
+enum ladybrown_states { ARM_DOWN = 200, ARM_PRIME = 2500,  ARM_SCORE = 15000, ALLIANCE_SCORE = 18000 };
+enum ringColors       { RED = 15, BLUE = 100};
 
 void default_constants();
+
+// bool doColorSort;
+// bool isRedAllinace;

@@ -10,7 +10,7 @@
 /////
 
 // These are out of 127
-const int DRIVE_SPEED = 126;
+const int DRIVE_SPEED = 110;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 90;
 
@@ -31,13 +31,13 @@ void drive_example() {
   EZ_CHASSIS.pid_wait();
   pros::delay(500);
 
-  EZ_CHASSIS.pid_drive_set(-12_in, DRIVE_SPEED);
-  EZ_CHASSIS.pid_wait();
-  pros::delay(500);
+  // EZ_CHASSIS.pid_drive_set(-12_in, DRIVE_SPEED);
+  // EZ_CHASSIS.pid_wait();
+  // pros::delay(500);
 
-  EZ_CHASSIS.pid_drive_set(-12_in, DRIVE_SPEED);
-  EZ_CHASSIS.pid_wait();
-  pros::delay(500);
+  // EZ_CHASSIS.pid_drive_set(-12_in, DRIVE_SPEED);
+  // EZ_CHASSIS.pid_wait();
+  // pros::delay(500);
 }
 
 ///
@@ -47,13 +47,13 @@ void turn_example() {
   // The first parameter is the target in degrees
   // The second parameter is max speed the robot will drive at
 
-  EZ_CHASSIS.pid_turn_set(90_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_turn_set(90_deg, TURN_SPEED, true);
   EZ_CHASSIS.pid_wait();
 
-  EZ_CHASSIS.pid_turn_set(45_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_turn_set(45_deg, TURN_SPEED, true);
   EZ_CHASSIS.pid_wait();
 
-  EZ_CHASSIS.pid_turn_set(0_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_turn_set(0_deg, TURN_SPEED, true);
   EZ_CHASSIS.pid_wait();
 }
 
@@ -212,6 +212,88 @@ void interfered_example() {
 // . . .
 // Make your own autonomous functions here!
 // . . .
+
+void redNeg5rings() {
+  EZ_CHASSIS.pid_drive_set(-24_in, DRIVE_SPEED);
+  EZ_CHASSIS.pid_wait();
+  activateClamp();
+  pros::delay(500);
+  EZ_CHASSIS.pid_turn_set(100_deg, TURN_SPEED, true);
+  EZ_CHASSIS.pid_wait();
+  EZ_CHASSIS.pid_drive_set(22_in, DRIVE_SPEED);
+  moveIntake(12000);
+  EZ_CHASSIS.pid_wait();
+  EZ_CHASSIS.pid_swing_set(ez::RIGHT_SWING, 165_deg, SWING_SPEED);
+  EZ_CHASSIS.pid_wait();
+  EZ_CHASSIS.pid_drive_set(13_in, DRIVE_SPEED);
+  EZ_CHASSIS.pid_wait();
+  EZ_CHASSIS.pid_turn_set(125_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+  EZ_CHASSIS.pid_drive_set(4_in, DRIVE_SPEED);
+  EZ_CHASSIS.pid_wait();
+  EZ_CHASSIS.pid_swing_set(ez::LEFT_SWING, 30_deg, SWING_SPEED);
+  EZ_CHASSIS.pid_wait();
+  EZ_CHASSIS.pid_drive_set(64_in, 126);
+  activateLift();
+  EZ_CHASSIS.pid_wait();
+  deactivateLift();
+  // EZ_CHASSIS.drive_set(127, 127);
+  // pros::delay(2000);
+  EZ_CHASSIS.pid_drive_set(-12_in, 30);
+  EZ_CHASSIS.pid_wait();
+  EZ_CHASSIS.pid_turn_set(40_deg, TURN_SPEED);
+  EZ_CHASSIS.pid_wait();
+  armPID.target_set(4000);
+  EZ_CHASSIS.pid_drive_set(-60_in, DRIVE_SPEED);
+  EZ_CHASSIS.pid_wait();
+  armPID.target_set(ARM_DOWN);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void redNeg2() {
   EZ_CHASSIS.pid_drive_set(-30_in, DRIVE_SPEED, true);

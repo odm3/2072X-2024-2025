@@ -42,6 +42,7 @@ pros::adi::DigitalOut PISTON_DOINKER(PORT_DOINKER, LOW);
 pros::adi::DigitalOut PISTON_LIFT(PORT_LIFT, LOW);
 pros::adi::DigitalOut PISTON_HANG(PORT_HANG, LOW);
 pros::Distance DISTANCE_AUTO_CLAMP(PORT_AUTO_CLAMP);
+pros::Optical OPTICAL_COLOR(PORT_OPTICAL_COLOR);
 
 lemlib::TrackingWheel ODOM_HORI(&ROTATION_ODOM_HORI, lemlib::Omniwheel::NEW_2, OFFSET_HORI);
 lemlib::TrackingWheel ODOM_VERT(&ROTATION_ODOM_VERT, lemlib::Omniwheel::NEW_2, OFFSET_VERT);
@@ -92,12 +93,11 @@ lemlib::Chassis LL_CHASSIS(LL_DRIVETRAIN, // drivetrain settings
                         ODOM_SENSORS // odometry sensors
 );
 
- ez::PID armPID(3.25, 0.0, 0,0, "Lady Brown");
+ ez::PID armPID(2, 0.0, 0,0, "Lady Brown");
 
 void default_constants() {
   EZ_CHASSIS.pid_heading_constants_set(11, 0, 20);
-  //EZ_CHASSIS.pid_drive_constants_set(2.7, 0, 100);
-  EZ_CHASSIS.pid_drive_constants_set(2.7, 0, 100);
+  EZ_CHASSIS.pid_drive_constants_set(17.5, 0, 100);
   EZ_CHASSIS.pid_turn_constants_set(3, 0.05, 20, 15);
   EZ_CHASSIS.pid_swing_constants_set(6, 0, 65);
 
@@ -118,4 +118,5 @@ ez::Drive EZ_CHASSIS(
     {PORT_RF, PORT_RM, PORT_RB},  // Right Chassis Ports
     PORT_IMU,      // IMU Port
     lemlib::Omniwheel::NEW_275,  // Wheel Diameter 
-    450);   // Wheel RPM
+    600,
+    0.75);   // Wheel RPM

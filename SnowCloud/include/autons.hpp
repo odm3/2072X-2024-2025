@@ -27,3 +27,5 @@ void elims();
 void SoloAwpRedNeg();
 
 void ladyBrownTesting();
+
+void redNeg5rings();
