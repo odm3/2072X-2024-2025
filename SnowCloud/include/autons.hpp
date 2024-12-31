@@ -29,3 +29,5 @@ void SoloAwpRedNeg();
 void ladyBrownTesting();
 
 void redNeg5rings();
+void blueNeg5rings();
+void soloAWPLeft4rings();

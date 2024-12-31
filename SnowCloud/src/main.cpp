@@ -61,7 +61,9 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-    Auton("Red neg 4 rings", redNeg5rings),
+    Auton("Red neg 5 rings", redNeg5rings),
+    Auton("Blue neg 5 rings", blueNeg5rings),
+    Auton("Solo AWP Left 4 rings", soloAWPLeft4rings),
       // Auton("SoloAwpRedNeg", SoloAwpRedNeg),
       // Auton("Neg Red 2 ring", redNeg2),
       // Auton("Neg Red 3 ring", redNeg3),  
