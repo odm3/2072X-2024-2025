@@ -157,7 +157,7 @@ void detectClamp()   {
     pros::delay(1000);
     while(true) {
         if (DISTANCE_AUTO_CLAMP.get_distance() <= 37) {
-            pros::delay(250);
+            pros::delay(100);
             toggleClamp = true;
             pros::delay(2500);
         }
