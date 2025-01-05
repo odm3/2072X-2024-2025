@@ -4,20 +4,21 @@
       "name": "PROS Project",
       "includePath": [
         "${workspaceFolder}/**",
-        "c:\\Users\\Devin Wanchoo\\OneDrive\\Desktop\\HS Routes\\2072X-2024-2025\\SnowCloud\\include"
+        "c:\\Users\\Devin Wanchoo\\OneDrive\\Desktop\\HS Routes\\2072X-2024-2025\\SnowCloud\\include",
+        "c:\\2072X-2024-2025\\2072X-2024-2025\\SnowCloud\\include"
       ],
       "defines": [
         "_DEBUG",
         "UNICODE",
         "_UNICODE"
       ],
-      "compilerPath": "c:\\Users\\Devin Wanchoo\\AppData\\Roaming\\Code\\User\\globalStorage\\sigbots.pros\\install\\pros-toolchain-windows\\usr\\bin\\arm-none-eabi-g++",
+      "compilerPath": "c:\\Users\\anshr\\AppData\\Roaming\\Code\\User\\globalStorage\\sigbots.pros\\install\\pros-toolchain-windows\\usr\\bin\\arm-none-eabi-g++",
       "cStandard": "gnu11",
       "cppStandard": "gnu++20",
       "intelliSenseMode": "gcc-arm",
       "browse": {
         "path": [
-          "c:\\Users\\Devin Wanchoo\\OneDrive\\Desktop\\HS Routes\\2072X-2024-2025\\SnowCloud"
+          "c:\\2072X-2024-2025\\2072X-2024-2025\\SnowCloud"
         ],
         "limitSymbolsToIncludedHeaders": true,
         "databaseFilename": ""
