@@ -13,13 +13,21 @@ void combining_movements();
 void interfered_example();
 
 void redNeg2();
+void blueNeg2();
 void redNeg3();
 void redNeg4();
 void redNeg5();
-void blueNeg2();
+void SoloAwpRedPos();
 void blueNeg3();
 void blueNeg4();
 void blueNeg5();
 void goalRush();
 void skills();
 void elims();
+void SoloAwpRedNeg();
+
+void ladyBrownTesting();
+
+void redNeg5rings();
+void blueNeg5rings();
+void soloAWPLeft4rings();

@@ -1,3 +1,4 @@
+#include <cstddef>
 #include "EZ-Template/util.hpp"
 #include "constants.hpp"
 #include "main.h"
@@ -20,7 +21,8 @@ void moveIntake(double vltg)    {
 }
 
 void moveArm(double vltg)  {
-    MOTORGROUP_ARM.move_voltage(vltg);
+    // MOTORGROUP_ARM.move_voltage(vltg);
+    MOTOR_ARM.move_voltage(vltg);
 }
 
 void activateClamp()    {
@@ -67,18 +69,30 @@ void controlIntake()    {
     }
 }
 
+void controlArmManual() {
+    if (controlla.get_digital(BUTTON_ARM)) {
+        moveArm(120000);
+    }
+    else if (controlla.get_digital(BUTTON_ARM_REVERSE)) {
+        moveArm(-12000);
+    }
+    else {
+        moveArm(0);
+    }
+}
+
 void controlArm()   {
     if (controlla.get_digital(BUTTON_ARM)) {
-        if (ROTATION_ARM.get_position() < 23000) {
-        armPID.target_set(armPID.target_get() + 300);
+        if (ROTATION_ARM.get_position() < 22000) {
+        armPID.target_set(armPID.target_get() + 200);
         }
         else {
-        armPID.target_set(24000);
+        armPID.target_set(22000);
         }
     }
     else if (controlla.get_digital(BUTTON_ARM_REVERSE)) {
         if (ROTATION_ARM.get_position() > 1000) {
-        armPID.target_set(armPID.target_get() - 300);
+        armPID.target_set(armPID.target_get() - 200);
         }
         else {
         armPID.target_set(1000);
@@ -103,12 +117,6 @@ void controlArmScore()  {
     }
 }
 
-void controlClamp() {
-    if (controlla.get_digital_new_press(BUTTON_CLAMP)) {
-        toggleClamp = !toggleClamp;
-    }   PISTON_CLAMP.set_value(toggleClamp);
-}
-
 void controlDoinker() {
     if (controlla.get_digital_new_press(BUTTON_DOINKER)) {
         toggleDoinker = !toggleDoinker;
@@ -125,7 +133,44 @@ void controlArmTask() {
     pros::delay(1000);
     while(true) {
         moveArm(armPID.compute(ROTATION_ARM.get_position()));
+        printf("Target: %.2f\n", armPID.target_get());
         printf("LB Value: %d", ROTATION_ARM.get_position());
         pros::delay(ez::util::DELAY_TIME);
     }
 }
+
+void controlClamp() {
+    if (controlla.get_digital_new_press(BUTTON_CLAMP)) {
+        toggleClamp = !toggleClamp;
+    }
+}
+
+void autoClamp_task()   {
+    pros::delay(1000);
+    while (true) {
+        PISTON_CLAMP.set_value(toggleClamp);
+        pros::delay(ez::util::DELAY_TIME);
+    }
+}
+
+void detectClamp()   {
+    pros::delay(1000);
+    while(true) {
+        if (DISTANCE_AUTO_CLAMP.get_distance() <= 37) {
+            pros::delay(100);
+            toggleClamp = true;
+            pros::delay(2500);
+        }
+        pros::delay(ez::util::DELAY_TIME);
+    }
+}
+
+int toggleClampInt()    {
+    if (toggleClamp == true) {
+        return 1;
+    }
+    if (toggleClamp == false) {
+        return 0;
+    }
+}
+

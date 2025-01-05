@@ -288,16 +288,15 @@ void soloAWPreg()  {
     EzTempChassis.pid_wait();
     EzTempChassis.pid_drive_set(-15_in, DRIVE_SPEED);
     EzTempChassis.pid_wait();
-
-    
-
     activateClamp();
 
 
     EzTempChassis.pid_wait();
-    EzTempChassis.pid_turn_set(53_deg, TURN_SPEED, true);
+    EzTempChassis.pid_drive_set(2_in, DRIVE_SPEED);
     EzTempChassis.pid_wait();
-    EzTempChassis.pid_drive_set(34_in, DRIVE_SPEED, true);
+    EzTempChassis.pid_turn_set(55_deg, TURN_SPEED, true);
+    EzTempChassis.pid_wait();
+    EzTempChassis.pid_drive_set(32_in, DRIVE_SPEED, true); // changed value to 32 -- ansh
     activateIntakeLift();
     EzTempChassis.pid_wait();
     pros::delay(250);

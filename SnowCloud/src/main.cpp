@@ -9,6 +9,31 @@
 #include "pros/misc.h"
 #include "pros/motors.h"
 
+bool doColorSort = true;
+bool isRedAllinace;
+
+void colorSortTask()    {
+    pros::delay(1000);
+    while (true) {
+        if (doColorSort) {
+            if ((isRedAllinace && OPTICAL_COLOR.get_hue() >= 90 && OPTICAL_COLOR.get_hue() <= 115)  ||
+                (!isRedAllinace && OPTICAL_COLOR.get_hue() >= 10 && OPTICAL_COLOR.get_hue() <= 30)) {
+                    // activateDoinker();
+                    pros::delay(300);
+                    moveIntake(-12000);
+                    pros::delay(100);
+                    moveIntake(12000);
+            }
+
+        }
+    }
+}
+
+void controlColorSort() {
+    if (controlla.get_digital_new_press(BUTTON_COLOR_SORT)) {
+        doColorSort = !doColorSort;
+    }
+}
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -36,19 +61,25 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-      Auton("Neg Red 2 ring", redNeg2),
-      Auton("Neg Red 3 ring", redNeg3), 
-      Auton("Neg Red 4 ring", redNeg4),
-      Auton("Neg Red 5 ring", redNeg5),
-      Auton("Red goal elims", blueNeg2),
-      Auton("Blue goal elims", elims),
-      Auton("Neg Blue 3 ring", blueNeg3), 
-      Auton("Neg Blue 4 ring", blueNeg4),
-      Auton("Neg Blue 5 ring", blueNeg5),
-      Auton("Goal Rush", goalRush),
+    Auton("Red neg 5 rings", redNeg5rings),
+    Auton("Blue neg 5 rings", blueNeg5rings),
+    Auton("Solo AWP Left 4 rings", soloAWPLeft4rings),
+      // Auton("SoloAwpRedNeg", SoloAwpRedNeg),
+      // Auton("Neg Red 2 ring", redNeg2),
+      // Auton("Neg Red 3 ring", redNeg3),  
+      // Auton("Neg Red 4 ring", redNeg4),
+      // Auton("Neg Red 5 ring", redNeg5),
+      // Auton("Red goal elims", SoloAwpRedPos),
+      // Auton("Blue goal elims", elims),
+      // Auton("Neg Blue 2 ring", blueNeg2),
+      // Auton("Neg Blue 3 ring", blueNeg3), 
+      // Auton("Neg Blue 4 ring", blueNeg4),
+      // Auton("Neg Blue 5 ring", blueNeg5),
+      // Auton("Goal Rush", goalRush),
       Auton("Example Drive\n\nDrive forward and come back.", drive_example),
       Auton("Example Turn\n\nTurn 3 times.", turn_example),
-      Auton("Skills", skills),
+      // Auton("Skills", skills),
+      Auton("LB TESTING", ladyBrownTesting),
       // Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
       // Auton("Drive and Turn\n\nSlow down during drive.", wait_until_change_speed),
       // Auton("Swing Example\n\nSwing in an 'S' curve", swing_example),
@@ -62,11 +93,14 @@ void initialize() {
   LL_CHASSIS.calibrate();
   ez::as::initialize();
   MOTOR_INTAKE.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-  MOTORGROUP_ARM.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
-  ROTATION_ARM.reset_position();
+  MOTOR_ARM.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  //ROTATION_ARM.reset_position();
+  armPID.target_set(ROTATION_ARM.get_position());
   pros::Task lbTask(controlArmTask);
+  pros::Task clampTask(autoClamp_task);
+  pros::Task detectTask(detectClamp);
+  pros::Task colorSort(colorSortTask);
   // MOTORGROUP_ARM.tare_position();
-
   master.rumble("_");
 }
 
@@ -165,6 +199,7 @@ void opcontrol() {
     // . . .
     controlIntake();
     controlArm();
+    // controlArmManual();
     controlClamp();
     controlDoinker();
     controlLift();
@@ -173,6 +208,7 @@ void opcontrol() {
     pros::lcd::print(6, "Rotation Value: %d", ROTATION_ARM.get_position());
     pros::lcd::print(7, "PID target get: %d",armPID.target_get());
     pros::lcd::print(8, "Lady Brown State: %d Value: %d", lbArray[lbDriverIndex], lbDriverIndex);
+    // pros::lcd::print(4, "Clamp State: %d", toggleClampInt);
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
