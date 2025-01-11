@@ -1,6 +1,9 @@
 #pragma once
 
-void default_constants();
+inline bool isRed = true;
+enum allaince{red = 1, blue = -1, red1 = 10, red2 = 45, blue1 = 70, blue2 = 115};
+inline int allainceIndex = 1;
+inline int allianceArray [2] = {red, blue};
 
 void drive_example();
 void turn_example();
