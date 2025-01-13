@@ -20,3 +20,7 @@ void control_doinker();
 void controlArmTask();
 void autoClampTask();
 void colorSortTask();
+
+void controlArmScore();
+void controlArmPrime();
+void controlArm();

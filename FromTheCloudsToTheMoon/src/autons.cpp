@@ -1,4 +1,70 @@
+#include "autons.hpp"
+#include <string>
+#include "EZ-Template/drive/drive.hpp"
+#include "EZ-Template/util.hpp"
+#include "constants.hpp"
+#include "controls.hpp"
 #include "main.h"
+#include "pros/motors.h"
+
+void neg2(bool isRed) {
+   isRed ? sign = 1 : sign = -1;
+   chassis.pid_drive_set(-28_in, DRIVE_SPEED);
+   chassis.pid_wait();
+   chassis.pid_turn_set(sign * 90_deg, TURN_SPEED);
+   chassis.pid_wait();
+   moveIntake(12000);
+   chassis.pid_drive_set(20_in, DRIVE_SPEED);
+   chassis.pid_wait();
+}
+
+void neg2Red() { neg2(true); passRed = true; }
+void neg2Blue() { neg2(false); passRed = false; }
+
+void pos2(bool isRed) {
+   isRed ? sign =  1: sign = -1;
+   chassis.pid_drive_set(-28_in, DRIVE_SPEED);
+   chassis.pid_wait();
+   chassis.pid_turn_set(sign * -90_deg, TURN_SPEED);
+   chassis.pid_wait();
+   chassis.pid_drive_set(20_in, DRIVE_SPEED);
+   chassis.pid_wait();
+}
+
+void pos2Red() { pos2(true); passRed = true; }
+void pos2Blue() {pos2(false); passRed = false; }
+
+void neg5(bool isRed) {
+  isRed ? sign = red : sign = blue;
+  chassis.pid_drive_set(-28_in, DRIVE_SPEED);
+  chassis.pid_wait_until(-20_in);
+  activate_clamp();
+  chassis.pid_wait();
+  chassis.pid_turn_set(sign * 90_deg, TURN_SPEED);
+  chassis.pid_wait();
+  moveIntake(12000);
+  chassis.pid_drive_set(20_in, DRIVE_SPEED);
+  chassis.pid_wait();
+
+  if (isRed) {
+    chassis.pid_swing_set(ez::RIGHT_SWING, sign * 160_deg, SWING_SPEED);
+    chassis.pid_wait();
+  } else {
+    chassis.pid_swing_set(ez::LEFT_SWING, sign * 160_deg, SWING_SPEED);
+  }
+
+  chassis.pid_drive_set(18_in, DRIVE_SPEED);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(sign * 90_deg, TURN_SPEED);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(8_in, TURN_SPEED);
+  chassis.pid_wait();
+}
+
+void neg5Red() { neg5(true); }
+void neg5Blue() { neg5(false); }
 
 ///
 // Drive Example
@@ -286,7 +352,7 @@ void measure_offsets() {
     chassis.pid_targets_reset();
     chassis.drive_imu_reset();
     chassis.drive_sensor_reset();
-    chassis.drive_brake_set(MOTOR_BRAKE_HOLD);
+    chassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
     chassis.odom_xyt_set(0_in, 0_in, 0_deg);
     double imu_start = chassis.odom_theta_get();
     double target = i % 2 == 0 ? 90 : 270;  // Switch the turn target every run from 270 to 90

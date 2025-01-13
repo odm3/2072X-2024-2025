@@ -1,8 +1,10 @@
 #include "main.h"
-#include <type_traits>
+#include "EZ-Template/util.hpp"
 #include "autons.hpp"
-#include "pros/abstract_motor.hpp"
+#include "constants.hpp"
+#include "controls.hpp"
 #include "pros/motors.h"
+#include "pros/rtos.h"
 #include "pros/rtos.hpp"
 
 /**
@@ -40,6 +42,12 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+      {"Neg 5 Red", neg5Red},
+      {"Neg 5 Blue", neg5Blue},
+      {"Pos 2 Red", pos2Red},
+      {"Pos 2 Blue", pos2Blue},
+      {"Neg 2 Red", neg2Red},
+      {"Neg 2 Blue", neg2Blue},
       {"Drive\n\nDrive forward and come back", drive_example},
       {"Turn\n\nTurn 3 times.", turn_example},
       {"Drive and Turn\n\nDrive forward, turn, come back", drive_and_turn},
@@ -59,12 +67,12 @@ void initialize() {
   // Initialize chassis and auton selector
   chassis.initialize();
   ez::as::initialize();
-
   pros::Task armTask(controlArmTask);
   pros::Task clampTask(autoClampTask);
   pros::Task sortTask(colorSortTask);
   motor_intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   motor_arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  optical_sort.set_led_pwm(100);
 
   controlla.rumble(chassis.drive_imu_calibrated() ? "." : "---");
 }
@@ -236,13 +244,16 @@ void opcontrol() {
     // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
 
-    chassis.opcontrol_tank();  // Tank control
+    chassis.opcontrol_arcade_standard(ez::SPLIT);  // Tank control
 
+    // control_arm();
     control_intake();
-    control_arm();
     control_clamp();
     control_lift();
     control_doinker();
+    controlArmScore();
+    controlArmPrime();
+    controlArm();
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }

@@ -96,14 +96,14 @@ lemlib::Chassis LL_CHASSIS(LL_DRIVETRAIN, // drivetrain settings
  ez::PID armPID(2, 0.0, 0,0, "Lady Brown");
 
 void default_constants() {
-  EZ_CHASSIS.pid_heading_constants_set(11, 0, 20);
-  EZ_CHASSIS.pid_drive_constants_set(17.5, 0, 100);
-  EZ_CHASSIS.pid_turn_constants_set(3, 0.05, 20, 15);
-  EZ_CHASSIS.pid_swing_constants_set(6, 0, 65);
+  EZ_CHASSIS.pid_heading_constants_set(3, 0, 20);
+  EZ_CHASSIS.pid_drive_constants_set(10, 0, 100);
+  EZ_CHASSIS.pid_turn_constants_set(3, 0.0, 20, 15);
+  EZ_CHASSIS.pid_swing_constants_set(5, 0, 30);
 
-  EZ_CHASSIS.pid_turn_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  EZ_CHASSIS.pid_swing_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  EZ_CHASSIS.pid_drive_exit_condition_set(80_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
+  EZ_CHASSIS.pid_turn_exit_condition_set(100_ms, 3_deg, 150_ms, 7_deg, 150_ms, 500_ms);
+  EZ_CHASSIS.pid_swing_exit_condition_set(100_ms, 3_deg, 150_ms, 7_deg, 150_ms, 500_ms);
+  EZ_CHASSIS.pid_drive_exit_condition_set(100_ms, 1_in, 150_ms, 3_in, 150_ms, 500_ms);
 
   EZ_CHASSIS.pid_turn_chain_constant_set(3_deg);
   EZ_CHASSIS.pid_swing_chain_constant_set(5_deg);

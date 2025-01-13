@@ -1,5 +1,7 @@
+#include "controls.hpp"
 #include "EZ-Template/util.hpp"
 #include "autons.hpp"
+#include "constants.hpp"
 #include "main.h"
 #include "pros/device.hpp"
 #include "pros/rtos.hpp"
@@ -28,10 +30,12 @@ void control_arm()  {
     if (controlla.get_digital(BUTTON_ARM)) {
 
         armPid.target_set(armPid.target_get() + 200);
+        //motor_arm.move_voltage(12000);
 
     }   else if (controlla.get_digital(BUTTON_ARM_REVERSE)) {
 
         armPid.target_set(armPid.target_get() - 200);
+        //motor_arm.move_voltage(-12000);
 
     }   else if (controlla.get_digital_new_press(BUTTON_ARM_PRIME)) {
 
@@ -49,6 +53,42 @@ void control_arm()  {
     }
 }
 
+void controlArm()   {
+    if (controlla.get_digital(BUTTON_ARM)) {
+        if (rotation_arm.get_position() < 22000) {
+        armPid.target_set(armPid.target_get() + 500);
+        }
+        else {
+        armPid.target_set(22000);
+        }
+    }
+    else if (controlla.get_digital(BUTTON_ARM_REVERSE)) {
+        if (rotation_arm.get_position() > 1000) {
+        armPid.target_set(armPid.target_get() - 500);
+        }
+        else {
+        armPid.target_set(1000);
+        }
+    }
+    else {
+        armPid.target_set(armPid.target_get());
+
+    }
+}
+
+void controlArmPrime() {
+    if  (controlla.get_digital_new_press(BUTTON_ARM_PRIME))   {
+        armStateIndex = (armStateIndex + 1) % (sizeof(armStateArray) / sizeof(armStateArray[0]));
+        armPid.target_set(armStateArray[armStateIndex]);
+    }
+}
+
+void controlArmScore()  {
+    if  (controlla.get_digital_new_press(BUTTON_ARM_SCORE))   {
+        armPid.target_set(ARM_SCORE);
+    }
+}
+
 void control_clamp()   {piston_clamp.button_toggle(BUTTON_CLAMP);}
 void control_lift()    {piston_lift.button_toggle(BUTTON_LIFT);}
 void control_doinker() {piston_doinker.button_toggle(BUTTON_DOINKER);}
@@ -56,7 +96,7 @@ void control_doinker() {piston_doinker.button_toggle(BUTTON_DOINKER);}
 void controlArmTask()   {
     pros::delay(2500);
     while (true) {
-        motor_arm.move_voltage(armPid.compute(rotation_arm.get_position() / 100));
+        motor_arm.move_voltage(armPid.compute(rotation_arm.get_position()));
         pros::delay(ez::util::DELAY_TIME);
     }
 }
@@ -75,22 +115,23 @@ void autoClampTask()  {
 }
 
 void colorSortTask()    {
-    pros::delay(2500);
+    pros::delay(1000);
+
     while (true) {
 
-        if (isRed) {
+        if (passRed) {
             if ((int)optical_sort.get_hue() >= red1 && (int)optical_sort.get_hue() <= red2) {
-                pros::delay(0);
+                pros::delay(300);
                 moveIntake(-12000);
-                pros::delay(0);
+                pros::delay(100);
                 moveIntake(12000);
             }
         }   
-        else if (!isRed) {
+        else if (!passRed) {
             if ((int)optical_sort.get_hue() >= blue1 && (int)optical_sort.get_hue() <= blue2) {
-                pros::delay(0);
+                pros::delay(300);
                 moveIntake(-12000);
-                pros::delay(0);
+                pros::delay(100);
                 moveIntake(12000);
             }
         }
@@ -98,3 +139,7 @@ void colorSortTask()    {
         pros::delay(ez::util::DELAY_TIME);
     }
 }
+
+//   pros::Task armTask(controlArmTask);
+//   pros::Task clampTask(autoClampTask);
+//   pros::Task sortTask(colorSortTask);

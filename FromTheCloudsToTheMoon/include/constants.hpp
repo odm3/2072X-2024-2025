@@ -15,26 +15,26 @@
 #include "pros/rotation.hpp"
 
 // motor ports
-#define PORT_LF 1
-#define PORT_LM 2
-#define PORT_LB 3
-#define PORT_RF 4
-#define PORT_RM 5
-#define PORT_RB 6
+#define PORT_LF -18
+#define PORT_LM 7
+#define PORT_LB -6
+#define PORT_RF 2
+#define PORT_RM -4
+#define PORT_RB 3
 
-#define PORT_INTAKE 7
-#define PORT_ARM    8
+#define PORT_INTAKE    -1
+#define PORT_ARM        5
 
 // piston ports
 #define PORT_CLAMP   'A'
-#define PORT_LIFT    'B'
-#define PORT_DOINKER 'C'
+#define PORT_LIFT    'C'
+#define PORT_DOINKER 'B'
 
 // sensor ports
-#define PORT_IMU            9
-#define PORT_ROTATION_ARM   10
-#define PORT_DISTANCE_CLAMP 11
-#define PORT_OPTICAL_SORT   12
+#define PORT_IMU            19
+#define PORT_ROTATION_ARM   8
+#define PORT_DISTANCE_CLAMP 14
+#define PORT_OPTICAL_SORT   20
 #define PORT_ODOM_VERT      0
 #define PORT_ODOM_HORI      0
 
@@ -60,7 +60,8 @@
 #define BUTTON_CLAMP          pros::E_CONTROLLER_DIGITAL_B
 #define BUTTON_LIFT           pros::E_CONTROLLER_DIGITAL_Y
 #define BUTTON_DOINKER        pros::E_CONTROLLER_DIGITAL_A
-#define BUTTON_COLOR_SORT
+#define BUTTON_COLOR_SORT_ON  pros::E_CONTROLLER_DIGITAL_UP
+#define BUTTON_COLOR_SORT_OFF pros::E_CONTROLLER_DIGITAL_LEFT
 
 // Controller constructor
 inline pros::Controller controlla(pros::E_CONTROLLER_MASTER);
@@ -105,26 +106,26 @@ inline ez::Drive chassis(
 inline void default_constants() {
   // P, I, D, and Start I
   chassis.pid_drive_constants_set(20.0, 0.0, 100.0);         // Fwd/rev constants, used for odom and non odom motions
-  chassis.pid_heading_constants_set(11.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
-  chassis.pid_turn_constants_set(3.0, 0.05, 20.0, 15.0);     // Turn in place constants
+  chassis.pid_heading_constants_set(3.0, 0.0, 50.0);        // Holds the robot straight while going forward without odom
+  chassis.pid_turn_constants_set(3.0, 0.0, 20.0, 15.0);     // Turn in place constants
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
   chassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
   chassis.pid_odom_boomerang_constants_set(5.8, 0.0, 32.5);  // Angular control for boomerang motions
 
   // Exit conditions
-  chassis.pid_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  chassis.pid_swing_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
-  chassis.pid_odom_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 750_ms);
-  chassis.pid_odom_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 500_ms, 750_ms);
+  chassis.pid_turn_exit_condition_set(90_ms, 3_deg, 150_ms, 7_deg, 150_ms, 500_ms);
+  chassis.pid_swing_exit_condition_set(90_ms, 3_deg, 150_ms, 7_deg, 150_ms, 500_ms);
+  chassis.pid_drive_exit_condition_set(90_ms, 1_in, 150_ms, 3_in, 150_ms, 500_ms);
+  chassis.pid_odom_turn_exit_condition_set(90_ms, 3_deg, 150_ms, 7_deg, 150_ms, 750_ms);
+  chassis.pid_odom_drive_exit_condition_set(90_ms, 1_in, 150_ms, 3_in, 150_ms, 750_ms);
   chassis.pid_turn_chain_constant_set(3_deg);
   chassis.pid_swing_chain_constant_set(5_deg);
   chassis.pid_drive_chain_constant_set(3_in);
 
   // Slew constants
   chassis.slew_turn_constants_set(3_deg, 70);
-  chassis.slew_drive_constants_set(3_in, 70);
-  chassis.slew_swing_constants_set(3_in, 80);
+  chassis.slew_drive_constants_set(6_in, 50);
+  chassis.slew_swing_constants_set(6_in, 40);
 
   // The amount that turns are prioritized over driving in odom motions
   // - if you have tracking wheels, you can run this higher.  1.0 is the max
@@ -138,6 +139,6 @@ inline void default_constants() {
 }
 
 inline ez::PID armPid(2, 0, 0, 0, "Lady Brown PID");
-enum   armStates{ ARM_DOWN = 3, ARM_PRIME = 20, ARM_SCORE = 150, ARM_ALLIANCE = 180};
+enum   armStates{ ARM_DOWN = 300, ARM_PRIME = 2000, ARM_SCORE = 15000, ARM_ALLIANCE = 18000};
 inline int armStateIndex = 0;
 inline int armStateArray [2] = {ARM_DOWN, ARM_PRIME};
