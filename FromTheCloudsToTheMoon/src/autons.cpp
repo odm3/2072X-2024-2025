@@ -1,6 +1,9 @@
 #include "autons.hpp"
+#include <sys/_intsup.h>
+#include <cmath>
 #include <string>
 #include "EZ-Template/drive/drive.hpp"
+#include "EZ-Template/piston.hpp"
 #include "EZ-Template/util.hpp"
 #include "constants.hpp"
 #include "controls.hpp"
@@ -43,6 +46,280 @@ void pos2(bool isRed) {
    chassis.pid_wait();
 }
 
+void soloAwp(bool isRed) {
+  int sign = isRed ? 1 : -1;
+
+  chassis.drive_angle_set(40_deg * sign);
+
+  chassis.pid_drive_set(3_in, DRIVE_SPEED);
+  chassis.pid_wait();
+  armPid.target_set(ARM_ALLIANCE);
+  pros::delay(800);
+
+  if (isRed == false) {
+  chassis.pid_swing_set(ez::LEFT_SWING, 120*sign, SWING_SPEED, 60, false);
+  } else if (isRed == true) {
+  chassis.pid_swing_set(ez::RIGHT_SWING, 120*sign, SWING_SPEED, 60, false);
+  }
+  chassis.pid_wait();
+  armPid.target_set(ARM_DOWN);
+
+  chassis.pid_drive_set(-8, DRIVE_SPEED);
+  chassis.pid_wait_until(-5);
+  piston_clamp.set(true);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(-135*sign, TURN_SPEED);
+  moveIntake(12000);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(15, DRIVE_SPEED);
+  chassis.pid_wait();
+
+  if (isRed == false) {
+    chassis.pid_swing_set(ez::RIGHT_SWING, 150*sign,SWING_SPEED);
+  } else if (isRed == true) {
+    chassis.pid_swing_set(ez::LEFT_SWING, 150*sign,SWING_SPEED);
+  }
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(12, DRIVE_SPEED);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(33*sign, TURN_SPEED);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(70_in, DRIVE_SPEED);
+  chassis.pid_wait_until(30);
+  chassis.pid_speed_max_set(45);
+  chassis.pid_wait_until(45);
+  piston_clamp.set(false);
+  chassis.pid_wait_until(65);
+  moveIntake(0);
+  chassis.pid_wait();
+
+  moveIntake(0);
+
+  chassis.pid_turn_set(100 * sign, TURN_SPEED);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(-20, DRIVE_SPEED);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-12_in, 45);
+  chassis.pid_wait();
+  piston_clamp.set(true);
+
+  chassis.pid_turn_set(-7.5*sign, TURN_SPEED);
+  chassis.pid_wait();
+
+  moveIntake(12000);
+
+  chassis.pid_drive_set(24, DRIVE_SPEED);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(-170*sign, TURN_SPEED);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(24, DRIVE_SPEED);
+  armPid.target_set(4000);
+  chassis.pid_wait();
+}
+
+void soloAwpRed() {
+  passRed = true;
+  soloAwp(true);
+}
+
+void soloAwpBlue() {
+  passRed = false;
+    chassis.drive_angle_set(40_deg * -1);
+
+  chassis.pid_drive_set(3_in, DRIVE_SPEED);
+  chassis.pid_wait();
+  armPid.target_set(ARM_ALLIANCE);
+  pros::delay(800);
+
+  chassis.pid_swing_set(ez::LEFT_SWING, 120*-1, SWING_SPEED, 60, false);
+
+
+  chassis.pid_wait();
+  armPid.target_set(ARM_DOWN);
+
+  chassis.pid_drive_set(-8, DRIVE_SPEED);
+  chassis.pid_wait_until(-5);
+  piston_clamp.set(true);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(-135*-1, TURN_SPEED);
+  moveIntake(12000);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(15, DRIVE_SPEED);
+  chassis.pid_wait();
+
+
+  chassis.pid_swing_set(ez::RIGHT_SWING, 150*-1,SWING_SPEED);
+
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(12, DRIVE_SPEED);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(33*-1, TURN_SPEED);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(70_in, DRIVE_SPEED);
+  chassis.pid_wait_until(30);
+  chassis.pid_speed_max_set(45);
+  chassis.pid_wait_until(45);
+  piston_clamp.set(false);
+  chassis.pid_wait_until(65);
+  moveIntake(0);
+  chassis.pid_wait();
+
+  moveIntake(0);
+
+  chassis.pid_turn_set(100 * -1, TURN_SPEED);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(-20, DRIVE_SPEED);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-16_in, 60);
+  chassis.pid_wait_until(14);
+  piston_clamp.set(true);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(-5*-1, TURN_SPEED);
+  chassis.pid_wait();
+
+  moveIntake(12000);
+
+  chassis.pid_drive_set(24, DRIVE_SPEED);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(-170*-1, TURN_SPEED);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(28, DRIVE_SPEED);
+  armPid.target_set(4000);
+  chassis.pid_wait();
+}
+
+void pos5Elims(bool isRed) {
+
+}
+
+void pos5ElimsRed() {
+  passRed = true;
+  pos5Elims(true);
+}
+
+void pos5ElimsBlue() {
+  passRed = false;
+  pos5Elims(false);
+}
+
+void soloAwpBaker(bool isRed) { 
+  int sign = isRed ? 1 : -1;
+
+  chassis.drive_angle_set(51 * sign);
+
+  motor_arm.move_absolute(480, 600);
+
+  pros::delay(600);
+
+  motor_arm.move_absolute(10, 200);
+
+  if (!isRed) {
+    chassis.pid_swing_set(ez::LEFT_SWING,73 * sign, -SWING_SPEED, 0);
+    pros::delay(100);
+    chassis.pid_wait();
+  } else {
+    chassis.pid_swing_set(ez::RIGHT_SWING,73 * sign, -SWING_SPEED, 0);
+    pros::delay(100);
+    chassis.pid_wait();
+  }
+
+  piston_clamp.set(true);
+  chassis.pid_drive_set(-38, 70, true);
+  chassis.pid_wait_until(-36);
+  piston_clamp.set(false);
+  chassis.pid_wait();
+  pros::delay(100);
+
+  chassis.pid_turn_set(221 * sign, TURN_SPEED);
+  pros::delay(100);
+  chassis.pid_wait_until(219 * sign);
+
+  moveIntake(12000);
+
+  chassis.pid_drive_set(24, DRIVE_SPEED, true);
+  pros::delay(100);
+  chassis.pid_wait_until(22);
+
+  chassis.pid_drive_set(-25, DRIVE_SPEED, true);
+  pros::delay(100);
+  chassis.pid_wait_until(-23);
+
+  chassis.pid_turn_set(180 * sign, TURN_SPEED);
+  pros::delay(100);
+  chassis.pid_wait_until(178 * sign);
+
+  chassis.pid_drive_set(30, DRIVE_SPEED, true);
+  pros::delay(100);
+  chassis.pid_wait_until(28);
+
+  chassis.pid_turn_set(26 * sign, TURN_SPEED);
+  pros::delay(100);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(79, DRIVE_SPEED, true);
+  pros::delay(600);
+  chassis.pid_wait_until(32);
+  
+  chassis.pid_drive_set(48, 50, true);
+  pros::delay(100);
+  piston_clamp.set(true);
+  chassis.pid_wait_until(45);
+  moveIntake(0);
+  chassis.pid_wait_until(46);
+
+  chassis.pid_turn_set(96 * sign, TURN_SPEED);
+  pros::delay(50);
+  chassis.pid_wait_until(94 * sign);
+
+  chassis.pid_drive_set(-35, 70, true);
+  pros::delay(100);
+  chassis.pid_wait_until(-31);
+  piston_clamp.set(false);
+  chassis.pid_wait_until(-33);
+  
+  chassis.pid_turn_set(0 * sign, TURN_SPEED);
+  pros::delay(100);
+  chassis.pid_wait_until(2 * sign);
+  moveIntake(12000);
+
+  chassis.pid_drive_set(23, DRIVE_SPEED, true);
+  pros::delay(100);
+  chassis.pid_wait_until(20);
+
+   chassis.pid_turn_set(-170 * sign, TURN_SPEED);
+  pros::delay(100);
+  chassis.pid_wait_until(-168 * sign);
+
+  chassis.pid_drive_set(42, DRIVE_SPEED, true);
+  pros::delay(100);
+  chassis.pid_wait();
+}
+
+void soloAwpBlueBaker() {
+  soloAwp(false);
+}
+
+void soloAwpRedBaker() {
+  soloAwp(true);
+}
+
 void pos2Red() { pos2(true); passRed = true; }
 void pos2Blue() {pos2(false); passRed = false; }
 
@@ -78,6 +355,8 @@ void neg5(bool isRed) {
 
 void neg5Red() { neg5(true); }
 void neg5Blue() { neg5(false); }
+
+/*  example progs
 
 ///
 // Drive Example
@@ -404,6 +683,4 @@ void measure_offsets() {
   if (chassis.odom_tracker_front != nullptr) chassis.odom_tracker_front->distance_to_center_set(f_offset);
 }
 
-// . . .
-// Make your own autonomous functions here!
-// . . .
+*/

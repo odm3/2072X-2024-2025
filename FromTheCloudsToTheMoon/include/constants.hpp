@@ -25,7 +25,7 @@
 #define PORT_RB 3
 
 #define PORT_INTAKE    -1
-#define PORT_ARM        11
+#define PORT_ARM        12
 
 // piston ports
 #define PORT_CLAMP         'A'
@@ -49,10 +49,11 @@
 #define OFFSET_VERT    0
 #define OFFSET_HORI    0
 #define DRIVE_CURVE_1  1
-#define DRIVE_CURVE_2  5
+#define DRIVE_CURVE_2  10
 #define DRIVE_SPEED    110
 #define TURN_SPEED     90
 #define SWING_SPEED    110
+#define ACTIVE_BREAK   0
 
 // buttons
 #define BUTTON_INTAKE         pros::E_CONTROLLER_DIGITAL_L1
@@ -145,7 +146,10 @@ inline void default_constants() {
   chassis.pid_angle_behavior_set(ez::shortest);  // Changes the default behavior for turning, this defaults it to the shortest path there
 }
 
-inline ez::PID armPid(2, 0, 0, 0, "Lady Brown PID");
-enum   armStates{ ARM_DOWN = 300, ARM_PRIME = 2500, ARM_SCORE = 16000, ARM_ALLIANCE = 18000};
+
+#define armKp 2
+#define armKd 0
+inline ez::PID armPid(armKp, 0, armKd, 0, "Lady Brown PID");
+enum   armStates{ ARM_DOWN = 500, ARM_PRIME = 2500, ARM_SCORE = 15000, ARM_ALLIANCE = 18000};
 inline int armStateIndex = 0;
 inline int armStateArray [2] = {ARM_DOWN, ARM_PRIME};

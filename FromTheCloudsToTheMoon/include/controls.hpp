@@ -2,13 +2,6 @@
 
 void moveIntake(int vltg);
 
-void activate_clamp();
-void activate_lift();
-void activate_doinker();
-void deactivate_clamp();
-void deactivate_lift();
-void deactivate_doinker();
-
 void armPos(int pos);
 
 void control_intake();
@@ -22,6 +15,8 @@ void controlArmTask();
 void autoClampTask();
 void colorSortTask();
 
+void arm_wait();
 void controlArm();
-void controlArmScore();
-void controlArmPrime();
+
+void intakeTorque_task();
+
