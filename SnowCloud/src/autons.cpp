@@ -215,9 +215,11 @@ void interfered_example() {
 
 void redNeg5rings() {
   EZ_CHASSIS.pid_drive_set(-24_in, DRIVE_SPEED);
-  EZ_CHASSIS.pid_wait();
+  EZ_CHASSIS.pid_wait_until(-22);
   activateClamp();
-  pros::delay(500);
+  pros::delay(100);
+  EZ_CHASSIS.pid_wait();
+
   EZ_CHASSIS.pid_turn_set(100_deg, TURN_SPEED, true);
   EZ_CHASSIS.pid_wait();
   EZ_CHASSIS.pid_drive_set(22_in, DRIVE_SPEED);

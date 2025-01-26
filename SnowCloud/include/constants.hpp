@@ -12,15 +12,15 @@
 #include "pros/motors.hpp"
 #include "pros/optical.hpp"
 #include "pros/rotation.hpp"
-#define PORT_LF -19
-#define PORT_LM 9
-#define PORT_LB -8
+#define PORT_LF -18
+#define PORT_LM 7
+#define PORT_LB -6
 #define PORT_RF 2
 #define PORT_RM -4
 #define PORT_RB 3
 
 #define PORT_INTAKE     -1
-#define PORT_ARM        6
+#define PORT_ARM        5
 // #define PORT_ARM_LEFT   -6
 // #define PORT_ARM_RIGHT  16
 
