@@ -1,10 +1,16 @@
 #pragma once
 
-inline bool passRed = true;
+inline bool passRed = false;
 inline bool sign = true;
+inline int totalRings = 0;
+inline int redRings = 0;
+inline int blueRings = 0;
 
-enum allaince{red = 1, blue = -1, red1 = 5, red2 = 15, blue1 = 210, blue2 = 230};
+enum allaince{red = 1, blue = -1, red1 = 5, red2 = 25, blue1 = 210, blue2 = 230};
 inline int allainceIndex = 1;
+
+void nothing();
+void drive12();
 
 void pos2(bool isRed);
 void pos2Red();

@@ -4,7 +4,6 @@
 #include "constants.hpp"
 #include "controls.hpp"
 #include "pros/motors.h"
-#include "pros/rtos.h"
 #include "pros/rtos.hpp"
 
 /**
@@ -29,7 +28,7 @@ void initialize() {
   // chassis.odom_tracker_left_set(&vert_tracker);
 
   // Configure your chassis controls
-  chassis.opcontrol_curve_buttons_toggle(true);   // Enables modifying the controller curve with buttons on the joysticks
+  chassis.opcontrol_curve_buttons_toggle(false);   // Enables modifying the controller curve with buttons on the joysticks
   chassis.opcontrol_drive_activebrake_set(0.0);   // Sets the active brake kP. We recommend ~2.  0 will disable.
   chassis.opcontrol_curve_default_set(DRIVE_CURVE_1, DRIVE_CURVE_2);  // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)
 
@@ -42,6 +41,7 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+      {"Drive 12", drive12},
       {"Neg 5 Red", neg5Red},
       {"Neg 5 Blue", neg5Blue},
       {"Pos 2 Red", pos2Red},
@@ -68,7 +68,7 @@ void initialize() {
   chassis.initialize();
   ez::as::initialize();
   pros::Task armTask(controlArmTask);
-  pros::Task clampTask(autoClampTask);
+  // pros::Task clampTask(autoClampTask);
   pros::Task sortTask(colorSortTask);
   motor_intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   motor_arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
@@ -242,7 +242,7 @@ void opcontrol() {
 
   while (true) {
     // Gives you some extras to make EZ-Template ezier
-    ez_template_extras();
+    // ez_template_extras();
 
     chassis.opcontrol_arcade_standard(ez::SPLIT);  // Tank control
 
@@ -250,7 +250,8 @@ void opcontrol() {
     control_intake();
     control_clamp();
     control_lift();
-    control_doinker();
+    control_doinker_left();
+    control_doinker_right();
     controlArmScore();
     controlArmPrime();
     controlArm();

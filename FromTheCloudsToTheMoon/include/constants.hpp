@@ -4,7 +4,9 @@
 #include "EZ-Template/api.hpp"
 #include "EZ-Template/piston.hpp"
 #include "api.h"
+#include "constants.hpp"
 #include "pros/abstract_motor.hpp"
+#include "pros/adi.hpp"
 #include "pros/distance.hpp"
 #include "pros/imu.hpp"
 #include "pros/misc.h"
@@ -23,12 +25,14 @@
 #define PORT_RB 3
 
 #define PORT_INTAKE    -1
-#define PORT_ARM        5
+#define PORT_ARM        11
 
 // piston ports
-#define PORT_CLAMP   'A'
-#define PORT_LIFT    'C'
-#define PORT_DOINKER 'B'
+#define PORT_CLAMP         'A'
+#define PORT_LIFT          'C'
+#define PORT_DOINKER_LEFT  'D'
+#define PORT_DOINKER_RIGHT 'B'
+#define PORT_LIMIT_HOOK    'H'
 
 // sensor ports
 #define PORT_IMU            19
@@ -45,7 +49,7 @@
 #define OFFSET_VERT    0
 #define OFFSET_HORI    0
 #define DRIVE_CURVE_1  1
-#define DRIVE_CURVE_2  10
+#define DRIVE_CURVE_2  5
 #define DRIVE_SPEED    110
 #define TURN_SPEED     90
 #define SWING_SPEED    110
@@ -59,9 +63,10 @@
 #define BUTTON_ARM_SCORE      pros::E_CONTROLLER_DIGITAL_X
 #define BUTTON_CLAMP          pros::E_CONTROLLER_DIGITAL_B
 #define BUTTON_LIFT           pros::E_CONTROLLER_DIGITAL_Y
-#define BUTTON_DOINKER        pros::E_CONTROLLER_DIGITAL_A
-#define BUTTON_COLOR_SORT_ON  pros::E_CONTROLLER_DIGITAL_UP
-#define BUTTON_COLOR_SORT_OFF pros::E_CONTROLLER_DIGITAL_LEFT
+#define BUTTON_DOINKER_LEFT   pros::E_CONTROLLER_DIGITAL_LEFT
+#define BUTTON_DOINKER_RIGHT  pros::E_CONTROLLER_DIGITAL_A
+// #define BUTTON_COLOR_SORT_ON  pros::E_CONTROLLER_DIGITAL_UP
+// #define BUTTON_COLOR_SORT_OFF pros::E_CONTROLLER_DIGITAL_LEFT
 
 // Controller constructor
 inline pros::Controller controlla(pros::E_CONTROLLER_MASTER);
@@ -78,15 +83,17 @@ inline pros::Motor motor_intake (PORT_INTAKE, pros::v5::MotorGears::blue);
 inline pros::Motor motor_arm    (PORT_ARM, pros::v5::MotorGears::blue);
 
 // Piston constructors
-inline ez::Piston piston_clamp   (PORT_CLAMP);
-inline ez::Piston piston_lift    (PORT_LIFT);
-inline ez::Piston piston_doinker (PORT_DOINKER);
+inline ez::Piston piston_clamp         (PORT_CLAMP, false);
+inline ez::Piston piston_lift          (PORT_LIFT, false);
+inline ez::Piston piston_doinker_left (PORT_DOINKER_LEFT, false);
+inline ez::Piston piston_doinker_right (PORT_DOINKER_RIGHT, false);
 
 // Sensor constructors
 inline pros::Imu      IMU            (PORT_IMU);
 inline pros::Rotation rotation_arm   (PORT_ROTATION_ARM);
 inline pros::Distance distance_clamp (PORT_CLAMP);
 inline pros::Optical  optical_sort   (PORT_OPTICAL_SORT);
+inline pros::adi::DigitalIn limitHook(PORT_LIMIT_HOOK);
 
 // Chassis constructor
 inline ez::Drive chassis(
@@ -139,6 +146,6 @@ inline void default_constants() {
 }
 
 inline ez::PID armPid(2, 0, 0, 0, "Lady Brown PID");
-enum   armStates{ ARM_DOWN = 300, ARM_PRIME = 2000, ARM_SCORE = 15000, ARM_ALLIANCE = 18000};
+enum   armStates{ ARM_DOWN = 300, ARM_PRIME = 2500, ARM_SCORE = 16000, ARM_ALLIANCE = 18000};
 inline int armStateIndex = 0;
 inline int armStateArray [2] = {ARM_DOWN, ARM_PRIME};

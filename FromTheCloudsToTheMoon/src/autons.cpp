@@ -6,6 +6,18 @@
 #include "controls.hpp"
 #include "main.h"
 #include "pros/motors.h"
+#include "pros/rtos.hpp"
+
+void nothing() {
+  
+}
+
+void drive12() {
+  chassis.pid_drive_set(12_in, DRIVE_SPEED);
+  moveIntake(120000);
+  chassis.pid_wait();
+  pros::delay(10000);
+}
 
 void neg2(bool isRed) {
    isRed ? sign = 1 : sign = -1;
@@ -38,7 +50,7 @@ void neg5(bool isRed) {
   isRed ? sign = red : sign = blue;
   chassis.pid_drive_set(-28_in, DRIVE_SPEED);
   chassis.pid_wait_until(-20_in);
-  activate_clamp();
+  piston_clamp.set(true);
   chassis.pid_wait();
   chassis.pid_turn_set(sign * 90_deg, TURN_SPEED);
   chassis.pid_wait();
@@ -51,6 +63,7 @@ void neg5(bool isRed) {
     chassis.pid_wait();
   } else {
     chassis.pid_swing_set(ez::LEFT_SWING, sign * 160_deg, SWING_SPEED);
+    chassis.pid_wait();
   }
 
   chassis.pid_drive_set(18_in, DRIVE_SPEED);
