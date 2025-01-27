@@ -12,6 +12,14 @@ inline int allainceIndex = 1;
 void nothing();
 void drive12();
 
+void soloAwp(bool isRed);
+void soloAwpRed();
+void soloAwpBlue();
+
+void pos5Elims(bool isRed);
+void pos5ElimsRed();
+void pos5ElimsBlue();
+
 void pos2(bool isRed);
 void pos2Red();
 void pos2Blue();
