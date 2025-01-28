@@ -30,3 +30,10 @@ void control_clamp();
 void control_lift();
 void control_doinker_left();
 void control_doinker_right();
+
+void controlArmTask();
+
+#define armKp 2
+#define armKd 0
+inline ez::PID armPid(armKp, 0, armKd, 0, "Lady Brown PID");
+enum   armStates{ ARM_DOWN = 500, ARM_PRIME = 2500, ARM_SCORE = 15000, ARM_ALLIANCE = 18000};

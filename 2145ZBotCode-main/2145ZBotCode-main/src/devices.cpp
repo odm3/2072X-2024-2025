@@ -15,7 +15,7 @@ pros::ADIDigitalOut doinkerRight('B');
 pros::ADIDigitalOut ringRush('B');
 pros::ADIDigitalOut backClamp('A');
 
-pros::Rotation liftSensor(8, true);
+pros::Rotation liftSensor(8, false);
 
 pros::Motor intake (1, pros::E_MOTOR_GEARSET_06, true, pros::E_MOTOR_ENCODER_DEGREES);
 pros::Motor liftLeft (12, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);

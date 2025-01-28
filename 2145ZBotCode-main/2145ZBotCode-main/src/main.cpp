@@ -38,7 +38,7 @@ size_t autonCount = sizeof(autonFunctions) / sizeof(autonFunctions[0]);
 
 void initialize() {
     pros::delay(750); // Stop the user from doing anything while legacy ports configure.
-
+    chassis.opcontrol_curve_default_set(10000,10000);
 	// screen init
     calibrationScreenInit();
 
@@ -54,7 +54,7 @@ void initialize() {
     );
 
     chassisInits();
-
+    pros::Task armTask(controlArmTask);
     liftLeft.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     liftRight.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
@@ -101,7 +101,7 @@ void opcontrol() {
     bool clawUp = false;
 
 	while (true) {
-        chassis.opcontrol_tank();
+        chassis.opcontrol_arcade_standard(ez::SPLIT);
 
 
 

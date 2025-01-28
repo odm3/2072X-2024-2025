@@ -1161,15 +1161,17 @@ void skillsv2() {
 void soloAwp(bool isRed) { 
   double sign = isRed ? 1 : -1;
 
-  chassis.drive_angle_set(51 * sign);
+  chassis.drive_angle_set(40 * sign);
 
-  liftLeft.move_absolute(480, 600);
-  liftRight.move_absolute(480, 600);
+  chassis.pid_drive_set(3, DRIVE_SPEED, true);
+  pros::delay(100);
+  chassis.pid_wait_until(3);
+
+  armPid.target_set(ARM_ALLIANCE);
 
   pros::delay(600);
 
-  liftLeft.move_absolute(10, 200);
-  liftRight.move_absolute(10, 200);
+
 
   if (!isRed) {
     chassis.pid_swing_set(ez::LEFT_SWING,73 * sign, -SWING_SPEED, 0);
@@ -1181,10 +1183,11 @@ void soloAwp(bool isRed) {
     chassis.pid_wait();
   }
 
-  backClamp.set_value(true);
+  armPid.target_set(ARM_DOWN);
+  
   chassis.pid_drive_set(-38, 70, true);
   chassis.pid_wait_until(-36);
-  backClamp.set_value(false);
+  backClamp.set_value(true);
   chassis.pid_wait();
   pros::delay(100);
 
@@ -1194,13 +1197,13 @@ void soloAwp(bool isRed) {
 
   intake = 127;
 
-  chassis.pid_drive_set(24, DRIVE_SPEED, true);
+  chassis.pid_drive_set(19, DRIVE_SPEED, true);
   pros::delay(100);
-  chassis.pid_wait_until(22);
+  chassis.pid_wait_until(17);
 
-  chassis.pid_drive_set(-25, DRIVE_SPEED, true);
+  chassis.pid_drive_set(-20, DRIVE_SPEED, true);
   pros::delay(100);
-  chassis.pid_wait_until(-23);
+  chassis.pid_wait_until(-18);
 
   chassis.pid_turn_set(180 * sign, TURN_SPEED);
   pros::delay(100);
@@ -1213,14 +1216,13 @@ void soloAwp(bool isRed) {
   chassis.pid_turn_set(26 * sign, TURN_SPEED);
   pros::delay(100);
   chassis.pid_wait();
-
   chassis.pid_drive_set(79, DRIVE_SPEED, true);
   pros::delay(600);
   chassis.pid_wait_until(32);
   
   chassis.pid_drive_set(48, 50, true);
   pros::delay(100);
-  backClamp.set_value(true);
+  backClamp.set_value(false);
   chassis.pid_wait_until(45);
   intake = 0;
   chassis.pid_wait_until(46);
@@ -1232,7 +1234,7 @@ void soloAwp(bool isRed) {
   chassis.pid_drive_set(-35, 70, true);
   pros::delay(100);
   chassis.pid_wait_until(-31);
-  backClamp.set_value(false);
+  backClamp.set_value(true);
   chassis.pid_wait_until(-33);
   
   chassis.pid_turn_set(0 * sign, TURN_SPEED);
@@ -1244,11 +1246,11 @@ void soloAwp(bool isRed) {
   pros::delay(100);
   chassis.pid_wait_until(20);
 
-   chassis.pid_turn_set(-170 * sign, TURN_SPEED);
+  chassis.pid_turn_set(-165 * sign, TURN_SPEED);
   pros::delay(100);
-  chassis.pid_wait_until(-168 * sign);
+  chassis.pid_wait_until(-163 * sign);
 
-  chassis.pid_drive_set(42, DRIVE_SPEED, true);
+  chassis.pid_drive_set(35, DRIVE_SPEED, true);
   pros::delay(100);
   chassis.pid_wait();
 }

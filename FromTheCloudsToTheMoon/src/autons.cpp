@@ -11,6 +11,111 @@
 #include "pros/motors.h"
 #include "pros/rtos.hpp"
 
+void soloAwp1(bool isRed) { 
+  double sign = isRed ? 1 : -1;
+
+  chassis.drive_angle_set(40 * sign);
+
+  chassis.pid_drive_set(3, DRIVE_SPEED, true);
+  pros::delay(100);
+  chassis.pid_wait_until(3);
+
+  armPid.target_set(ARM_ALLIANCE);
+
+  pros::delay(600);
+
+
+
+  if (!isRed) {
+    chassis.pid_swing_set(ez::LEFT_SWING,73 * sign, -SWING_SPEED, 0);
+    pros::delay(100);
+    chassis.pid_wait();
+  } else {
+    chassis.pid_swing_set(ez::RIGHT_SWING,73 * sign, -SWING_SPEED, 0);
+    pros::delay(100);
+    chassis.pid_wait();
+  }
+
+  armPid.target_set(ARM_DOWN);
+  
+  chassis.pid_drive_set(-38, 70, true);
+  chassis.pid_wait_until(-36);
+  piston_clamp.set(true);
+  chassis.pid_wait();
+  pros::delay(100);
+
+  chassis.pid_turn_set(221 * sign, TURN_SPEED);
+  pros::delay(100);
+  chassis.pid_wait_until(219 * sign);
+
+  motor_intake.move_voltage(12000);
+
+  chassis.pid_drive_set(19, DRIVE_SPEED, true);
+  pros::delay(100);
+  chassis.pid_wait_until(17);
+
+  chassis.pid_drive_set(-20, DRIVE_SPEED, true);
+  pros::delay(100);
+  chassis.pid_wait_until(-18);
+
+  chassis.pid_turn_set(180 * sign, TURN_SPEED);
+  pros::delay(100);
+  chassis.pid_wait_until(178 * sign);
+
+  chassis.pid_drive_set(30, DRIVE_SPEED, true);
+  pros::delay(100);
+  chassis.pid_wait_until(28);
+
+  chassis.pid_turn_set(26 * sign, TURN_SPEED);
+  pros::delay(100);
+  chassis.pid_wait();
+  chassis.pid_drive_set(79, DRIVE_SPEED, true);
+  pros::delay(600);
+  chassis.pid_wait_until(32);
+  
+  chassis.pid_drive_set(48, 50, true);
+  pros::delay(100);
+  piston_clamp.set(false);
+  chassis.pid_wait_until(45);
+  motor_intake.move_voltage(0);
+  chassis.pid_wait_until(46);
+
+  chassis.pid_turn_set(96 * sign, TURN_SPEED);
+  pros::delay(50);
+  chassis.pid_wait_until(94 * sign);
+
+  chassis.pid_drive_set(-35, 70, true);
+  pros::delay(100);
+  chassis.pid_wait_until(-31);
+  piston_clamp.set(true);
+  chassis.pid_wait_until(-33);
+  
+  chassis.pid_turn_set(0 * sign, TURN_SPEED);
+  pros::delay(100);
+  chassis.pid_wait_until(2 * sign);
+  motor_intake.move_voltage(12000);
+
+  chassis.pid_drive_set(23, DRIVE_SPEED, true);
+  pros::delay(100);
+  chassis.pid_wait_until(20);
+
+  chassis.pid_turn_set(-165 * sign, TURN_SPEED);
+  pros::delay(100);
+  chassis.pid_wait_until(-163 * sign);
+
+  chassis.pid_drive_set(35, DRIVE_SPEED, true);
+  pros::delay(100);
+  chassis.pid_wait();
+}
+
+void soloAwp1red() {
+  soloAwp1(true);
+}
+
+void soloAwp1blue() {
+  soloAwp1(false);
+}
+
 void nothing() {
   
 }

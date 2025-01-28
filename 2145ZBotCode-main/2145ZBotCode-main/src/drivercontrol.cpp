@@ -15,10 +15,7 @@
 // . . .
 
 // ansh stuff
-#define armKp 2
-#define armKd 0
-inline ez::PID armPid(armKp, 0, armKd, 0, "Lady Brown PID");
-enum   armStates{ ARM_DOWN = 500, ARM_PRIME = 2500, ARM_SCORE = 15000, ARM_ALLIANCE = 18000};
+
 
 void set_drive_to_coast() {
   left_side_motors.set_brake_modes(pros::E_MOTOR_BRAKE_COAST);
@@ -176,18 +173,17 @@ void arm_wait() {
     int prime = 0;
 
 void control_arm() {
-
     if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
         armPid.constants_set(0, 0, 0);
         liftLeft.move_voltage(12000);
         armPid.target_set(liftSensor.get_position());
-        armPid.constants_set(armKp, 0, armKd);
+        // armPid.constants_set(armKp, 0, armKd);
     }
     else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
         armPid.constants_set(0, 0, 0);
         liftLeft.move_voltage(-12000);
         armPid.target_set(liftSensor.get_position());
-        armPid.constants_set(armKp, 0, armKd);
+        // armPid.constants_set(armKp, 0, armKd);
     }
     else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
         if (prime == 1) {
@@ -206,7 +202,19 @@ void control_arm() {
     }
     else {
         // armPid.target_set(liftSensor.get_position());
-        // armPid.constants_set(armKp, 0, armKd);
+        armPid.constants_set(armKp, 0, armKd);
+    }
+}
+
+void controlArmTask()   {
+    pros::delay(1000);
+    while (true) {
+        liftLeft.move_voltage(armPid.compute(liftSensor.get_position()));
+        // pros::lcd::print(3, "angle: %f", IMU.get_rotation());
+        // pros::lcd::print(4, "prime: %d", prime);
+        // pros::lcd::print(5, "Arm Pid value: %d", armPid.target_get());
+        // pros::lcd::print(6, "Arm Rotation Value %d", rotation_arm.get_position());
+        pros::delay(ez::util::DELAY_TIME);
     }
 }
 
