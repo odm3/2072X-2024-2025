@@ -135,10 +135,10 @@ void opcontrol() {
         // ringRush.set_value(false);
 
         control_intake();
-        // control_clamp();
-        // control_lift();
-        // control_doinker_left();
-        // control_doinker_right();
+        control_clamp();
+        control_lift();
+        control_doinker_left();
+        control_doinker_right();
         control_arm();
 
 		pros::delay(10);

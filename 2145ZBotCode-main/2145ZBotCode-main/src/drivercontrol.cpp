@@ -210,12 +210,32 @@ void control_arm() {
     }
 }
 
-// bool boolClamp = false;
-// bool boolLift = false;
-// bool boolDoinkerLeft = false;
-// bool boolDoinkerRight = false;
-// void control_clamp()   { if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) { backClamp.set_value(backClamp.get); } }
-// void control_lift()    { if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) { piston_lift.set(!piston_lift.get()); } }
-// void control_doinker_left()  { if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) { piston_doinker_left.set(!piston_doinker_left.get()); } }
-// void control_doinker_right() { if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) { ringRush.set_value(!piston_doinker_right.get()); } }
+bool boolClamp = false;
+bool boolLift = false;
+bool boolDoinkerLeft = false;
+bool boolDoinkerRight = false;
 
+void control_clamp()   { 
+  if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+      boolClamp = !boolClamp;
+      backClamp.set_value(boolClamp); 
+    } 
+  }
+void control_lift()    { if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+      if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+        boolLift = !boolLift;
+        intakeRaise.set_value(boolLift); 
+      } 
+  }
+} 
+
+void control_doinker_left()  { if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
+      boolDoinkerRight = !boolDoinkerRight;
+      ringRush.set_value(boolDoinkerRight); 
+  } 
+}
+void control_doinker_right() { if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
+      boolDoinkerLeft = !boolDoinkerLeft;
+      doinker.set_value(boolDoinkerLeft); 
+  }
+}

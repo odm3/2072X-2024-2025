@@ -26,3 +26,7 @@ extern double FIRST_RING_LIFT_VALUE;
 void control_intake();
 void arm_wait();
 void control_arm();
+void control_clamp();
+void control_lift();
+void control_doinker_left();
+void control_doinker_right();
