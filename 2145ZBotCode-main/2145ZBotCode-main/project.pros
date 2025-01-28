@@ -352,7 +352,7 @@
     "upload_options": {
       "description": "lock in",
       "icon": "X",
-      "slot": 3
+      "slot": 2
     },
     "use_early_access": false
   }
