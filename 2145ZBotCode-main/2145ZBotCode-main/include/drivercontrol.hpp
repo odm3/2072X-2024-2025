@@ -22,3 +22,7 @@ void startLiftTask(double targetLiftValue);
 
 extern const double MAX_LIFT_VALUE;
 extern double FIRST_RING_LIFT_VALUE;
+
+void control_intake();
+void arm_wait();
+void control_arm();

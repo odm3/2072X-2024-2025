@@ -1,6 +1,8 @@
+#include "EZ-Template/util.hpp"
 #include "main.h"
 #include "drivercontrol.hpp"
 #include "devices.hpp"
+#include "pros/misc.h"
 #include "pros/rtos.hpp"
 #include <math.h>
 #include <stdio.h>
@@ -11,6 +13,12 @@
 //  DRIVER CONTROL
 //
 // . . .
+
+// ansh stuff
+#define armKp 2
+#define armKd 0
+inline ez::PID armPid(armKp, 0, armKd, 0, "Lady Brown PID");
+enum   armStates{ ARM_DOWN = 500, ARM_PRIME = 2500, ARM_SCORE = 15000, ARM_ALLIANCE = 18000};
 
 void set_drive_to_coast() {
   left_side_motors.set_brake_modes(pros::E_MOTOR_BRAKE_COAST);
@@ -58,109 +66,156 @@ void tank_drive(double curve /* default is 7 in hpp file */) {
     set_tank(l_stick, r_stick);
 }
 
-// Constants for lift positions
-double FIRST_RING_LIFT_VALUE = 0.0795 * 360 * 100; 
-const double MAX_LIFT_VALUE = 0.45 * 360 * 100;
 
-// PID Control Constants
-double kP = 3;  // Adjust this if needed
-double kI = 0.0;  // Currently no integral term
-double kD = 9.0;  // Add some derivative control for damping
+//  * Baker's LB Control * 
+// // Constants for lift positions
+// double FIRST_RING_LIFT_VALUE = 0.0795 * 360 * 100; 
+// const double MAX_LIFT_VALUE = 0.45 * 360 * 100;
+// // PID Control Constants
+// double kP = 3;  // Adjust this if needed
+// double kI = 0.0;  // Currently no integral term
+// double kD = 9.0;  // Add some derivative control for damping
+// // PID variables
+// double error = 0, last_error = 0, integral = 0, derivative = 0;
+// double targetLiftValue = FIRST_RING_LIFT_VALUE;
+// // Function to stop the lift and reset PID variables
+// void stopLift() {
+//     liftLeft.move_velocity(0);
+//     liftRight.move_velocity(0);
+//     integral = 0;
+//     last_error = 0;
+// }
+// void liftAutoControl(double targetLiftValue = FIRST_RING_LIFT_VALUE) {
+//     double resetValue;
+//     // Control loop for lift to reach target position
+//       double currentLiftValue = liftSensor.get_position();  // Get current lift position
+//       if (targetLiftValue == -1) {
+//           double resetValue = 0.00 * 360 * 100;  // Set lift to a reset position
+//           error = resetValue - currentLiftValue;
+//       } else {
+//           error = targetLiftValue - currentLiftValue;
+//       } 
+//       // Check if the error is small enough to stop
+//       if (abs(error) < 1) {  
+//           // Stop the lift if the target position is reached
+//           stopLift();
+//           return;
+//       }
+//       // PID calculations for motor control
+//       integral += error;
+//       derivative = error - last_error;
+//       double motorSpeed =  ((error * kP) + (integral * kI) + (derivative * kD));  // PID control  
+//       // Apply motor speed with a max speed limit
+//       motorSpeed = std::clamp(motorSpeed, -12000.0, 12000.0);  // Prevent overspeeding
+//       liftLeft.move_voltage(motorSpeed);
+//       liftRight.move_voltage(motorSpeed);
+//       last_error = error;
+// }
+// ez::PID liftPID{0.055, 0, 0.375, 0, "Lift"};
+// void set_lift(int input) {
+//   liftLeft.move(input);
+//   liftRight.move(input);
+// }
+// void manualLiftControl() {
+//     double currentLiftPosition = liftSensor.get_position();  // Get current lift position
+//     if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) { 
+//       intake = 127;
+//       liftAutoControl(0.12 * 360 * 100);
+//     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+//         // Move the lift down, allowing movement as long as it's above 0 degrees
+//             liftLeft.move_velocity(200);  // Move lift down
+//             liftRight.move_velocity(200);  // Move lift down  
+//             intake.move_velocity(0);       
+//     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+//             liftLeft.move_velocity(-200);  // Move lift up
+//             liftRight.move_velocity(-200);  // Move lift up
+//             intake.move_velocity(0);  
+//     } else {
+//           liftLeft.move_velocity(0);
+//           liftRight.move_velocity(0);
+//           intake.move_velocity(0);  
+//     }
+// }
 
-// PID variables
-double error = 0, last_error = 0, integral = 0, derivative = 0;
-double targetLiftValue = FIRST_RING_LIFT_VALUE;
+// void liftControl() {
+//   if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) { 
+//     intake.move_velocity(600);
+//     liftAutoControl(FIRST_RING_LIFT_VALUE);
+//   } else {
+//     manualLiftControl();
+//   }
+// }
+// double globalLiftTarget = FIRST_RING_LIFT_VALUE;
+// void liftLoop() {
+//   for (int i; i <200; i++) {
+//     liftAutoControl(targetLiftValue);
+//     pros::delay(10);
+//   }
+//   stopLift();
+// }
+// void startLiftTask(double targetLiftValue) {
+//   globalLiftTarget = targetLiftValue;
+//   pros::Task liftTask(liftLoop);
+// }
 
-// Function to stop the lift and reset PID variables
-void stopLift() {
-    liftLeft.move_velocity(0);
-    liftRight.move_velocity(0);
-    integral = 0;
-    last_error = 0;
-}
-
-void liftAutoControl(double targetLiftValue = FIRST_RING_LIFT_VALUE) {
-    double resetValue;
-
-    // Control loop for lift to reach target position
-      double currentLiftValue = liftSensor.get_position();  // Get current lift position
-      if (targetLiftValue == -1) {
-          double resetValue = 0.00 * 360 * 100;  // Set lift to a reset position
-          error = resetValue - currentLiftValue;
-      } else {
-          error = targetLiftValue - currentLiftValue;
-      }
-      
-      // Check if the error is small enough to stop
-      if (abs(error) < 1) {  
-          // Stop the lift if the target position is reached
-          stopLift();
-          return;
-      }
-
-      // PID calculations for motor control
-      integral += error;
-      derivative = error - last_error;
-      double motorSpeed =  ((error * kP) + (integral * kI) + (derivative * kD));  // PID control
-      
-      // Apply motor speed with a max speed limit
-      motorSpeed = std::clamp(motorSpeed, -12000.0, 12000.0);  // Prevent overspeeding
-      liftLeft.move_voltage(motorSpeed);
-      liftRight.move_voltage(motorSpeed);
-
-      last_error = error;
-}
-
-ez::PID liftPID{0.055, 0, 0.375, 0, "Lift"};
-
-void set_lift(int input) {
-  liftLeft.move(input);
-  liftRight.move(input);
-}
-
-void manualLiftControl() {
-    double currentLiftPosition = liftSensor.get_position();  // Get current lift position
-
-    if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) { 
-      intake = 127;
-      liftAutoControl(0.12 * 360 * 100);
-    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-        // Move the lift down, allowing movement as long as it's above 0 degrees
-            liftLeft.move_velocity(200);  // Move lift down
-            liftRight.move_velocity(200);  // Move lift down  
-            intake.move_velocity(0);       
-    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-            liftLeft.move_velocity(-200);  // Move lift up
-            liftRight.move_velocity(-200);  // Move lift up
-            intake.move_velocity(0);  
-    } else {
-          liftLeft.move_velocity(0);
-          liftRight.move_velocity(0);
-          intake.move_velocity(0);  
+void control_intake() {
+    if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+        intake.move_voltage(12000);
+    }   else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+        intake.move_voltage(-12000);
+    }   else {
+        intake.move_voltage(0);
     }
 }
 
-void liftControl() {
-  if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) { 
-    intake.move_velocity(600);
-    liftAutoControl(FIRST_RING_LIFT_VALUE);
-  } else {
-    manualLiftControl();
-  }
+void arm_wait() {
+    while (armPid.exit_condition(liftLeft, true) == ez::RUNNING) {
+        pros::delay(ez::util::DELAY_TIME);
+    }
+}
+    int prime = 0;
+
+void control_arm() {
+
+    if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+        armPid.constants_set(0, 0, 0);
+        liftLeft.move_voltage(12000);
+        armPid.target_set(liftSensor.get_position());
+        armPid.constants_set(armKp, 0, armKd);
+    }
+    else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+        armPid.constants_set(0, 0, 0);
+        liftLeft.move_voltage(-12000);
+        armPid.target_set(liftSensor.get_position());
+        armPid.constants_set(armKp, 0, armKd);
+    }
+    else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+        if (prime == 1) {
+            armPid.target_set(ARM_DOWN);
+            arm_wait();
+            prime = 0;
+        }   else if (prime == 0) {
+            armPid.target_set(ARM_PRIME);
+            arm_wait();
+            prime = 1;
+        }
+    }
+    else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
+        armPid.target_set(ARM_SCORE);
+        arm_wait();
+    }
+    else {
+        // armPid.target_set(liftSensor.get_position());
+        // armPid.constants_set(armKp, 0, armKd);
+    }
 }
 
-double globalLiftTarget = FIRST_RING_LIFT_VALUE;
-
-void liftLoop() {
-  for (int i; i <200; i++) {
-    liftAutoControl(targetLiftValue);
-    pros::delay(10);
-  }
-  stopLift();
-}
-
-void startLiftTask(double targetLiftValue) {
-  globalLiftTarget = targetLiftValue;
-  pros::Task liftTask(liftLoop);
-}
+// bool boolClamp = false;
+// bool boolLift = false;
+// bool boolDoinkerLeft = false;
+// bool boolDoinkerRight = false;
+// void control_clamp()   { if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) { backClamp.set_value(backClamp.get); } }
+// void control_lift()    { if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) { piston_lift.set(!piston_lift.get()); } }
+// void control_doinker_left()  { if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) { piston_doinker_left.set(!piston_doinker_left.get()); } }
+// void control_doinker_right() { if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) { ringRush.set_value(!piston_doinker_right.get()); } }
 

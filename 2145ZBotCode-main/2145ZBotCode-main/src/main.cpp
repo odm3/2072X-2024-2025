@@ -103,34 +103,43 @@ void opcontrol() {
 	while (true) {
         chassis.opcontrol_tank();
 
-		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-            intakeRaise.set_value(false);
-            doinker.set_value(false);
 
-            liftControl();
-        } else {           
-            liftAutoControl(-1);
-            if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) { intake = 127; doinker.set_value(true); } 
-            else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {intake = 127; doinker.set_value(false); }
-            else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) { intake = -127; doinker.set_value(false); } 
-            else { intake = 0; doinker.set_value(false); }   
 
-            if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-               backClamp.set_value(true);
-            } else {
-               backClamp.set_value(false);
-            }
-        }
+		// if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+        //     intakeRaise.set_value(false);
+        //     doinker.set_value(false);
 
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) { motorCheck.suspend(); }
+        //     liftControl();
+        // } else {           
+        //     liftAutoControl(-1);
+        //     if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1) && master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) { intake = 127; doinker.set_value(true); } 
+        //     else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {intake = 127; doinker.set_value(false); }
+        //     else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) { intake = -127; doinker.set_value(false); } 
+        //     else { intake = 0; doinker.set_value(false); }   
 
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_A)) { liftSensor.reset_position(); }
+        //     if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+        //        backClamp.set_value(true);
+        //     } else {
+        //        backClamp.set_value(false);
+        //     }
+        // }
 
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) { FIRST_RING_LIFT_VALUE += 0.001 * 360 * 100; pros::delay(40); }
+        // if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) { motorCheck.suspend(); }
 
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) { FIRST_RING_LIFT_VALUE -= 0.001 * 360 * 100; pros::delay(40); }
+        // if (master.get_digital(pros::E_CONTROLLER_DIGITAL_A)) { liftSensor.reset_position(); }
 
-        ringRush.set_value(false);
+        // if (master.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) { FIRST_RING_LIFT_VALUE += 0.001 * 360 * 100; pros::delay(40); }
+
+        // if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) { FIRST_RING_LIFT_VALUE -= 0.001 * 360 * 100; pros::delay(40); }
+
+        // ringRush.set_value(false);
+
+        control_intake();
+        // control_clamp();
+        // control_lift();
+        // control_doinker_left();
+        // control_doinker_right();
+        control_arm();
 
 		pros::delay(10);
 	}
