@@ -41,10 +41,10 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+      {"Neg 5 Blue", neg5Blue},
       {"Neg 5 Red", neg5Red},
       {"Blue soloAWP", soloAwpBlue},
       {"Red soloAWP", soloAwpRed},
-
       {"Drive 12", drive12},
       {"Neg 5 Blue", neg5Blue},
       {"Pos 2 Red", pos2Red},
