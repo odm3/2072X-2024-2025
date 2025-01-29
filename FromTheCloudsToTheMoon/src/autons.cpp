@@ -232,7 +232,7 @@ void pos2Blue() {pos2(false); passRed = false; }
 
 
 
-// WORKING 1/28 //////////////////////////////
+// DONE 1 ALLIANCE STAKE 4 GOAL + BAR TOUCH (RING SIDE) //////////////////////////////
 void neg5(bool isRed) {
   int sign = isRed ? 1 : -1;
 
@@ -292,27 +292,22 @@ void neg5(bool isRed) {
   chassis.pid_wait();
   chassis.pid_turn_set(-45, TURN_SPEED);
   chassis.pid_wait();
-  chassis.pid_drive_set(23, DRIVE_SPEED);
-
-
-/////////////////////
-  // chassis.pid_wait();
-
-  // chassis.pid_drive_set(39, DRIVE_SPEED);
-  // pros::delay(500);
-  //piston_lift.set(false);
-  //chassis.pid_wait();
-  //chassis.pid_drive_set(-18, DRIVE_SPEED);
-
-
-
-
-
-  
+  chassis.pid_drive_set(23, DRIVE_SPEED);  
 }
 
-void neg5Red() { neg5(true); }
-void neg5Blue() { neg5(false); }
+void neg5Red() {
+  passRed = true;
+  neg5(true);
+}
+
+void neg5Blue() {
+  passRed = false;
+  //inverted code goes here////////////
+}
+
+
+////////////HERE ANSH CAN YOU ADDTHE BLUE SIDE CODE JUST INVERTED////////////
+// SIMILAR TO THE AUTO STRUCTIUWE MADE PREVIOSULY//////////
 
 /*  example progs
 
