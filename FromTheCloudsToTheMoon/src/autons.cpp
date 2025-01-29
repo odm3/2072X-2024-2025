@@ -11,111 +11,6 @@
 #include "pros/motors.h"
 #include "pros/rtos.hpp"
 
-void soloAwp1(bool isRed) { 
-  double sign = isRed ? 1 : -1;
-
-  chassis.drive_angle_set(40 * sign);
-
-  chassis.pid_drive_set(3, DRIVE_SPEED, true);
-  pros::delay(100);
-  chassis.pid_wait_until(3);
-
-  armPid.target_set(ARM_ALLIANCE);
-
-  pros::delay(600);
-
-
-
-  if (!isRed) {
-    chassis.pid_swing_set(ez::LEFT_SWING,73 * sign, -SWING_SPEED, 0);
-    pros::delay(100);
-    chassis.pid_wait();
-  } else {
-    chassis.pid_swing_set(ez::RIGHT_SWING,73 * sign, -SWING_SPEED, 0);
-    pros::delay(100);
-    chassis.pid_wait();
-  }
-
-  armPid.target_set(ARM_DOWN);
-  
-  chassis.pid_drive_set(-38, 70, true);
-  chassis.pid_wait_until(-36);
-  piston_clamp.set(true);
-  chassis.pid_wait();
-  pros::delay(100);
-
-  chassis.pid_turn_set(221 * sign, TURN_SPEED);
-  pros::delay(100);
-  chassis.pid_wait_until(219 * sign);
-
-  motor_intake.move_voltage(12000);
-
-  chassis.pid_drive_set(19, DRIVE_SPEED, true);
-  pros::delay(100);
-  chassis.pid_wait_until(17);
-
-  chassis.pid_drive_set(-20, DRIVE_SPEED, true);
-  pros::delay(100);
-  chassis.pid_wait_until(-18);
-
-  chassis.pid_turn_set(180 * sign, TURN_SPEED);
-  pros::delay(100);
-  chassis.pid_wait_until(178 * sign);
-
-  chassis.pid_drive_set(30, DRIVE_SPEED, true);
-  pros::delay(100);
-  chassis.pid_wait_until(28);
-
-  chassis.pid_turn_set(26 * sign, TURN_SPEED);
-  pros::delay(100);
-  chassis.pid_wait();
-  chassis.pid_drive_set(79, DRIVE_SPEED, true);
-  pros::delay(600);
-  chassis.pid_wait_until(32);
-  
-  chassis.pid_drive_set(48, 50, true);
-  pros::delay(100);
-  piston_clamp.set(false);
-  chassis.pid_wait_until(45);
-  motor_intake.move_voltage(0);
-  chassis.pid_wait_until(46);
-
-  chassis.pid_turn_set(96 * sign, TURN_SPEED);
-  pros::delay(50);
-  chassis.pid_wait_until(94 * sign);
-
-  chassis.pid_drive_set(-35, 70, true);
-  pros::delay(100);
-  chassis.pid_wait_until(-31);
-  piston_clamp.set(true);
-  chassis.pid_wait_until(-33);
-  
-  chassis.pid_turn_set(0 * sign, TURN_SPEED);
-  pros::delay(100);
-  chassis.pid_wait_until(2 * sign);
-  motor_intake.move_voltage(12000);
-
-  chassis.pid_drive_set(23, DRIVE_SPEED, true);
-  pros::delay(100);
-  chassis.pid_wait_until(20);
-
-  chassis.pid_turn_set(-165 * sign, TURN_SPEED);
-  pros::delay(100);
-  chassis.pid_wait_until(-163 * sign);
-
-  chassis.pid_drive_set(35, DRIVE_SPEED, true);
-  pros::delay(100);
-  chassis.pid_wait();
-}
-
-void soloAwp1red() {
-  soloAwp1(true);
-}
-
-void soloAwp1blue() {
-  soloAwp1(false);
-}
-
 void nothing() {
   
 }
@@ -151,6 +46,11 @@ void pos2(bool isRed) {
    chassis.pid_wait();
 }
 
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ // DONE AND TUNED
 void soloAwp(bool isRed) {
   int sign = isRed ? 1 : -1;
 
@@ -174,11 +74,11 @@ void soloAwp(bool isRed) {
   piston_clamp.set(true);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(-135*sign, TURN_SPEED);
+  chassis.pid_turn_set(-137*sign, TURN_SPEED);
   moveIntake(12000);
   chassis.pid_wait();
 
-  chassis.pid_drive_set(15, DRIVE_SPEED);
+  chassis.pid_drive_set(16.5, DRIVE_SPEED);
   chassis.pid_wait();
 
   if (isRed == false) {
@@ -195,11 +95,11 @@ void soloAwp(bool isRed) {
   chassis.pid_wait();
 
   chassis.pid_drive_set(70_in, DRIVE_SPEED);
-  chassis.pid_wait_until(30);
+  chassis.pid_wait_until(18);
   chassis.pid_speed_max_set(45);
   chassis.pid_wait_until(45);
   piston_clamp.set(false);
-  chassis.pid_wait_until(65);
+  chassis.pid_wait_until(62);
   moveIntake(0);
   chassis.pid_wait();
 
@@ -213,8 +113,10 @@ void soloAwp(bool isRed) {
   chassis.pid_drive_set(-12_in, 45);
   chassis.pid_wait();
   piston_clamp.set(true);
+  chassis.pid_wait();
 
-  chassis.pid_turn_set(-7.5*sign, TURN_SPEED);
+
+  chassis.pid_turn_set(-10.5*sign, TURN_SPEED);
   chassis.pid_wait();
 
   moveIntake(12000);
@@ -222,10 +124,10 @@ void soloAwp(bool isRed) {
   chassis.pid_drive_set(24, DRIVE_SPEED);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(-170*sign, TURN_SPEED);
+  chassis.pid_turn_set(-165*sign, TURN_SPEED);
   chassis.pid_wait();
 
-  chassis.pid_drive_set(24, DRIVE_SPEED);
+  chassis.pid_drive_set(36, DRIVE_SPEED);
   armPid.target_set(4000);
   chassis.pid_wait();
 }
@@ -234,7 +136,8 @@ void soloAwpRed() {
   passRed = true;
   soloAwp(true);
 }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// DONE AND TUNED
 void soloAwpBlue() {
   passRed = false;
     chassis.drive_angle_set(40_deg * -1);
@@ -284,7 +187,7 @@ void soloAwpBlue() {
 
   moveIntake(0);
 
-  chassis.pid_turn_set(100 * -1, TURN_SPEED);
+  chassis.pid_turn_set(101 * -1, TURN_SPEED);
   chassis.pid_wait();
 
   chassis.pid_drive_set(-20, DRIVE_SPEED);
@@ -294,7 +197,7 @@ void soloAwpBlue() {
   piston_clamp.set(true);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(-5*-1, TURN_SPEED);
+  chassis.pid_turn_set(0*-1, TURN_SPEED);
   chassis.pid_wait();
 
   moveIntake(12000);
@@ -305,7 +208,7 @@ void soloAwpBlue() {
   chassis.pid_turn_set(-170*-1, TURN_SPEED);
   chassis.pid_wait();
 
-  chassis.pid_drive_set(28, DRIVE_SPEED);
+  chassis.pid_drive_set(32, DRIVE_SPEED);
   armPid.target_set(4000);
   chassis.pid_wait();
 }
@@ -324,138 +227,88 @@ void pos5ElimsBlue() {
   pos5Elims(false);
 }
 
-void soloAwpBaker(bool isRed) { 
-  int sign = isRed ? 1 : -1;
-
-  chassis.drive_angle_set(51 * sign);
-
-  motor_arm.move_absolute(480, 600);
-
-  pros::delay(600);
-
-  motor_arm.move_absolute(10, 200);
-
-  if (!isRed) {
-    chassis.pid_swing_set(ez::LEFT_SWING,73 * sign, -SWING_SPEED, 0);
-    pros::delay(100);
-    chassis.pid_wait();
-  } else {
-    chassis.pid_swing_set(ez::RIGHT_SWING,73 * sign, -SWING_SPEED, 0);
-    pros::delay(100);
-    chassis.pid_wait();
-  }
-
-  piston_clamp.set(true);
-  chassis.pid_drive_set(-38, 70, true);
-  chassis.pid_wait_until(-36);
-  piston_clamp.set(false);
-  chassis.pid_wait();
-  pros::delay(100);
-
-  chassis.pid_turn_set(221 * sign, TURN_SPEED);
-  pros::delay(100);
-  chassis.pid_wait_until(219 * sign);
-
-  moveIntake(12000);
-
-  chassis.pid_drive_set(24, DRIVE_SPEED, true);
-  pros::delay(100);
-  chassis.pid_wait_until(22);
-
-  chassis.pid_drive_set(-25, DRIVE_SPEED, true);
-  pros::delay(100);
-  chassis.pid_wait_until(-23);
-
-  chassis.pid_turn_set(180 * sign, TURN_SPEED);
-  pros::delay(100);
-  chassis.pid_wait_until(178 * sign);
-
-  chassis.pid_drive_set(30, DRIVE_SPEED, true);
-  pros::delay(100);
-  chassis.pid_wait_until(28);
-
-  chassis.pid_turn_set(26 * sign, TURN_SPEED);
-  pros::delay(100);
-  chassis.pid_wait();
-
-  chassis.pid_drive_set(79, DRIVE_SPEED, true);
-  pros::delay(600);
-  chassis.pid_wait_until(32);
-  
-  chassis.pid_drive_set(48, 50, true);
-  pros::delay(100);
-  piston_clamp.set(true);
-  chassis.pid_wait_until(45);
-  moveIntake(0);
-  chassis.pid_wait_until(46);
-
-  chassis.pid_turn_set(96 * sign, TURN_SPEED);
-  pros::delay(50);
-  chassis.pid_wait_until(94 * sign);
-
-  chassis.pid_drive_set(-35, 70, true);
-  pros::delay(100);
-  chassis.pid_wait_until(-31);
-  piston_clamp.set(false);
-  chassis.pid_wait_until(-33);
-  
-  chassis.pid_turn_set(0 * sign, TURN_SPEED);
-  pros::delay(100);
-  chassis.pid_wait_until(2 * sign);
-  moveIntake(12000);
-
-  chassis.pid_drive_set(23, DRIVE_SPEED, true);
-  pros::delay(100);
-  chassis.pid_wait_until(20);
-
-   chassis.pid_turn_set(-170 * sign, TURN_SPEED);
-  pros::delay(100);
-  chassis.pid_wait_until(-168 * sign);
-
-  chassis.pid_drive_set(42, DRIVE_SPEED, true);
-  pros::delay(100);
-  chassis.pid_wait();
-}
-
-void soloAwpBlueBaker() {
-  soloAwp(false);
-}
-
-void soloAwpRedBaker() {
-  soloAwp(true);
-}
-
 void pos2Red() { pos2(true); passRed = true; }
 void pos2Blue() {pos2(false); passRed = false; }
 
+
+
+// WORKING 1/28 //////////////////////////////
 void neg5(bool isRed) {
-  isRed ? sign = red : sign = blue;
-  chassis.pid_drive_set(-28_in, DRIVE_SPEED);
-  chassis.pid_wait_until(-20_in);
+  int sign = isRed ? 1 : -1;
+
+  chassis.drive_angle_set(40_deg * sign);
+
+  chassis.pid_drive_set(3_in, DRIVE_SPEED);
+  chassis.pid_wait();
+  armPid.target_set(ARM_ALLIANCE);
+  pros::delay(800);
+
+  if (isRed == false) {
+  chassis.pid_swing_set(ez::LEFT_SWING, 120*sign, SWING_SPEED, 60, false);
+  } else if (isRed == true) {
+  chassis.pid_swing_set(ez::RIGHT_SWING, 120*sign, SWING_SPEED, 60, false);
+  }
+  chassis.pid_wait();
+  armPid.target_set(ARM_DOWN);
+
+  chassis.pid_drive_set(-8, DRIVE_SPEED);
+  chassis.pid_wait_until(-5);
   piston_clamp.set(true);
   chassis.pid_wait();
-  chassis.pid_turn_set(sign * 90_deg, TURN_SPEED);
-  chassis.pid_wait();
+
+  chassis.pid_turn_set(-137*sign, TURN_SPEED);
   moveIntake(12000);
-  chassis.pid_drive_set(20_in, DRIVE_SPEED);
   chassis.pid_wait();
 
-  if (isRed) {
-    chassis.pid_swing_set(ez::RIGHT_SWING, sign * 160_deg, SWING_SPEED);
-    chassis.pid_wait();
-  } else {
-    chassis.pid_swing_set(ez::LEFT_SWING, sign * 160_deg, SWING_SPEED);
-    chassis.pid_wait();
+  chassis.pid_drive_set(16.5, DRIVE_SPEED);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(-195*-1, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_drive_set(10, DRIVE_SPEED);
+  chassis.pid_wait();
+
+  if (isRed == false) {
+    chassis.pid_swing_set(ez::RIGHT_SWING, 115*sign,SWING_SPEED);
+  } else if (isRed == true) {
+    chassis.pid_swing_set(ez::LEFT_SWING, 115*sign,SWING_SPEED);
   }
-
-  chassis.pid_drive_set(18_in, DRIVE_SPEED);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(sign * 90_deg, TURN_SPEED);
+  chassis.pid_drive_set(16, DRIVE_SPEED);
+  chassis.pid_wait();
+  chassis.pid_turn_set(30, TURN_SPEED);
   chassis.pid_wait();
 
-  chassis.pid_drive_set(8_in, TURN_SPEED);
+  chassis.pid_drive_set(39_in, DRIVE_SPEED);
+  chassis.pid_wait_until(18);
+  piston_lift.set(true);
+
+  pros::delay(500);
+  piston_lift.set(false);
+  armPid.target_set(5000);
+  pros::delay(200);
+  chassis.pid_drive_set(-20, DRIVE_SPEED);
   chassis.pid_wait();
+  chassis.pid_turn_set(-45, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_drive_set(23, DRIVE_SPEED);
+
+
+/////////////////////
+  // chassis.pid_wait();
+
+  // chassis.pid_drive_set(39, DRIVE_SPEED);
+  // pros::delay(500);
+  //piston_lift.set(false);
+  //chassis.pid_wait();
+  //chassis.pid_drive_set(-18, DRIVE_SPEED);
+
+
+
+
+
+  
 }
 
 void neg5Red() { neg5(true); }

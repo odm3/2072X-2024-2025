@@ -48,8 +48,8 @@
 #define ODOM_DIAMETER  2
 #define OFFSET_VERT    0
 #define OFFSET_HORI    0
-#define DRIVE_CURVE_1  1
-#define DRIVE_CURVE_2  10
+#define DRIVE_CURVE_1  5
+#define DRIVE_CURVE_2  8
 #define DRIVE_SPEED    110
 #define TURN_SPEED     90
 #define SWING_SPEED    110
