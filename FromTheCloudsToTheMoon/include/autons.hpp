@@ -12,6 +12,18 @@ inline int allainceIndex = 1;
 void nothing();
 void drive12();
 
+void autoSkills();
+
+void posRed();
+void posBlue();
+
+void safePosRed();
+void safePosBlue();
+
+void ringRush(bool isRed);
+void ringRushRed();
+void ringRushBlue();
+
 void soloAwp(bool isRed);
 void soloAwpRed();
 void soloAwpBlue();

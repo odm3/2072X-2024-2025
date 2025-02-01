@@ -48,7 +48,7 @@
 #define ODOM_DIAMETER  2
 #define OFFSET_VERT    0
 #define OFFSET_HORI    0
-#define DRIVE_CURVE_1  5
+#define DRIVE_CURVE_1  3
 #define DRIVE_CURVE_2  8
 #define DRIVE_SPEED    110
 #define TURN_SPEED     90
@@ -147,9 +147,9 @@ inline void default_constants() {
 }
 
 
-#define armKp 2
-#define armKd 0
+#define armKp 3
+#define armKd 10
 inline ez::PID armPid(armKp, 0, armKd, 0, "Lady Brown PID");
-enum   armStates{ ARM_DOWN = 500, ARM_PRIME = 2500, ARM_SCORE = 15000, ARM_ALLIANCE = 18000};
+enum   armStates{ ARM_DOWN = 1000, ARM_PRIME = 2600, ARM_SCORE = 15000, ARM_ALLIANCE = 18000};
 inline int armStateIndex = 0;
 inline int armStateArray [2] = {ARM_DOWN, ARM_PRIME};

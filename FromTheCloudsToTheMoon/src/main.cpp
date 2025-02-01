@@ -41,16 +41,18 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-      {"Neg 5 Blue", neg5Blue},
-      {"Neg 5 Red", neg5Red},
       {"Blue soloAWP", soloAwpBlue},
       {"Red soloAWP", soloAwpRed},
-      {"Drive 12", drive12},
+      {"Pos 5 Blue", posBlue},
+      {"Pos 5 Red", posRed},
+      {"Neg 5 Red", neg5Red},
       {"Neg 5 Blue", neg5Blue},
+      {"Drive 12", drive12},
       {"Pos 2 Red", pos2Red},
       {"Pos 2 Blue", pos2Blue},
       {"Neg 2 Red", neg2Red},
       {"Neg 2 Blue", neg2Blue},
+      {"autoSkills", autoSkills},
       // {"Drive\n\nDrive forward and come back", drive_example},
       // {"Turn\n\nTurn 3 times.", turn_example},
       // {"Drive and Turn\n\nDrive forward, turn, come back", drive_and_turn},
@@ -246,7 +248,7 @@ void opcontrol() {
 
   while (true) {
     // Gives you some extras to make EZ-Template ezier
-    ez_template_extras();
+    //ez_template_extras();
 
     chassis.opcontrol_arcade_standard(ez::SPLIT);  // Tank control
 
