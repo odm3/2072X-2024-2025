@@ -255,15 +255,18 @@ void neg5(bool isRed) {
   chassis.pid_wait_until(-5);
   piston_clamp.set(true);
   chassis.pid_wait();
+  piston_doinker_right.set(true);
 
-  chassis.pid_turn_set(-137*sign, TURN_SPEED);
+  chassis.pid_turn_set(-139*sign, TURN_SPEED);
   moveIntake(12000);
   chassis.pid_wait();
 
-  chassis.pid_drive_set(16.5, DRIVE_SPEED);
+  chassis.pid_drive_set(16.5, 127);
   chassis.pid_wait();
+  piston_doinker_right.set(false);
 
-  chassis.pid_turn_set(-195*-1, TURN_SPEED);
+
+  chassis.pid_turn_set(-193*-1, TURN_SPEED);
   chassis.pid_wait();
   chassis.pid_drive_set(10, DRIVE_SPEED);
   chassis.pid_wait();
@@ -280,7 +283,7 @@ void neg5(bool isRed) {
   chassis.pid_turn_set(30, TURN_SPEED);
   chassis.pid_wait();
 
-  chassis.pid_drive_set(39_in, DRIVE_SPEED);
+  chassis.pid_drive_set(42_in, DRIVE_SPEED);
   chassis.pid_wait_until(18);
   piston_lift.set(true);
 
@@ -321,6 +324,7 @@ void neg5Blue() {
   chassis.pid_wait_until(-5);
   piston_clamp.set(true);
   chassis.pid_wait();
+  piston_doinker_left.set(true);
 
   chassis.pid_turn_set(-138*sign, TURN_SPEED);
   moveIntake(12000);
@@ -328,6 +332,7 @@ void neg5Blue() {
 
   chassis.pid_drive_set(15.8, DRIVE_SPEED);
   chassis.pid_wait();
+  piston_doinker_left.set(false);
 
   chassis.pid_turn_set(-168*-1, TURN_SPEED);
   chassis.pid_wait();
