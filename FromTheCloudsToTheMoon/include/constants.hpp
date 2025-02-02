@@ -36,7 +36,7 @@
 
 // sensor ports
 #define PORT_IMU            19
-#define PORT_ROTATION_ARM   8
+#define PORT_ROTATION_ARM   9
 #define PORT_DISTANCE_CLAMP 14
 #define PORT_OPTICAL_SORT   20
 #define PORT_ODOM_VERT      0
