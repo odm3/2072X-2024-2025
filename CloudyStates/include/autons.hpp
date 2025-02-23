@@ -1,7 +1,10 @@
 #pragma once
 
-void default_constants();
+// declaring qual autos
 
+// declaring elim autos
+
+// declaring example autos
 void drive_example();
 void turn_example();
 void drive_and_turn();

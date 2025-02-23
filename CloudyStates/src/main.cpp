@@ -3,10 +3,6 @@
 #include "pros/motors.h"
 #include "subsystems.hpp"
 
-/////
-// For installation, upgrading, documentations, and tutorials, check out our website!
-// https://ez-robotics.github.io/EZ-Template/
-/////
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -50,7 +46,7 @@ void initialize() {
 
   // Initialize EzChassis and auton selector
   EzChassis.initialize();
-  // LLCHASSIS.calibrate(false);
+  LLCHASSIS.calibrate(false);
   ez::as::initialize();
 
   //  
@@ -60,13 +56,14 @@ void initialize() {
 
   motor_intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);     //sets intake motor to coast and not resist external movement
   motor_arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);         //sets arm motor to hold to resist against gravity and other robots
-  optical_clamp.set_integration_time(20);
-  optical_clamp.set_led_pwm(100);
+  optical_clamp.set_integration_time(10);                     // sets the integration time of the optical sensor to 10ms
+  optical_sort.set_integration_time(10);                      // sets the integration time of the optical sensor to 10ms
+  optical_clamp.set_led_pwm(100);                            // sets the led brightness of the optical sensor to 100%
+  optical_sort.set_led_pwm(100);                             // sets the led brightness of the optical sensor to 100%
 
-  pros::Task arm_task(arm_t);
-  pros::Task intake_task(intake_t);
-
-
+  pros::Task arm_task(arm_t);                            // starts the arm task
+  pros::Task intake_task(intake_t);                      // starts the intake task
+  pros::Task piston_task(piston_control);                // starts the piston task
 
   master.rumble(EzChassis.drive_imu_calibrated() ? "." : "---");
 }
@@ -105,6 +102,7 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
+  isAuto = true;
   EzChassis.pid_targets_reset();                // Resets PID targets to 0
   EzChassis.drive_imu_reset();                  // Reset gyro position to 0
   EzChassis.drive_sensor_reset();               // Reset drive sensors to 0
@@ -231,23 +229,19 @@ void ez_template_extras() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-  // This is preference to what you like to drive on
+  // Set isAuto to false to allow for user control
+  isAuto = false;
+  // Sets the motors to coast when not in autonomous for smoother driving and protecting motors
   EzChassis.drive_brake_set(MOTOR_BRAKE_COAST);
 
   while (true) {
     // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
 
-    //EzChassis.opcontrol_tank();  // Tank control
-    EzChassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
-    //EzChassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
-    // EzChassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
-    // EzChassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
+    //EzChassis.opcontrol_tank();  // Activates tank controls
+    EzChassis.opcontrol_arcade_standard(ez::SPLIT);   // Activates arcade control
 
-    // . . .
-    // Put more user control code here!
-    // . . .
 
-    pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
+    pros::delay(ez::util::DELAY_TIME);  // Delay to prevent the v5 cortex from being overworked
   }
 }
