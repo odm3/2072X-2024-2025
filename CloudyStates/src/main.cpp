@@ -1,28 +1,12 @@
 #include "main.h"
-#include "lemlib/api.hpp" // IWYU pragma: keep
+#include "controls.hpp"
+#include "pros/motors.h"
+#include "subsystems.hpp"
 
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
 // https://ez-robotics.github.io/EZ-Template/
 /////
-
-// Chassis constructor
-ez::Drive chassis(
-    // These are your drive motors, the first motor is used for sensing!
-    {1, 2, 3},     // Left Chassis Ports (negative port will reverse it!)
-    {-4, -5, -6},  // Right Chassis Ports (negative port will reverse it!)
-
-    7,      // IMU Port
-    4.125,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
-    343);   // Wheel RPM = cartridge * (motor gear / wheel gear)
-
-// Uncomment the trackers you're using here!
-// - `8` and `9` are smart ports (making these negative will reverse the sensor)
-//  - you should get positive values on the encoders going FORWARD and RIGHT
-// - `2.75` is the wheel diameter
-// - `4.0` is the distance from the center of the wheel to the center of the robot
-// ez::tracking_wheel horiz_tracker(8, 2.75, 4.0);  // This tracking wheel is perpendicular to the drive wheels
-// ez::tracking_wheel vert_tracker(9, 2.75, 4.0);   // This tracking wheel is parallel to the drive wheels
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -36,26 +20,15 @@ void initialize() {
 
   pros::delay(500);  // Stop the user from doing anything while legacy ports configure
 
-  // Look at your horizontal tracking wheel and decide if it's in front of the midline of your robot or behind it
-  //  - change `back` to `front` if the tracking wheel is in front of the midline
-  //  - ignore this if you aren't using a horizontal tracker
-  // chassis.odom_tracker_back_set(&horiz_tracker);
-  // Look at your vertical tracking wheel and decide if it's to the left or right of the center of the robot
-  //  - change `left` to `right` if the tracking wheel is to the right of the centerline
-  //  - ignore this if you aren't using a vertical tracker
-  // chassis.odom_tracker_left_set(&vert_tracker);
-
-  // Configure your chassis controls
-  chassis.opcontrol_curve_buttons_toggle(true);   // Enables modifying the controller curve with buttons on the joysticks
-  chassis.opcontrol_drive_activebrake_set(0.0);   // Sets the active brake kP. We recommend ~2.  0 will disable.
-  chassis.opcontrol_curve_default_set(0.0, 0.0);  // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)
-
-  // Set the drive to your own constants from autons.cpp!
+  // Configure your EzChassis controls
+  EzChassis.opcontrol_curve_buttons_toggle(true);   // Enables modifying the controller curve with buttons on the joysticks
+  EzChassis.opcontrol_drive_activebrake_set(0.0);   // Sets the active brake kP. We recommend ~2.  0 will disable.
+  EzChassis.opcontrol_curve_default_set(EZ_DRIVE_CURVE_1, EZ_DRIVE_CURVE_2);  // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)
   default_constants();
 
   // These are already defaulted to these buttons, but you can change the left/right curve buttons here!
-  // chassis.opcontrol_curve_buttons_left_set(pros::E_CONTROLLER_DIGITAL_LEFT, pros::E_CONTROLLER_DIGITAL_RIGHT);  // If using tank, only the left side is used.
-  // chassis.opcontrol_curve_buttons_right_set(pros::E_CONTROLLER_DIGITAL_Y, pros::E_CONTROLLER_DIGITAL_A);
+  // EzChassis.opcontrol_curve_buttons_left_set(pros::E_CONTROLLER_DIGITAL_LEFT, pros::E_CONTROLLER_DIGITAL_RIGHT);  // If using tank, only the left side is used.
+  // EzChassis.opcontrol_curve_buttons_right_set(pros::E_CONTROLLER_DIGITAL_Y, pros::E_CONTROLLER_DIGITAL_A);
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
@@ -75,10 +48,27 @@ void initialize() {
       {"Measure Offsets\n\nThis will turn the robot a bunch of times and calculate your offsets for your tracking wheels.", measure_offsets},
   });
 
-  // Initialize chassis and auton selector
-  chassis.initialize();
+  // Initialize EzChassis and auton selector
+  EzChassis.initialize();
+  // LLCHASSIS.calibrate(false);
   ez::as::initialize();
-  master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
+
+  //  
+  // if (rotation_arm.get_position() <= -350000) {
+  //   rotation_arm.set_position(rotation_arm.get_position() + 360);
+  // }
+
+  motor_intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);     //sets intake motor to coast and not resist external movement
+  motor_arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);         //sets arm motor to hold to resist against gravity and other robots
+  optical_clamp.set_integration_time(20);
+  optical_clamp.set_led_pwm(100);
+
+  pros::Task arm_task(arm_t);
+  pros::Task intake_task(intake_t);
+
+
+
+  master.rumble(EzChassis.drive_imu_calibrated() ? "." : "---");
 }
 
 /**
@@ -115,11 +105,11 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-  chassis.pid_targets_reset();                // Resets PID targets to 0
-  chassis.drive_imu_reset();                  // Reset gyro position to 0
-  chassis.drive_sensor_reset();               // Reset drive sensors to 0
-  chassis.odom_xyt_set(0_in, 0_in, 0_deg);    // Set the current position, you can start at a specific position with this
-  chassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
+  EzChassis.pid_targets_reset();                // Resets PID targets to 0
+  EzChassis.drive_imu_reset();                  // Reset gyro position to 0
+  EzChassis.drive_sensor_reset();               // Reset drive sensors to 0
+  EzChassis.odom_xyt_set(0_in, 0_in, 0_deg);    // Set the current position, you can start at a specific position with this
+  EzChassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
 
   /*
   Odometry and Pure Pursuit are not magic
@@ -160,20 +150,20 @@ void ez_screen_task() {
     // Only run this when not connected to a competition switch
     if (!pros::competition::is_connected()) {
       // Blank page for odom debugging
-      if (chassis.odom_enabled() && !chassis.pid_tuner_enabled()) {
+      if (EzChassis.odom_enabled() && !EzChassis.pid_tuner_enabled()) {
         // If we're on the first blank page...
         if (ez::as::page_blank_is_on(0)) {
           // Display X, Y, and Theta
-          ez::screen_print("x: " + util::to_string_with_precision(chassis.odom_x_get()) +
-                               "\ny: " + util::to_string_with_precision(chassis.odom_y_get()) +
-                               "\na: " + util::to_string_with_precision(chassis.odom_theta_get()),
+          ez::screen_print("x: " + util::to_string_with_precision(EzChassis.odom_x_get()) +
+                               "\ny: " + util::to_string_with_precision(EzChassis.odom_y_get()) +
+                               "\na: " + util::to_string_with_precision(EzChassis.odom_theta_get()),
                            1);  // Don't override the top Page line
 
           // Display all trackers that are being used
-          screen_print_tracker(chassis.odom_tracker_left, "l", 4);
-          screen_print_tracker(chassis.odom_tracker_right, "r", 5);
-          screen_print_tracker(chassis.odom_tracker_back, "b", 6);
-          screen_print_tracker(chassis.odom_tracker_front, "f", 7);
+          screen_print_tracker(EzChassis.odom_tracker_left, "l", 4);
+          screen_print_tracker(EzChassis.odom_tracker_right, "r", 5);
+          screen_print_tracker(EzChassis.odom_tracker_back, "b", 6);
+          screen_print_tracker(EzChassis.odom_tracker_front, "f", 7);
         }
       }
     }
@@ -207,23 +197,23 @@ void ez_template_extras() {
     //  * use A and Y to increment / decrement the constants
     //  * use the arrow keys to navigate the constants
     if (master.get_digital_new_press(DIGITAL_X))
-      chassis.pid_tuner_toggle();
+      EzChassis.pid_tuner_toggle();
 
     // Trigger the selected autonomous routine
     if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) {
-      pros::motor_brake_mode_e_t preference = chassis.drive_brake_get();
+      pros::motor_brake_mode_e_t preference = EzChassis.drive_brake_get();
       autonomous();
-      chassis.drive_brake_set(preference);
+      EzChassis.drive_brake_set(preference);
     }
 
     // Allow PID Tuner to iterate
-    chassis.pid_tuner_iterate();
+    EzChassis.pid_tuner_iterate();
   }
 
   // Disable PID Tuner when connected to a comp switch
   else {
-    if (chassis.pid_tuner_enabled())
-      chassis.pid_tuner_disable();
+    if (EzChassis.pid_tuner_enabled())
+      EzChassis.pid_tuner_disable();
   }
 }
 
@@ -242,17 +232,17 @@ void ez_template_extras() {
  */
 void opcontrol() {
   // This is preference to what you like to drive on
-  chassis.drive_brake_set(MOTOR_BRAKE_COAST);
+  EzChassis.drive_brake_set(MOTOR_BRAKE_COAST);
 
   while (true) {
     // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
 
-    chassis.opcontrol_tank();  // Tank control
-    // chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
-    // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
-    // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
-    // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
+    //EzChassis.opcontrol_tank();  // Tank control
+    EzChassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
+    //EzChassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
+    // EzChassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
+    // EzChassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
 
     // . . .
     // Put more user control code here!

@@ -17,15 +17,15 @@
 #include "pros/rotation.hpp"
 
 // motor ports
-#define PORT_LF -18
-#define PORT_LM 7
-#define PORT_LB -6
-#define PORT_RF 2
-#define PORT_RM -4
-#define PORT_RB 3
+#define PORT_LF 18
+#define PORT_LM -19
+#define PORT_LB -20
+#define PORT_RF 13
+#define PORT_RM -12
+#define PORT_RB 11
 
-#define PORT_INTAKE    -1
-#define PORT_ARM        12
+#define PORT_INTAKE    15
+#define PORT_ARM       9
 
 // piston ports
 #define PORT_CLAMP         'A'
@@ -35,10 +35,10 @@
 #define PORT_LIMIT_HOOK    'H'
 
 // sensor ports
-#define PORT_IMU            19
-#define PORT_ROTATION_ARM   8
-#define PORT_DISTANCE_CLAMP 14
-#define PORT_OPTICAL_SORT   20
+#define PORT_IMU            2
+#define PORT_ROTATION_ARM   10
+#define PORT_DISTANCE_CLAMP 16
+#define PORT_OPTICAL_SORT   8
 #define PORT_ODOM_VERT      0
 #define PORT_ODOM_HORI      0
 
@@ -99,7 +99,7 @@ inline pros::adi::DigitalIn limitHook(PORT_LIMIT_HOOK);
 // Chassis constructor
 inline ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-     {PORT_LF, PORT_LM, PORT_RB},     // Left Chassis Ports (negative port will reverse it!)
+    {PORT_LF, PORT_LM, PORT_LB},     // Left Chassis Ports (negative port will reverse it!)
     {PORT_RF, PORT_RM, PORT_RB},    // Right Chassis Ports (negative port will reverse it!)
 
     PORT_IMU,      // IMU Port
