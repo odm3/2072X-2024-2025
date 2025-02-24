@@ -1,5 +1,5 @@
 #pragma once
-
+// lists out all the header files that are used in the project
 #include "EZ-Template/PID.hpp"
 #include "EZ-Template/api.hpp"
 #include "EZ-Template/piston.hpp"
@@ -16,33 +16,34 @@
 #include "pros/optical.hpp"
 #include "pros/rotation.hpp"
 
-// motor ports
-#define PORT_LF -18
-#define PORT_LM 7
-#define PORT_LB -6
-#define PORT_RF 2
-#define PORT_RM -4
-#define PORT_RB 3
+//defines drive motor port variables
+#define PORT_LF 18
+#define PORT_LM -19
+#define PORT_LB -20
+#define PORT_RF 13
+#define PORT_RM -12
+#define PORT_RB 11
 
-#define PORT_INTAKE    -1
-#define PORT_ARM        12
+//defines subsystem motor port variables
+#define PORT_INTAKE    15
+#define PORT_ARM       9
 
-// piston ports
+//defines piston port variables
 #define PORT_CLAMP         'A'
 #define PORT_LIFT          'C'
 #define PORT_DOINKER_LEFT  'D'
 #define PORT_DOINKER_RIGHT 'B'
 #define PORT_LIMIT_HOOK    'H'
 
-// sensor ports
-#define PORT_IMU            19
-#define PORT_ROTATION_ARM   9
-#define PORT_DISTANCE_CLAMP 14
-#define PORT_OPTICAL_SORT   20
+//defines sensor port variables
+#define PORT_IMU            2
+#define PORT_ROTATION_ARM   10
+#define PORT_DISTANCE_CLAMP 16
+#define PORT_OPTICAL_SORT   8
 #define PORT_ODOM_VERT      0
 #define PORT_ODOM_HORI      0
 
-// other constants
+//defines drive constants
 #define WHEEL_DIAMETER 2.75
 #define DRIVE_RPM      450 
 #define ODOM_DIAMETER  2
@@ -55,7 +56,7 @@
 #define SWING_SPEED    110
 #define ACTIVE_BREAK   0
 
-// buttons
+//defines button variables
 #define BUTTON_INTAKE         pros::E_CONTROLLER_DIGITAL_L1
 #define BUTTON_INTAKE_REVERSE pros::E_CONTROLLER_DIGITAL_L2
 #define BUTTON_ARM            pros::E_CONTROLLER_DIGITAL_R1
@@ -99,7 +100,7 @@ inline pros::adi::DigitalIn limitHook(PORT_LIMIT_HOOK);
 // Chassis constructor
 inline ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-     {PORT_LF, PORT_LM, PORT_RB},     // Left Chassis Ports (negative port will reverse it!)
+    {PORT_LF, PORT_LM, PORT_LB},     // Left Chassis Ports (negative port will reverse it!)
     {PORT_RF, PORT_RM, PORT_RB},    // Right Chassis Ports (negative port will reverse it!)
 
     PORT_IMU,      // IMU Port

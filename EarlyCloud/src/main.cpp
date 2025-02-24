@@ -240,7 +240,7 @@ void opcontrol() {
 	ringStopperControl();
 	// wallStakeLoad();
 
-	controlla.print(0, 0, "torque: %.2f", conveyor.get_torque());
+	controlla.print(0, 0, "torque: %.2f", conveyor.get_torque());	//prints the torque of the conveyor to the controller screen
 
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations

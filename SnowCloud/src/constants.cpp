@@ -14,8 +14,10 @@
 #include "pros/motors.hpp"
 #include "pros/rotation.hpp"
 
+// contructs the controller
 pros::Controller controlla(pros::E_CONTROLLER_MASTER);
 
+// contructs the drive motors and motorgroups
 pros::Motor MOTOR_LF(PORT_LF, pros::v5::MotorGears::blue);
 pros::Motor MOTOR_LM(PORT_LM, pros::v5::MotorGears::blue);
 pros::Motor MOTOR_LB(PORT_LB, pros::v5::MotorGears::blue);
@@ -25,18 +27,21 @@ pros::Motor MOTOR_RB(PORT_RB, pros::v5::MotorGears::blue);
 pros::MotorGroup MOTORGROUP_DRIVE_LEFT({PORT_LF, PORT_LM, PORT_LB}, pros::v5::MotorGears::blue); 
 pros::MotorGroup MOTORGROUP_DRIVE_RIGHT({PORT_RF, PORT_RM, PORT_RB}, pros::v5::MotorGears::blue);
 
+// decalres the subsystem motors
 pros::Motor MOTOR_INTAKE(PORT_INTAKE, pros::v5::MotorGears::blue);
 pros::Motor MOTOR_ARM(PORT_ARM, pros::v5::MotorGears::red);
 // pros::Motor MOTOR_ARM_LEFT(PORT_ARM_LEFT, pros::v5::MotorGears::green);
 // pros::Motor MOTOR_ARM_RIGHT(PORT_ARM_RIGHT, pros::v5::MotorGears::green);
 // pros::MotorGroup MOTORGROUP_ARM({PORT_ARM_LEFT, PORT_ARM_RIGHT}, pros::MotorGears::green);
 
+// contructs the sensors
 pros::Imu INERTIAL(PORT_IMU);
 pros::Rotation ROTATION_ODOM_HORI(PORT_ROTATION_ODOM_HORI);
 pros::Rotation ROTATION_ODOM_VERT(PORT_ROTATION_ODOM_VERT);
 pros::Rotation ROTATION_ARM(PORT_ROTATION_ARM);
 pros::Rotation ROTATION_INTAKE(PORT_ROTATION_INTAKE);
 
+// contructs the pistons and sensors
 pros::adi::DigitalOut PISTON_CLAMP(PORT__CLAMP, LOW);
 pros::adi::DigitalOut PISTON_DOINKER(PORT_DOINKER, LOW);
 pros::adi::DigitalOut PISTON_LIFT(PORT_LIFT, LOW);
@@ -44,10 +49,11 @@ pros::adi::DigitalOut PISTON_HANG(PORT_HANG, LOW);
 pros::Distance DISTANCE_AUTO_CLAMP(PORT_AUTO_CLAMP);
 pros::Optical OPTICAL_COLOR(PORT_OPTICAL_COLOR);
 
+// contructs the tracking wheels
 lemlib::TrackingWheel ODOM_HORI(&ROTATION_ODOM_HORI, lemlib::Omniwheel::NEW_2, OFFSET_HORI);
 lemlib::TrackingWheel ODOM_VERT(&ROTATION_ODOM_VERT, lemlib::Omniwheel::NEW_2, OFFSET_VERT);
 
-// drivetrain settings
+// contructs drivetrain settings
 lemlib::Drivetrain LL_DRIVETRAIN(&MOTORGROUP_DRIVE_LEFT, // left motor group
                               &MOTORGROUP_DRIVE_RIGHT, // right motor group
                               13, // 10 inch track width
@@ -63,7 +69,7 @@ lemlib::OdomSensors ODOM_SENSORS(&ODOM_VERT, // vertical tracking wheel 1, set t
                             &INERTIAL // inertial sensor
 );
 
-// lateral PID controller
+// contructs lateral PID controller
 lemlib::ControllerSettings LL_LAT_CONTROLLER(10, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               3, // derivative gain (kD)
@@ -75,7 +81,7 @@ lemlib::ControllerSettings LL_LAT_CONTROLLER(10, // proportional gain (kP)
                                               20 // maximum acceleration (slew)
 );
 
-// angular PID controller
+// contructs angular PID controller
 lemlib::ControllerSettings LL_ANG_CONTROLLER(2, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               10, // derivative gain (kD)
@@ -87,14 +93,17 @@ lemlib::ControllerSettings LL_ANG_CONTROLLER(2, // proportional gain (kP)
                                               0 // maximum acceleration (slew)
 );
 
+// contructs the lemlib chassis
 lemlib::Chassis LL_CHASSIS(LL_DRIVETRAIN, // drivetrain settings
                         LL_LAT_CONTROLLER, // lateral PID settings
                         LL_ANG_CONTROLLER, // angular PID settings
                         ODOM_SENSORS // odometry sensors
 );
 
- ez::PID armPID(2, 0.0, 0,0, "Lady Brown");
+// contructs the arm pid
+ez::PID armPID(2, 0.0, 0,0, "Lady Brown");
 
+// contructs the default constants
 void default_constants() {
   EZ_CHASSIS.pid_heading_constants_set(3, 0, 20);
   EZ_CHASSIS.pid_drive_constants_set(10, 0, 100);
