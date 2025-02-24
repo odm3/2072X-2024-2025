@@ -2,8 +2,7 @@
 
 void default_constants();
 
-//compition autos
-
+//competition autos
 void noAuto();
 void driveToLadder();
 void EzQualsLeft();
@@ -34,7 +33,6 @@ void Skills();
 
 
 // tuning pid autos
-
 void tuneLateralLemLib();
 void tuneAngularLemLib();
 void drive_example();

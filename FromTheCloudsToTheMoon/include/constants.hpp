@@ -1,5 +1,5 @@
 #pragma once
-
+// lists out all the header files that are used in the project
 #include "EZ-Template/PID.hpp"
 #include "EZ-Template/api.hpp"
 #include "EZ-Template/piston.hpp"
@@ -16,7 +16,7 @@
 #include "pros/optical.hpp"
 #include "pros/rotation.hpp"
 
-// motor ports
+//defines drive motor port variables
 #define PORT_LF 18
 #define PORT_LM -19
 #define PORT_LB -20
@@ -24,17 +24,18 @@
 #define PORT_RM -12
 #define PORT_RB 11
 
+//defines subsystem motor port variables
 #define PORT_INTAKE    15
 #define PORT_ARM       9
 
-// piston ports
+//defines piston port variables
 #define PORT_CLAMP         'A'
 #define PORT_LIFT          'C'
 #define PORT_DOINKER_LEFT  'D'
 #define PORT_DOINKER_RIGHT 'B'
 #define PORT_LIMIT_HOOK    'H'
 
-// sensor ports
+//defines sensor port variables
 #define PORT_IMU            2
 #define PORT_ROTATION_ARM   10
 #define PORT_DISTANCE_CLAMP 16
@@ -42,7 +43,7 @@
 #define PORT_ODOM_VERT      0
 #define PORT_ODOM_HORI      0
 
-// other constants
+//defines drive constants
 #define WHEEL_DIAMETER 2.75
 #define DRIVE_RPM      450 
 #define ODOM_DIAMETER  2
@@ -55,7 +56,7 @@
 #define SWING_SPEED    110
 #define ACTIVE_BREAK   0
 
-// buttons
+//defines button variables
 #define BUTTON_INTAKE         pros::E_CONTROLLER_DIGITAL_L1
 #define BUTTON_INTAKE_REVERSE pros::E_CONTROLLER_DIGITAL_L2
 #define BUTTON_ARM            pros::E_CONTROLLER_DIGITAL_R1
@@ -146,7 +147,7 @@ inline void default_constants() {
   chassis.pid_angle_behavior_set(ez::shortest);  // Changes the default behavior for turning, this defaults it to the shortest path there
 }
 
-
+//arm variables defines and declares
 #define armKp 2
 #define armKd 0
 inline ez::PID armPid(armKp, 0, armKd, 0, "Lady Brown PID");

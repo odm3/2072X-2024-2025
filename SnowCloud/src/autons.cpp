@@ -40,12 +40,8 @@ void drive_example() {
   // pros::delay(500);
 }
 
-///
 // Turn Example
-///
 void turn_example() {
-  // The first parameter is the target in degrees
-  // The second parameter is max speed the robot will drive at
 
   EZ_CHASSIS.pid_turn_set(90_deg, TURN_SPEED, true);
   EZ_CHASSIS.pid_wait();

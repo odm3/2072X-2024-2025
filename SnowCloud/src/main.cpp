@@ -9,9 +9,11 @@
 #include "pros/misc.h"
 #include "pros/motors.h"
 
+// declares the color sort variables
 bool doColorSort = true;
 bool isRedAllinace;
 
+// declares the function for the color sorting
 void colorSortTask()    {
     pros::delay(1000);
     while (true) {
@@ -29,6 +31,7 @@ void colorSortTask()    {
     }
 }
 
+// toggles the color sort function
 void controlColorSort() {
     if (controlla.get_digital_new_press(BUTTON_COLOR_SORT)) {
         doColorSort = !doColorSort;
@@ -92,16 +95,18 @@ void initialize() {
   EZ_CHASSIS.initialize();
   LL_CHASSIS.calibrate();
   ez::as::initialize();
+  // sets the subsystem motors to their brake modes
   MOTOR_INTAKE.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   MOTOR_ARM.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   //ROTATION_ARM.reset_position();
-  armPID.target_set(ROTATION_ARM.get_position());
+  armPID.target_set(ROTATION_ARM.get_position()); // Sets the target to the current position
+  // starts all of the tasks
   pros::Task lbTask(controlArmTask);
   pros::Task clampTask(autoClamp_task);
   pros::Task detectTask(detectClamp);
   pros::Task colorSort(colorSortTask);
   // MOTORGROUP_ARM.tare_position();
-  master.rumble("_");
+  master.rumble("_"); // Rumble the controller to let the driver know that the robot is ready
 }
 
 /**
@@ -162,7 +167,7 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-  // This is preference to what you like to drive on
+  // Sets the drive motors to coast
   EZ_CHASSIS.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
   LL_CHASSIS.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
 
@@ -170,7 +175,7 @@ void opcontrol() {
   while (true) {
     // PID Tuner
     // After you find values that you're happy with, you'll have to set them in auton.cpp
-    if (!pros::competition::is_connected()) {
+    if (!pros::competition::is_connected()) { // Only run PID Tuner if not in competition
       // Enable / Disable PID Tuner
       //  When enabled:
       //  * use A and Y to increment / decrement the constants
@@ -194,9 +199,7 @@ void opcontrol() {
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
 
-    // . . .
-    // Put more user control code here!
-    // . . .
+    //runs the control functions in this infinite loop
     controlIntake();
     controlArm();
     // controlArmManual();
@@ -205,6 +208,7 @@ void opcontrol() {
     controlLift();
     controlArmPrime();
     controlArmScore();
+    //prints various values to the brain screen for debugging
     pros::lcd::print(6, "Rotation Value: %d", ROTATION_ARM.get_position());
     pros::lcd::print(7, "PID target get: %d",armPID.target_get());
     pros::lcd::print(8, "Lady Brown State: %d Value: %d", lbArray[lbDriverIndex], lbDriverIndex);

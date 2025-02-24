@@ -240,15 +240,16 @@ void ez_template_extras() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-  // This is preference to what you like to drive on
+  //sets the drive motors to coast
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
 
   while (true) {
-    // Gives you some extras to make EZ-Template ezier
+    // ez template extras: run auto and pid tuner in opcontrol
     ez_template_extras();
 
-    chassis.opcontrol_arcade_standard(ez::SPLIT);  // Tank control
+    chassis.opcontrol_arcade_standard(ez::SPLIT);  // Arcade control
 
+    //driver control functions
     // control_arm();
     control_intake();
     control_clamp();

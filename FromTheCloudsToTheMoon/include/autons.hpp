@@ -1,5 +1,6 @@
 #pragma once
 
+//declare color soring variables
 inline bool passRed = false;
 inline bool sign = true;
 inline int totalRings = 0;
@@ -9,27 +10,32 @@ inline int blueRings = 0;
 enum allaince{red = 1, blue = -1, red1 = 5, red2 = 25, blue1 = 210, blue2 = 230};
 inline int allainceIndex = 1;
 
+//declaring small autos
 void nothing();
 void drive12();
 
+//declaring soloAwp autos
 void soloAwp(bool isRed);
 void soloAwpRed();
 void soloAwpBlue();
 
+//declaring 5 ring autos
 void pos5Elims(bool isRed);
 void pos5ElimsRed();
 void pos5ElimsBlue();
+void neg5(bool isRed);
+void neg5Red();
+void neg5Blue();
 
+//declaring 2 ring autos
 void pos2(bool isRed);
 void pos2Red();
 void pos2Blue();
 void neg2(bool isRed);
 void neg2Red();
 void neg2Blue();
-void neg5(bool isRed);
-void neg5Red();
-void neg5Blue();
 
+//declaring example autos
 void drive_example();
 void turn_example();
 void drive_and_turn();
