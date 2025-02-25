@@ -1,5 +1,6 @@
 // list of includesa
 #include "controls.hpp"
+#include <cmath>
 #include "main.h"
 #include "EZ-Template/util.hpp"
 #include "pros/llemu.hpp"
@@ -29,8 +30,14 @@ void armPos(int target) {
     armPid.target_set(target);
 }
 
-// function for controlling the arm
-void arm_control() {
+void arm_wait() {
+    while (armPid.exit_condition(motor_arm, true) == ez::RUNNING) {
+        pros::delay(ez::util::DELAY_TIME);
+    }
+    }
+
+// function for controlling the arm ***LEGACY***
+void arm_control_legacy() {
     if (isAuto) { return; }    // if in auto, return
     else if (controlla.get_digital_new_press(BUTTON_ARM_PRIME)) {   // if the arm prime button is pressed, cycle through the arm states using this code
         if (armState == 0) { armPos(ARM_PRIME1); armState++; }       // if the arm state is 0, set the arm position to ARM_PRIME1 and increment the arm state
@@ -39,21 +46,35 @@ void arm_control() {
     }
     else if (controlla.get_digital_new_press(BUTTON_ARM_SCORE)) {
         armPos(ARM_SCORE);
+        armState = 0;
     }
+}
+
+void arm_control() {
+    if (isAuto) { return; }    // if in auto, return
+    else if (controlla.get_digital_new_press(BUTTON_ARM_PRIME)) { armPos(ARM_PRIME1); }  // if the arm prime button is pressed, set the arm position to ARM_PRIME1
 }
 
 // task for controlling the arm
 void arm_t() {
     pros::delay(100);   // small delay to prevent the task from running when ez-temp is initializing
     while (true) {    // infinite loop
-        if (controlla.get_digital(BUTTON_ARM)) { arm_vltg = 12000; }                // if the arm button is pressed, set the arm voltage variable to 12000
-        else if (controlla.get_digital(BUTTON_ARM_REVERSE)) { arm_vltg = -12000; }  // if the arm reverse button is pressed, set the arm voltage variable to -12000
-        else { arm_vltg = 0; }                                                             // if no buttons are pressed, set the arm voltage variable to 0
-        // else { arm_vltg = armPid.compute(rotation_arm.get_position()); }
+        if (controlla.get_digital(BUTTON_ARM)) {
+            arm_vltg = 12000;
+            arm_wait();
+            armPos(rotation_arm.get_angle());
+            }                // if the arm button is pressed, set the arm voltage variable to 12000
+        else if (controlla.get_digital(BUTTON_ARM_REVERSE)) {
+            arm_vltg = -12000;
+            arm_wait();
+            armPos(rotation_arm.get_angle());
+        }  // if the arm reverse button is pressed, set the arm voltage variable to -12000
+        //else { arm_vltg = 0; }                                                             // if no buttons are pressed, set the arm voltage variable to 0
+        else { arm_vltg = armPid.compute(rotation_arm.get_angle()); }
         arm_control();                                                                      // run the arm control function to constantly update the arm voltage variable during driver control
         motor_arm.move_voltage(arm_vltg);                                          // move the arm motor with the arm voltage variable
         pros::lcd::print(3, "rotation state: %d", armState);
-        pros::lcd::print(4, "arm rotation value: %f", rotation_arm.get_position());
+        pros::lcd::print(5, "angle: %d", rotation_arm.get_angle());
 
         pros::delay(ez::util::DELAY_TIME);                                    // delay to prevent the v5 cortex from being overworked
     }

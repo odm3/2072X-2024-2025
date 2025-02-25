@@ -29,7 +29,7 @@
 
 // declaring smartwire sensor port variables
 #define PORT_IMU            2
-#define PORT_ROTATION_ARM   9
+#define PORT_ROTATION_ARM   -9
 #define PORT_OPTICAL_CLAMP  17
 #define PORT_OPTICAL_SORT   8
 #define PORT_ODOM_VERT      13

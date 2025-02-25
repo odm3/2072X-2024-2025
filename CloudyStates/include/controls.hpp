@@ -16,18 +16,17 @@ void intake_control();
 void intake_t();
 
 // declaring arm variables
-#define armKp 2
-#define armKd 0
 inline int arm_vltg = 0;
 inline int armState = 0;
-enum armStates{ARM_DOWN = 0, ARM_PRIME1 = 2000, ARM_PRIME2 = 4000, ARM_SCORE = 12000, ARM_ALLIANCE = 18000};
+enum armStates{ARM_DOWN = 1000, ARM_PRIME1 = 3500, ARM_PRIME2 = 5000, ARM_SCORE = 14000, ARM_ALLIANCE = 18000};
 
 // declaring arm PID control loop
-inline ez::PID armPid(armKp, 0, armKd, 0, "Lady Brown PID");
+inline ez::PID armPid(2, 0, 10, 0, "Lady Brown PID");
 
 // declaring arm functions
 void armPos(int target);
 void arm_control();
+void arm_control_legacy();
 void arm_t();
 
 // declaring piston variables

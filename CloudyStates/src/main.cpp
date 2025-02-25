@@ -53,9 +53,9 @@ void initialize() {
   // if (rotation_arm.get_position() <= -350000) {
   //   rotation_arm.set_position(rotation_arm.get_position() + 360);
   // }
-
   motor_intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);     //sets intake motor to coast and not resist external movement
   motor_arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);         //sets arm motor to hold to resist against gravity and other robots
+  rotation_arm.set_reversed(true);
   optical_clamp.set_integration_time(10);                     // sets the integration time of the optical sensor to 10ms
   optical_sort.set_integration_time(10);                      // sets the integration time of the optical sensor to 10ms
   optical_clamp.set_led_pwm(100);                            // sets the led brightness of the optical sensor to 100%
