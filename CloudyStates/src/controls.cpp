@@ -4,6 +4,7 @@
 #include "main.h"
 #include "EZ-Template/util.hpp"
 #include "pros/llemu.hpp"
+#include "pros/misc.h"
 #include "pros/rtos.hpp"
 #include "subsystems.hpp"
 
@@ -17,7 +18,7 @@ void intake_control() {
 
 // task for controlling the intake
 void intake_t() {
-    pros::delay(100);   // small delay to prevent the task from running when ez-temp is initializing
+    pros::delay(2000);   // small delay to prevent the task from running when ez-temp is initializing
     while (true) {          // infinite loop
         intake_control();   // run the intake control function to constantly update the intake voltage variable during driver control
         motor_intake.move_voltage(intake_vltg);  // move the intake motor with the intake voltage variable
@@ -57,7 +58,7 @@ void arm_control() {
 
 // task for controlling the arm
 void arm_t() {
-    pros::delay(100);   // small delay to prevent the task from running when ez-temp is initializing
+    pros::delay(2000);   // small delay to prevent the task from running when ez-temp is initializing
     while (true) {    // infinite loop
         if (controlla.get_digital(BUTTON_ARM)) {
             arm_vltg = 12000;
@@ -74,32 +75,48 @@ void arm_t() {
         arm_control();                                                                      // run the arm control function to constantly update the arm voltage variable during driver control
         motor_arm.move_voltage(arm_vltg);                                          // move the arm motor with the arm voltage variable
         pros::lcd::print(3, "rotation state: %d", armState);
+        pros::lcd::print(4, "imu heading: %d", imu.get_heading());
         pros::lcd::print(5, "angle: %d", rotation_arm.get_angle());
 
         pros::delay(ez::util::DELAY_TIME);                                    // delay to prevent the v5 cortex from being overworked
     }
 }
 
-// function for color sorting the rings
-void colorSort() {
-    if (!runColorSort) { return; }  // if the color sort variable is false, return
-    
-}
+// // Driver Control Functions
+// void clampControl() {
+//     double curDistance = optical_clamp.get_proximity();
+//     if (clampState == false && curDistance < AUTOCLAMP_DISTANCE && autoClampActivated && !tempDisableAutoclamp) { // unclamped and ready to auto clamp
+//         clampState = true;
+//         tempDisableAutoclamp = true;
+//     }
+//     if (controlla.get_digital_new_press(BUTTON_CLAMP)) { // button pressed 
+//         clampState = false;
+//     }
+//     if (!controlla.get_digital(BUTTON_CLAMP)) {
+//         clampState = true;
+//         tempDisableAutoclamp = true;
+//     }
+//     if (curDistance > AUTOCLAMP_DISTANCEREACTIVATE) {
+//         tempDisableAutoclamp = false;
+//     }
+// }
 
 // function for controlling the pistons
 void piston_control() {
     if (isAuto) { return;} // if in auto, return
-    else if (controlla.get_digital_new_press(BUTTON_CLAMP)) { clampState = !clampState; }  // if the clamp button is pressed, toggle the clamp state
-    else if (controlla.get_digital_new_press(BUTTON_LIFT)) { liftState = !liftState; }    // if the lift button is pressed, toggle the lift state
-    else if (controlla.get_digital_new_press(BUTTON_DOINKER_LEFT)) { doinkerLeftState = !doinkerLeftState; }  // if the doinker left button is pressed, toggle the doinker left state
-    else if (controlla.get_digital_new_press(BUTTON_DOINKER_RIGHT)) { doinkerRightState = !doinkerRightState; }  // if the doinker right button is pressed, toggle the doinker right state
+    /* NOT IN USE DUE TO AUTOCLAMP FUNCTION*/
+    if (controlla.get_digital_new_press(BUTTON_CLAMP)) { clampState = !clampState; }  // if the clamp button is pressed, toggle the clamp state
+    if (controlla.get_digital_new_press(BUTTON_LIFT)) { liftState = !liftState; }    // if the lift button is pressed, toggle the lift state
+    if (controlla.get_digital_new_press(BUTTON_DOINKER_LEFT)) { doinkerLeftState = !doinkerLeftState; }  // if the doinker left button is pressed, toggle the doinker left state
+    if (controlla.get_digital_new_press(BUTTON_DOINKER_RIGHT)) { doinkerRightState = !doinkerRightState; }  // if the doinker right button is pressed, toggle the doinker right state
 }
 
 // task for controlling the pistons
 void piston_t() {
-    pros::delay(100);   // small delay to prevent the task from running when ez-temp is initializing
+    pros::delay(2000);   // small delay to prevent the task from running when ez-temp is initializing
     while (true) {                   // infinite loop
         if (controlla.get_digital_new_press(BUTTON_COLOR_SORT)) { runColorSort = !runColorSort; }  // if the color sort button is pressed, toggle the color sort variable
+        //clampControl(); // run the clamp control function to constantly update the clamp state during driver control
         piston_control();            // run the piston control function to constantly update the piston states during driver control
         piston_clamp.set(clampState);                   // set the clamp piston to the clamp state
         piston_lift.set(liftState);                     // set the lift piston to the lift state
@@ -108,4 +125,3 @@ void piston_t() {
         pros::delay(ez::util::DELAY_TIME);       // delay to prevent the v5 cortex from being overworked
     }
 }
-

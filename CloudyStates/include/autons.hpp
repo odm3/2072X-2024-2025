@@ -1,7 +1,9 @@
 #pragma once
 
 // declaring qual autos
-
+void pos4(bool doAllianceStake);
+void pos4red();
+void pos4blue();
 // declaring elim autos
 
 // declaring example autos

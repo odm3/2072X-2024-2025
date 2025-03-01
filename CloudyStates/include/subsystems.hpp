@@ -1,13 +1,17 @@
 #pragma once
 
 // including all necessary header files
+#include "EZ-Template/piston.hpp"
 #include "api.h"
 #include "EZ-Template/api.hpp"
 #include "lemlib/api.hpp"
 #include "lemlib/chassis/trackingWheel.hpp"
+#include "pros/adi.h"
+#include "pros/adi.hpp"
 #include "pros/link.hpp"
 #include "pros/optical.hpp"
 #include "pros/rotation.hpp"
+#include "subsystems.hpp"
 
 // declaring drive motor port variables
 #define PORT_LF 18

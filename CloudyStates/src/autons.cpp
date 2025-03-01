@@ -1,4 +1,7 @@
+#include "controls.hpp"
 #include "main.h"
+#include "pros/motors.h"
+#include "subsystems.hpp"
 
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
@@ -30,6 +33,28 @@ void neg6redNoAlly() {
 void neg6blue() { EzChassis.odom_x_flip(); EzChassis.odom_theta_flip(); neg6(); }
 
 void neg6blueNoAlly() { EzChassis.odom_x_flip(); EzChassis.odom_theta_flip(); neg6(false); }
+
+void pos4(bool doAllianceStake) {
+  imu.set_heading(90);
+  EzChassis.pid_turn_set(120, TURN_SPEED);
+  EzChassis.pid_wait();
+  // if (doAllianceStake) {
+  //   armPid.target_set(ARM_ALLIANCE);
+  //   arm_wait();
+  //   armPid.target_set(ARM_DOWN);
+  // }
+  // EzChassis.pid_drive_set(-24_in, DRIVE_SPEED);
+  // EzChassis.pid_wait();
+  // clampState = true;
+  // EzChassis.pid_turn_set(220_deg, TURN_SPEED);
+  // EzChassis.pid_wait();
+  // doinkerLeftState = true;  doinkerRightState = true;
+
+
+}
+
+void pos4red() { pos4(true); }
+void pos4blue() { EzChassis.odom_x_flip(); EzChassis.odom_theta_flip(); pos4(true); }
 
 void skills() {
 
@@ -322,7 +347,7 @@ void measure_offsets() {
     EzChassis.pid_targets_reset();
     EzChassis.drive_imu_reset();
     EzChassis.drive_sensor_reset();
-    EzChassis.drive_brake_set(MOTOR_BRAKE_HOLD);
+    EzChassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
     EzChassis.odom_xyt_set(0_in, 0_in, 0_deg);
     double imu_start = EzChassis.odom_theta_get();
     double target = i % 2 == 0 ? 90 : 270;  // Switch the turn target every run from 270 to 90

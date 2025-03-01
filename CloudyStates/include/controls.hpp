@@ -25,6 +25,7 @@ inline ez::PID armPid(2, 0, 10, 0, "Lady Brown PID");
 
 // declaring arm functions
 void armPos(int target);
+void arm_wait();
 void arm_control();
 void arm_control_legacy();
 void arm_t();
@@ -35,6 +36,16 @@ inline bool liftState = false;
 inline bool doinkerLeftState = false;
 inline bool doinkerRightState = false;
 
+// declaring autoclamp variables
+inline const double AUTOCLAMP_DISTANCEREACTIVATE = 50;
+inline const double AUTOCLAMP_DISTANCE = 10;
+inline bool autoClampActivated = false;
+inline bool tempDisableAutoclamp = false;
+
 // declaring piston functions
 void piston_control();
+void piston_t();
 
+// checking temperature variables and functions
+inline double averageTempFahrenheit = 0;
+void checkTempAndPorts();

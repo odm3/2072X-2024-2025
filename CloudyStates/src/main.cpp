@@ -17,7 +17,7 @@ void initialize() {
   pros::delay(500);  // Stop the user from doing anything while legacy ports configure
 
   // Configure your EzChassis controls
-  EzChassis.opcontrol_curve_buttons_toggle(true);   // Enables modifying the controller curve with buttons on the joysticks
+  EzChassis.opcontrol_curve_buttons_toggle(false);   // Enables modifying the controller curve with buttons on the joysticks
   EzChassis.opcontrol_drive_activebrake_set(0.0);   // Sets the active brake kP. We recommend ~2.  0 will disable.
   EzChassis.opcontrol_curve_default_set(EZ_DRIVE_CURVE_1, EZ_DRIVE_CURVE_2);  // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)
   default_constants();
@@ -28,6 +28,8 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+    {"pos 4 red", pos4red},
+    {"pos 4 blue", pos4blue},
       {"Drive\n\nDrive forward and come back", drive_example},
       {"Turn\n\nTurn 3 times.", turn_example},
       {"Drive and Turn\n\nDrive forward, turn, come back", drive_and_turn},
@@ -63,9 +65,10 @@ void initialize() {
 
   pros::Task arm_task(arm_t);                            // starts the arm task
   pros::Task intake_task(intake_t);                      // starts the intake task
-  pros::Task piston_task(piston_control);                // starts the piston task
+  pros::Task piston_task(piston_t);                      // starts the piston task
+  // pros::Task temp_task(checkTempAndPorts);               // starts the temperature task
 
-  master.rumble(EzChassis.drive_imu_calibrated() ? "." : "---");
+  controlla.rumble(EzChassis.drive_imu_calibrated() ? "." : "---");
 }
 
 /**
@@ -102,25 +105,12 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-  isAuto = true;
+  // isAuto = true;
   EzChassis.pid_targets_reset();                // Resets PID targets to 0
   EzChassis.drive_imu_reset();                  // Reset gyro position to 0
   EzChassis.drive_sensor_reset();               // Reset drive sensors to 0
   EzChassis.odom_xyt_set(0_in, 0_in, 0_deg);    // Set the current position, you can start at a specific position with this
   EzChassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
-
-  /*
-  Odometry and Pure Pursuit are not magic
-
-  It is possible to get perfectly consistent results without tracking wheels,
-  but it is also possible to have extremely inconsistent results without tracking wheels.
-  When you don't use tracking wheels, you need to:
-   - avoid wheel slip
-   - avoid wheelies
-   - avoid throwing momentum around (super harsh turns, like in the example below)
-  You can do cool curved motions, but you have to give your robot the best chance
-  to be consistent
-  */
 
   ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
@@ -236,7 +226,7 @@ void opcontrol() {
 
   while (true) {
     // Gives you some extras to make EZ-Template ezier
-    ez_template_extras();
+    //ez_template_extras();
 
     //EzChassis.opcontrol_tank();  // Activates tank controls
     EzChassis.opcontrol_arcade_standard(ez::SPLIT);   // Activates arcade control
