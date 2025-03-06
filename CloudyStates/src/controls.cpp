@@ -5,12 +5,17 @@
 #include "EZ-Template/util.hpp"
 #include "pros/llemu.hpp"
 #include "pros/misc.h"
+#include "pros/rtos.h"
 #include "pros/rtos.hpp"
 #include "subsystems.hpp"
 
+void intakeSet(int vltg) {
+    intake_vltg = vltg;
+} 
+
 // function for controlling the intake
 void intake_control() {
-    if (isAuto) { return; }    // if in auto, return
+    if (isAuto) {}    // if in auto, return
     else if (controlla.get_digital(BUTTON_INTAKE)) { intake_vltg = 12000; }  // if intake button is pressed, set intake voltage variable to 12000
     else if (controlla.get_digital(BUTTON_INTAKE_REVERSE)) { intake_vltg = -12000; }   // if intake reverse button is pressed, set intake voltage variable to -12000
     else { intake_vltg = 0; }   // if no buttons are pressed, set intake voltage to 0              
@@ -18,7 +23,7 @@ void intake_control() {
 
 // task for controlling the intake
 void intake_t() {
-    pros::delay(2000);   // small delay to prevent the task from running when ez-temp is initializing
+    pros::delay(100);   // small delay to prevent the task from running when ez-temp is initializing
     while (true) {          // infinite loop
         intake_control();   // run the intake control function to constantly update the intake voltage variable during driver control
         motor_intake.move_voltage(intake_vltg);  // move the intake motor with the intake voltage variable
@@ -41,13 +46,13 @@ void arm_wait() {
 void arm_control_legacy() {
     if (isAuto) { return; }    // if in auto, return
     else if (controlla.get_digital_new_press(BUTTON_ARM_PRIME)) {   // if the arm prime button is pressed, cycle through the arm states using this code
-        if (armState == 0) { armPos(ARM_PRIME1); armState++; }       // if the arm state is 0, set the arm position to ARM_PRIME1 and increment the arm state
-        else if (armState == 1) { armPos(ARM_PRIME2); armState++; }  // if the arm state is 1, set the arm position to ARM_PRIME2 and increment the arm state
-        else if (armState == 2) { armPos(ARM_DOWN); armState = 0; }  // if the arm state is 2, set the arm position to ARM_DOWN and reset the arm state
+        if (armState == 0) { armPos(ARM_DOWN); armState++; }       // if the arm state is 0, set the arm position to ARM_PRIME1 and increment the arm state
+        else if (armState == 1) { armPos(ARM_PRIME1); armState--; }  // if the arm state is 1, set the arm position to ARM_PRIME2 and increment the arm state
+       // else if (armState == 2) { armPos(ARM_DOWN); armState = 0; }  // if the arm state is 2, set the arm position to ARM_DOWN and reset the arm state
     }
     else if (controlla.get_digital_new_press(BUTTON_ARM_SCORE)) {
-        armPos(ARM_SCORE);
-        armState = 0;
+        armPos(18000);
+        armState = 1;
     }
 }
 
@@ -58,7 +63,7 @@ void arm_control() {
 
 // task for controlling the arm
 void arm_t() {
-    pros::delay(2000);   // small delay to prevent the task from running when ez-temp is initializing
+    pros::delay(100);   // small delay to prevent the task from running when ez-temp is initializing
     while (true) {    // infinite loop
         if (controlla.get_digital(BUTTON_ARM)) {
             arm_vltg = 12000;
@@ -72,10 +77,10 @@ void arm_t() {
         }  // if the arm reverse button is pressed, set the arm voltage variable to -12000
         //else { arm_vltg = 0; }                                                             // if no buttons are pressed, set the arm voltage variable to 0
         else { arm_vltg = armPid.compute(rotation_arm.get_angle()); }
-        arm_control();                                                                      // run the arm control function to constantly update the arm voltage variable during driver control
+        arm_control_legacy();                                                                      // run the arm control function to constantly update the arm voltage variable during driver control
         motor_arm.move_voltage(arm_vltg);                                          // move the arm motor with the arm voltage variable
         pros::lcd::print(3, "rotation state: %d", armState);
-        pros::lcd::print(4, "imu heading: %d", imu.get_heading());
+        pros::lcd::print(4, "imu: %f", imu.get_rotation());
         pros::lcd::print(5, "angle: %d", rotation_arm.get_angle());
 
         pros::delay(ez::util::DELAY_TIME);                                    // delay to prevent the v5 cortex from being overworked
@@ -113,7 +118,7 @@ void piston_control() {
 
 // task for controlling the pistons
 void piston_t() {
-    pros::delay(2000);   // small delay to prevent the task from running when ez-temp is initializing
+    pros::delay(100);   // small delay to prevent the task from running when ez-temp is initializing
     while (true) {                   // infinite loop
         if (controlla.get_digital_new_press(BUTTON_COLOR_SORT)) { runColorSort = !runColorSort; }  // if the color sort button is pressed, toggle the color sort variable
         //clampControl(); // run the clamp control function to constantly update the clamp state during driver control

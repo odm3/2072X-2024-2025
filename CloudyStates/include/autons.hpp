@@ -1,6 +1,13 @@
 #pragma once
 
 // declaring qual autos
+void posAwpRed();
+void posAwpBlue();
+
+void pos3(bool doAllianceStake);
+void pos3red();
+void pos3blue();
+
 void pos4(bool doAllianceStake);
 void pos4red();
 void pos4blue();

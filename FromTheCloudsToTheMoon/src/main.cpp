@@ -41,6 +41,8 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+    {"drive", drive_example},
+    {"turn", turn_example},
       {"Blue soloAWP", soloAwpBlue},
       {"Drive 12", drive12},
       {"Red soloAWP", soloAwpRed},

@@ -17,13 +17,13 @@
 #define PORT_LF 18
 #define PORT_LM -19
 #define PORT_LB -20
-#define PORT_RF 13
-#define PORT_RM -12
+#define PORT_RF -13
+#define PORT_RM 12
 #define PORT_RB 11
 
 // declaring subsystem motor port variables
 #define PORT_INTAKE    15
-#define PORT_ARM       10
+#define PORT_ARM       8
 
 // declaring subsystem piston port variables
 #define PORT_CLAMP         'A'
@@ -32,13 +32,41 @@
 #define PORT_DOINKER_RIGHT 'D'
 
 // declaring smartwire sensor port variables
-#define PORT_IMU            2
+#define PORT_IMU            3
 #define PORT_ROTATION_ARM   -9
 #define PORT_OPTICAL_CLAMP  17
 #define PORT_OPTICAL_SORT   8
 #define PORT_ODOM_VERT      13
 #define PORT_ODOM_HORI      14
 #define PORT_VEXNET         21
+
+// // old bot ports
+// // declaring drive motor port variables
+// #define PORT_LF -18
+// #define PORT_LM -7
+// #define PORT_LB -6
+// #define PORT_RF 2
+// #define PORT_RM -4
+// #define PORT_RB 3
+
+// // declaring subsystem motor port variables
+// #define PORT_INTAKE    -1
+// #define PORT_ARM       12
+
+// // declaring subsystem piston port variables
+// #define PORT_CLAMP         'A'
+// #define PORT_LIFT          'B'
+// #define PORT_DOINKER_LEFT  'D'
+// #define PORT_DOINKER_RIGHT 'B'
+
+// // declaring smartwire sensor port variables
+// #define PORT_IMU            19
+// #define PORT_ROTATION_ARM   9
+// #define PORT_OPTICAL_CLAMP  14
+// #define PORT_OPTICAL_SORT   20
+// #define PORT_ODOM_VERT      13
+// #define PORT_ODOM_HORI      14
+// #define PORT_VEXNET         21
 
 // declaring constant variables
 #define WHEEL_DIAMETER 3.25
@@ -90,7 +118,7 @@ inline ez::Piston piston_doinker_right (PORT_DOINKER_RIGHT, false);
 // smartwire sensor constructors
 inline pros::Imu      imu            (PORT_IMU);
 inline pros::Rotation rotation_arm   (PORT_ROTATION_ARM);
-inline pros::Optical optical_clamp  (PORT_OPTICAL_CLAMP);
+inline pros::Optical optical_clamp   (PORT_OPTICAL_CLAMP);
 inline pros::Optical  optical_sort   (PORT_OPTICAL_SORT);
 inline pros::Rotation odom_hori      (PORT_ODOM_HORI);
 inline pros::Rotation odom_vert      (PORT_ODOM_VERT);
@@ -184,10 +212,10 @@ inline ez::Drive EzChassis(
 
 inline void default_constants() {
   // P, I, D, and Start I
-  EzChassis.pid_drive_constants_set(20.0, 0.0, 100.0);         // Fwd/rev constants, used for odom and non odom motions
-  EzChassis.pid_heading_constants_set(11.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
+  EzChassis.pid_drive_constants_set(10.0, 0.0, 100.0);         // Fwd/rev constants, used for odom and non odom motions
+  EzChassis.pid_heading_constants_set(3.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
   EzChassis.pid_turn_constants_set(3.0, 0.05, 20.0, 15.0);     // Turn in place constants
-  EzChassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
+  EzChassis.pid_swing_constants_set(5.0, 0.0, 35.0);           // Swing constants
   EzChassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
   EzChassis.pid_odom_boomerang_constants_set(5.8, 0.0, 32.5);  // Angular control for boomerang motions
       

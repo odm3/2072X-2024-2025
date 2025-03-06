@@ -12,13 +12,14 @@ inline bool isRed = true;
 inline int intake_vltg = 0;
 
 // declaring intake functions
+void intakeSet(int vltg);
 void intake_control();
 void intake_t();
 
 // declaring arm variables
 inline int arm_vltg = 0;
 inline int armState = 0;
-enum armStates{ARM_DOWN = 1000, ARM_PRIME1 = 3500, ARM_PRIME2 = 5000, ARM_SCORE = 14000, ARM_ALLIANCE = 18000};
+enum armStates{ARM_DOWN = 1000, ARM_PRIME1 = 3400, ARM_PRIME2 = 5000, ARM_SCORE = 14000, ARM_ALLIANCE = 21000};
 
 // declaring arm PID control loop
 inline ez::PID armPid(2, 0, 10, 0, "Lady Brown PID");

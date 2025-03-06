@@ -356,7 +356,7 @@ void neg5(bool isRed) {
 void neg5Red() { neg5(true); }
 void neg5Blue() { neg5(false); }
 
-/*  example progs
+// /*  example progs
 
 ///
 // Drive Example
@@ -682,5 +682,3 @@ void measure_offsets() {
   if (chassis.odom_tracker_back != nullptr) chassis.odom_tracker_back->distance_to_center_set(b_offset);
   if (chassis.odom_tracker_front != nullptr) chassis.odom_tracker_front->distance_to_center_set(f_offset);
 }
-
-*/
