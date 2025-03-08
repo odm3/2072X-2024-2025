@@ -4,11 +4,6 @@
 #include "main.h"
 #include "pros/rtos.hpp"
 
-/////
-// For installation, upgrading, documentations, and tutorials, check out our website!
-// https://ez-robotics.github.io/EZ-Template/
-/////
-
 // These are out of 127
 const int DRIVE_SPEED = 110;
 const int TURN_SPEED = 90;
@@ -335,53 +330,6 @@ void soloAWPLeft4rings()  {
   EZ_CHASSIS.pid_drive_set(-40_in, DRIVE_SPEED, true);
   EZ_CHASSIS.pid_wait();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 void redNeg2() {
   EZ_CHASSIS.pid_drive_set(-30_in, DRIVE_SPEED, true);
@@ -766,7 +714,6 @@ void goalRush()
     
    
 }
-
 
 void skills() {
 

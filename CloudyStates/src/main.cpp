@@ -1,7 +1,9 @@
 #include "main.h"
+#include <type_traits>
 #include "autons.hpp"
 #include "controls.hpp"
 #include "pros/motors.h"
+#include "pros/rtos.hpp"
 #include "subsystems.hpp"
 
 
@@ -29,6 +31,7 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+    {"Skills", skills},
     {"Awp pos red / neg blue", posAwpRed},
     {"Awp pos blue / neg red", posAwpBlue},
     {"3 pos red / neg blue", pos3red},
@@ -64,14 +67,16 @@ void initialize() {
   motor_arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);         //sets arm motor to hold to resist against gravity and other robots
   rotation_arm.set_reversed(true);
   optical_clamp.set_integration_time(10);                     // sets the integration time of the optical sensor to 10ms
-  optical_sort.set_integration_time(10);                      // sets the integration time of the optical sensor to 10ms
+  optical_sort.set_integration_time(5);                      // sets the integration time of the optical sensor to 10ms
   optical_clamp.set_led_pwm(100);                            // sets the led brightness of the optical sensor to 100%
   optical_sort.set_led_pwm(100);                             // sets the led brightness of the optical sensor to 100%
 
   pros::Task arm_task(arm_t);                            // starts the arm task
   pros::Task intake_task(intake_t);                      // starts the intake task
   pros::Task piston_task(piston_t);                      // starts the piston task
-  // pros::Task temp_task(checkTempAndPorts);               // starts the temperature task
+  // pros::Task temp_task(checkTempAndPorts);                     // starts the temperature task
+  pros::Task sort_task(colorSort_t);                    // starts the color sort task
+  pros::Task clamp_task(clamp_t);                        // starts the clamp task
 
   controlla.rumble(EzChassis.drive_imu_calibrated() ? "." : "---");
 }
@@ -226,6 +231,7 @@ void ez_template_extras() {
 void opcontrol() {
   // Set isAuto to false to allow for user control
   isAuto = false;
+  ColorLoopActive = true;
   // Sets the motors to coast when not in autonomous for smoother driving and protecting motors
   EzChassis.drive_brake_set(MOTOR_BRAKE_COAST);
 

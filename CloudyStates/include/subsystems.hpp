@@ -27,15 +27,16 @@
 
 // declaring subsystem piston port variables
 #define PORT_CLAMP         'A'
-#define PORT_LIFT          'B'
+#define PORT_LIFT          'E'
+#define PORT_RESET_SWITCH  'B'
 #define PORT_DOINKER_LEFT  'C'
 #define PORT_DOINKER_RIGHT 'D'
 
 // declaring smartwire sensor port variables
 #define PORT_IMU            3
 #define PORT_ROTATION_ARM   -9
-#define PORT_OPTICAL_CLAMP  17
-#define PORT_OPTICAL_SORT   8
+#define PORT_OPTICAL_CLAMP  16
+#define PORT_OPTICAL_SORT   4
 #define PORT_ODOM_VERT      13
 #define PORT_ODOM_HORI      14
 #define PORT_VEXNET         21
@@ -117,6 +118,7 @@ inline ez::Piston piston_doinker_right (PORT_DOINKER_RIGHT, false);
 
 // smartwire sensor constructors
 inline pros::Imu      imu            (PORT_IMU);
+inline pros::adi::DigitalIn reset_switch(PORT_RESET_SWITCH);
 inline pros::Rotation rotation_arm   (PORT_ROTATION_ARM);
 inline pros::Optical optical_clamp   (PORT_OPTICAL_CLAMP);
 inline pros::Optical  optical_sort   (PORT_OPTICAL_SORT);
@@ -212,21 +214,21 @@ inline ez::Drive EzChassis(
 
 inline void default_constants() {
   // P, I, D, and Start I
-  EzChassis.pid_drive_constants_set(10.0, 0.0, 100.0);         // Fwd/rev constants, used for odom and non odom motions
-  EzChassis.pid_heading_constants_set(3.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
-  EzChassis.pid_turn_constants_set(3.0, 0.05, 20.0, 15.0);     // Turn in place constants
+  EzChassis.pid_drive_constants_set(20.0, 0.0, 200.0);         // Fwd/rev constants, used for odom and non odom motions
+  EzChassis.pid_heading_constants_set(11.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
+  EzChassis.pid_turn_constants_set(6.0, 0.05, 45.0, 15.0);     // Turn in place constants
   EzChassis.pid_swing_constants_set(5.0, 0.0, 35.0);           // Swing constants
   EzChassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
   EzChassis.pid_odom_boomerang_constants_set(5.8, 0.0, 32.5);  // Angular control for boomerang motions
       
   // Exit conditions
-  EzChassis.pid_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  EzChassis.pid_swing_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
+  EzChassis.pid_turn_exit_condition_set(90_ms, 2_deg, 250_ms, 5_deg, 500_ms, 500_ms);
+  EzChassis.pid_swing_exit_condition_set(90_ms, 2_deg, 250_ms, 5_deg, 500_ms, 500_ms);
   EzChassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
   EzChassis.pid_odom_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 750_ms);
   EzChassis.pid_odom_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 500_ms, 750_ms);
   // motion chaining constants
-  EzChassis.pid_turn_chain_constant_set(3_deg);
+  EzChassis.pid_turn_chain_constant_set(2_deg);
   EzChassis.pid_swing_chain_constant_set(5_deg);
   EzChassis.pid_drive_chain_constant_set(3_in);
   

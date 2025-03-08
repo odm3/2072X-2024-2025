@@ -35,11 +35,11 @@
             "-funwind-tables",
             "--std=gnu++20",
             "-o",
-            "bin/main.cpp.o",
-            "src\\main.cpp"
+            "bin/controls.cpp.o",
+            "src\\controls.cpp"
         ],
-        "directory": "C:\\2072X-2024-2025\\SnowCloud",
-        "file": "src\\main.cpp"
+        "directory": "C:\\2072X-2024-2025\\2072X-2024-2025\\SnowCloud",
+        "file": "src\\controls.cpp"
     },
     {
         "arguments": [
@@ -80,7 +80,7 @@
             "bin/constants.cpp.o",
             "src\\constants.cpp"
         ],
-        "directory": "C:\\2072X-2024-2025\\SnowCloud",
+        "directory": "C:\\2072X-2024-2025\\2072X-2024-2025\\SnowCloud",
         "file": "src\\constants.cpp"
     },
     {
@@ -122,7 +122,7 @@
             "bin/autons.cpp.o",
             "src\\autons.cpp"
         ],
-        "directory": "C:\\2072X-2024-2025\\SnowCloud",
+        "directory": "C:\\2072X-2024-2025\\2072X-2024-2025\\SnowCloud",
         "file": "src\\autons.cpp"
     },
     {
@@ -161,10 +161,10 @@
             "-funwind-tables",
             "--std=gnu++20",
             "-o",
-            "bin/controls.cpp.o",
-            "src\\controls.cpp"
+            "bin/main.cpp.o",
+            "src\\main.cpp"
         ],
-        "directory": "C:\\2072X-2024-2025\\SnowCloud",
-        "file": "src\\controls.cpp"
+        "directory": "C:\\2072X-2024-2025\\2072X-2024-2025\\SnowCloud",
+        "file": "src\\main.cpp"
     }
 ]

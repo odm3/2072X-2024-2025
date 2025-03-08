@@ -13,6 +13,9 @@ void pos4red();
 void pos4blue();
 // declaring elim autos
 
+//declaring skills auto
+void skills();
+
 // declaring example autos
 void drive_example();
 void turn_example();

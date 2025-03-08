@@ -37,16 +37,45 @@ inline bool liftState = false;
 inline bool doinkerLeftState = false;
 inline bool doinkerRightState = false;
 
-// declaring autoclamp variables
-inline const double AUTOCLAMP_DISTANCEREACTIVATE = 50;
-inline const double AUTOCLAMP_DISTANCE = 10;
-inline bool autoClampActivated = false;
-inline bool tempDisableAutoclamp = false;
-
 // declaring piston functions
 void piston_control();
 void piston_t();
+void clamp_t();
 
 // checking temperature variables and functions
 inline double averageTempFahrenheit = 0;
 void checkTempAndPorts();
+
+extern bool ColorLoopActive;
+
+extern bool wrongColorDetected;
+
+extern bool colorLoopStarted;
+
+extern double ambientHue;
+
+extern double ambientProximity;
+
+extern bool colorUntilActivated;
+extern int ringsSeen;
+extern int colorUntilRings;
+
+extern bool safeScoring;
+extern double prevHeading;
+
+void initColorSort();
+
+void doColorSort();
+
+void colorSort_t();
+
+void stopColorUntilFunction();
+
+void startColorUntil(int rings);
+
+void clampMogo(bool active);
+
+// Driver Control Functions
+void setMogoMotors();
+
+extern bool autoClampActivated;
