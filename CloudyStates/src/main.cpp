@@ -76,7 +76,7 @@ void initialize() {
   pros::Task piston_task(piston_t);                      // starts the piston task
   // pros::Task temp_task(checkTempAndPorts);                     // starts the temperature task
   pros::Task sort_task(colorSort_t);                    // starts the color sort task
-  pros::Task clamp_task(clamp_t);                        // starts the clamp task
+  //pros::Task clamp_task(clamp_t);                        // starts the clamp task
 
   controlla.rumble(EzChassis.drive_imu_calibrated() ? "." : "---");
 }
@@ -232,6 +232,8 @@ void opcontrol() {
   // Set isAuto to false to allow for user control
   isAuto = false;
   ColorLoopActive = true;
+  autoClampActive = true;
+  isRed = true;
   // Sets the motors to coast when not in autonomous for smoother driving and protecting motors
   EzChassis.drive_brake_set(MOTOR_BRAKE_COAST);
 

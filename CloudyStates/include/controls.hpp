@@ -2,24 +2,27 @@
 
 #include "EZ-Template/PID.hpp"
 #include "controls.hpp"
+#include "pros/rtos.hpp"
 
 // declaring global variables
 inline bool isAuto = false;
 inline bool runColorSort = true;
-inline bool isRed = true;
+inline bool isRed;
 
 // declaring intake variables
 inline int intake_vltg = 0;
+inline bool isStuck = false;
 
 // declaring intake functions
 void intakeSet(int vltg);
+void unstuck();
 void intake_control();
 void intake_t();
 
 // declaring arm variables
 inline int arm_vltg = 0;
 inline int armState = 0;
-enum armStates{ARM_DOWN = 1000, ARM_PRIME1 = 3400, ARM_PRIME2 = 5000, ARM_SCORE = 14000, ARM_ALLIANCE = 21000};
+enum armStates{ARM_DOWN = 1000, ARM_PRIME1 = 3250, ARM_PRIME2 = 5000, ARM_SCORE = 14000, ARM_ALLIANCE = 21000};
 
 // declaring arm PID control loop
 inline ez::PID armPid(2, 0, 10, 0, "Lady Brown PID");
@@ -79,3 +82,16 @@ void clampMogo(bool active);
 void setMogoMotors();
 
 extern bool autoClampActivated;
+
+// inline pros::Task arm_task(arm_t);                            // starts the arm task
+// inline pros::Task intake_task(intake_t);                      // starts the intake task
+// inline pros::Task piston_task(piston_t);                      // starts the piston task
+// // inline pros::Task temp_task(checkTempAndPorts);                     // starts the temperature task
+// inline pros::Task sort_task(colorSort_t);                    // starts the color sort task
+// inline pros::Task clamp_task(clamp_t);                        // starts the clamp task
+
+void handleBlueRing();
+void handleRedRing();
+void handleRightColor();
+
+inline bool autoClampActive = false;
