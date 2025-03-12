@@ -7,7 +7,7 @@
 // declaring global variables
 inline bool isAuto = false;
 inline bool runColorSort = true;
-inline bool isRed;
+inline bool isRed;  //
 
 // declaring intake variables
 inline int intake_vltg = 0;
@@ -31,67 +31,41 @@ inline ez::PID armPid(2, 0, 10, 0, "Lady Brown PID");
 void armPos(int target);
 void arm_wait();
 void arm_control();
-void arm_control_legacy();
 void arm_t();
 
 // declaring piston variables
+inline const double AUTOCLAMP_DISTANCE = 235;
+inline bool autoClampActive = false;
 inline bool clampState = false;
 inline bool liftState = false;
 inline bool doinkerLeftState = false;
 inline bool doinkerRightState = false;
 
 // declaring piston functions
+void setMogoMotors();
 void piston_control();
 void piston_t();
 void clamp_t();
 
-// checking temperature variables and functions
-inline double averageTempFahrenheit = 0;
-void checkTempAndPorts();
+// declaring color sorting variables
+inline bool ColorLoopActive = false;
+inline bool colorUntilActivated = false;
+inline double ambientColorDiff = 0; 
+inline double ambientProximity = 60; 
+inline bool colorLoopStarted = false;
+inline int ringsSeen = 0;
+inline int colorUntilRings = 0;
+inline bool safeScoring = false;
+inline bool rightRingBeingSeen = false;
+inline double prevHeading = 0;
+inline long prevTime = 0;
+inline bool wrongColorDetected;
 
-extern bool ColorLoopActive;
-
-extern bool wrongColorDetected;
-
-extern bool colorLoopStarted;
-
-extern double ambientHue;
-
-extern double ambientProximity;
-
-extern bool colorUntilActivated;
-extern int ringsSeen;
-extern int colorUntilRings;
-
-extern bool safeScoring;
-extern double prevHeading;
-
-void initColorSort();
-
+// declaring color sorting functions
 void doColorSort();
-
 void colorSort_t();
-
 void stopColorUntilFunction();
-
 void startColorUntil(int rings);
-
-void clampMogo(bool active);
-
-// Driver Control Functions
-void setMogoMotors();
-
-extern bool autoClampActivated;
-
-// inline pros::Task arm_task(arm_t);                            // starts the arm task
-// inline pros::Task intake_task(intake_t);                      // starts the intake task
-// inline pros::Task piston_task(piston_t);                      // starts the piston task
-// // inline pros::Task temp_task(checkTempAndPorts);                     // starts the temperature task
-// inline pros::Task sort_task(colorSort_t);                    // starts the color sort task
-// inline pros::Task clamp_task(clamp_t);                        // starts the clamp task
-
 void handleBlueRing();
 void handleRedRing();
 void handleRightColor();
-
-inline bool autoClampActive = false;
