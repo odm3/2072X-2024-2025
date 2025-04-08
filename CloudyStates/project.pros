@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "States",
+    "project_name": "CloudyStates",
     "target": "v5",
     "templates": {
       "EZ-Template": {
@@ -467,7 +467,8 @@
       }
     },
     "upload_options": {
-      "description": "roboticsisez.com"
+      "description": "roboticsisez.com",
+      "slot": 1
     },
     "use_early_access": false
   }

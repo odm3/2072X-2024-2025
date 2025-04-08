@@ -15,30 +15,42 @@
 
 using namespace std;    //using standard namespace
 
+//sets the intake voltage to a certain value
 void intakeSet(int vltg) {
     intake_vltg = vltg;
 } 
 
-int stuckTime = 0;
-
+//code checking if the intake is jammed, and then it will unjam
 void unjam() {
     if (isStuck) {
+        intake_vltg = -intake_vltg; //set intake to reverse
+        pros::delay(250);   //wait for a quarter second
+        intake_vltg = -intake_vltg; //set intake to normal
+        isStuck = false;
+    }
+    else if (motor_intake.is_over_current(200)) {   //if the motor is over this much current, it's probably stuck
+        isStuck = true;
+    }
+}
+
+//code checking if the intake is jammed, and then it will unjam
+void unstuck()  {
+
+    if (isStuck) {  //if the variable is true
         int prevIntakeVltg = intake_vltg;
-        intake_vltg = -1 * intake_vltg;
-        stuckTime += util::DELAY_TIME;
-        if (stuckTime >= 500) {
-            isStuck = false;
-            stuckTime = 0;
-            intakeSet(prevIntakeVltg);
-        }
+        intakeSet(-intake_vltg);    //set the intake to reverse
+        pros::delay(250);   //wait for a quarter second
+        intake_vltg = prevIntakeVltg;   //set intake to normal
+        isStuck = false;    //make variable false
     }
 
-    else if (abs(intake_vltg) >= 1000 && motor_intake.get_efficiency() < 10) {
-        stuckTime += util::DELAY_TIME;
-        if (stuckTime >= 50) {
-            isStuck = true;
+    else if (abs(intake_vltg) >= 1000 && motor_intake.get_efficiency() < 1) {   //sees is the intake is set to a voltage and if the efficient is bad, means stuck
+        if ((int)armPid.target_get() != ARM_PRIME1) {   //if the arm is not primed
+            isStuck = true; //make variable true
         }
+
     }
+
 }
 
 // function for controlling the intake
@@ -57,10 +69,26 @@ void intake_control() {
 void intake_t() {
     pros::delay(100);   // small delay to prevent the task from running when ez-temp is initializing
     while (true) {          // infinite loop
-        unjam();            //checks if the intake is jammed
+        //unstuck();            //checks if the intake is jammed
+        if (motor_intake.get_efficiency() < 10 && abs(intake_vltg) > 0) {  //if the variable is true
+            if ((int)armPid.target_get() != ARM_PRIME1) {
+                intakeSet(-12000);  //set intake to revese at max vltg
+                pros::delay(200);   //wait for 0.2 seconds
+                intakeSet(12000);   //set intake to forward speed
+            }
+        }
         intake_control();   // run the intake control function to constantly update the intake voltage variable during driver control
         motor_intake.move_voltage(intake_vltg);  // move the intake motor with the intake voltage variable
         pros::delay(ez::util::DELAY_TIME);  // delay to prevent the v5 cortex from being overworked
+    }
+}
+
+void efficiency_t() {
+    while(true) {
+        if (abs(intake_vltg) > 0) {
+            printf("Intake Motor Efficiency: %.f\n", motor_intake.get_efficiency());
+        }
+        pros::delay(100);
     }
 }
 

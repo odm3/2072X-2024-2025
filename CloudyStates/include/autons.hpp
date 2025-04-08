@@ -1,20 +1,19 @@
 #pragma once
 
 // declaring qual autos
-void posAwpRed();
-void posAwpBlue();
-
-void pos3(bool doAllianceStake);
-void pos3red();
-void pos3blue();
-
-void pos4(bool doAllianceStake);
-void pos4red();
-void pos4blue();
+void drive6();
+void soloAwpRed();
+void soloAwpBlue();
+void qualNegBlue();
+void qualNegRed();
 // declaring elim autos
+void elimNeg5Red();
+void elimNeg5Blue();
 
 //declaring skills auto
 void skills();
+void skillsEnd();
+void hang();
 
 // declaring example autos
 void drive_example();

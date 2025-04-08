@@ -27,13 +27,15 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+    {"Elim Neg 5 Blue", elimNeg5Blue},
+    {"Elim Neg 5 Red", elimNeg5Red},
+    {"Drive 6", drive6},
+    {"SoloAwp Red", soloAwpRed},
+    {"SoloAwp Blue", soloAwpBlue},
+    {"Qual Neg Red", qualNegRed},
+    {"Qual Neg Blue", qualNegBlue}, 
     {"Skills", skills},
-    {"Awp pos red / neg blue", posAwpRed},
-    {"Awp pos blue / neg red", posAwpBlue},
-    {"3 pos red / neg blue", pos3red},
-    {"3 pos blue / neg red", pos3blue},
-    {"4 pos red / neg blue", pos4red},
-    {"4 pos blue / neg red", pos4blue},
+
   });
 
   // Initialize EzChassis and auton selector
@@ -52,9 +54,9 @@ void initialize() {
   pros::Task arm_task(arm_t);                            // starts the arm task
   pros::Task intake_task(intake_t);                      // starts the intake task
   pros::Task piston_task(piston_t);                      // starts the piston task
-  // pros::Task temp_task(checkTempAndPorts);                     // starts the temperature task
-  pros::Task sort_task(colorSort_t);                    // starts the color sort task
-  //pros::Task clamp_task(clamp_t);                               // starts the clamp task
+  //pros::Task temp_task(checkTempAndPorts);                     // starts the temperature task
+  pros::Task sort_task(colorSort_t);   
+  pros::Task clamp_task(clamp_t);                               // starts the clamp task
 
   controlla.rumble(EzChassis.drive_imu_calibrated() ? "." : "---"); //vibrates the controller depending on if the imu is calibrated 
 }
@@ -212,19 +214,21 @@ void opcontrol() {
   
   isAuto = false; // Set isAuto to false to allow for user control
   ColorLoopActive = true; // Set ColorLoopActive to true to allow for color sorting
-  autoClampActive = true; // Set autoClampActive to true to allow for automatically clamping
+  autoClampActive = false; // Set autoClampActive to true to allow for automatically clamping
   // Sets the motors to coast when not in autonomous for smoother driving and protecting motors
   EzChassis.drive_brake_set(MOTOR_BRAKE_COAST);
+  pros::Task display_task(efficiency_t);                 // starts the color sort task
+
 
   while (true) {
     // Gives you some extras to make EZ-Template ezier
-    ez_template_extras();
+    //ez_template_extras();
 
     //EzChassis.opcontrol_tank();  // Activates tank controls
     EzChassis.opcontrol_arcade_standard(ez::SPLIT);   // Activates arcade control
 
     if (controlla.get_digital_new_press(BUTTON_DRIVE_BACK)) { //backs up a distance to score allaince stake
-      EzChassis.pid_drive_set(-8.25, DRIVE_SPEED, false, false);
+      EzChassis.pid_drive_set(-7.5, DRIVE_SPEED, false, false);
       EzChassis.pid_wait();
     }
 
