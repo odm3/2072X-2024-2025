@@ -79,7 +79,7 @@ void intake_t() {
         }
         intake_control();   // run the intake control function to constantly update the intake voltage variable during driver control
         motor_intake.move_voltage(intake_vltg);  // move the intake motor with the intake voltage variable
-        motor_hook.move_voltage(intake_vltg);
+        motor_hooks.move_voltage(intake_vltg);
         pros::delay(ez::util::DELAY_TIME);  // delay to prevent the v5 cortex from being overworked
     }
 }
