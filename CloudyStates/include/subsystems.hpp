@@ -23,6 +23,7 @@
 
 // declaring subsystem motor port variables
 #define PORT_INTAKE    15
+#define PORT_HOOKS      21 //change ts
 #define PORT_ARM       8
 
 // declaring subsystem piston port variables
@@ -107,8 +108,9 @@ inline pros::Motor motor_RM     (PORT_RM, pros::v5::MotorGears::blue);
 inline pros::Motor motor_RB     (PORT_RB, pros::v5::MotorGears::blue);
 
 // subsystem motor constructors
-inline pros::Motor motor_intake (PORT_INTAKE, pros::v5::MotorGears::blue);
-inline pros::Motor motor_arm    (PORT_ARM, pros::v5::MotorGears::blue);
+inline pros::Motor motor_intake (PORT_INTAKE, pros::v5::MotorGears::green);
+inline pros::Motor motor_hooks (PORT_HOOKS, pros::v5::MotorGears::green);
+inline pros::Motor motor_arm    (PORT_ARM, pros::v5::MotorGears::red);
 
 // subsystem constructors
 inline ez::Piston piston_clamp         (PORT_CLAMP, false);
