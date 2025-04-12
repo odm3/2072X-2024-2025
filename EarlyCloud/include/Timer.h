@@ -5,6 +5,7 @@
 
 #include "main.h"
 
+//declares the timer class
 class Timer {
     public:
         Timer();

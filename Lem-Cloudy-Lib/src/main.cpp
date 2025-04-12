@@ -87,6 +87,7 @@ void opcontrol() {
     int leftControl = controlla.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
     int rightControl = controlla.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
 
+    // activates tank drive for user control
     chassis.tank(leftControl, rightControl, false);
 
     // //2 stick arcade drive {

@@ -5,8 +5,6 @@
 #include "pros/adi.hpp"
 #include "pros/rotation.hpp"
 
-//creates a new namespace for devices
-
 //creates controller
 pros::Controller controlla (pros::E_CONTROLLER_MASTER);
 
@@ -94,13 +92,13 @@ lemlib::Chassis chassis(
     odom_sensors,
     &lateral_curve);
 
-//mechanism motors
+// creates mechanism motors
 pros::Motor intake(PORT_INTAKE, pros::MotorGears::rpm_200);
 pros::Motor conveyor(PORT_CONVEYOR, pros::MotorGears::rpm_200);
 // pros::MotorGroup arm({PORT_ARM_LEFT, PORT_ARM_RIGHT}, pros::MotorGears::rpm_200);
 pros::Motor arm(PORT_ARM, pros::MotorGearset::rpm_100);
 
-//pistons
+// creates pistons
 pros::adi::DigitalOut intake_lift(PORT_INTAKE_LIFT, LOW);
 // pros::adi::DigitalOut intake_lift_left(PORT_INTAKE_LIFT_LEFT, LOW);
 // pros::adi::DigitalOut intake_lift_right(PORTS_INTAKE_LIFT_RIGHT, LOW);
@@ -111,8 +109,10 @@ pros::adi::DigitalOut clamp_right(PORT_CLAMP_RIGHT, LOW);
 pros::adi::DigitalOut doinker(PORT_DOINKER, LOW);
 pros::adi::DigitalOut ring_stopper(PORT_RING_STOPPER,LOW);
 
+// creates arm rotation sensor
 pros::Rotation armRotation(PORT_ARM_ROTATION);
 
+//checks if a device is connected
 bool isConnected(int port) {
     if ((pros::Device::get_plugged_type(port) == pros::v5::DeviceType::none) ||(pros::Device::get_plugged_type(port) == pros::DeviceType::undefined))  {
         return false;
@@ -122,6 +122,7 @@ bool isConnected(int port) {
     }
 }
 
+//checks if a device is connected and if not, rumbles the controller and displays a message on the controller screen
 void checkIfConnected(int port, std::string deviceName) {
     if ((isConnected(port)) == false) {
         controlla.rumble(".....");
@@ -130,6 +131,7 @@ void checkIfConnected(int port, std::string deviceName) {
     }
 }
 
+//checks all devices
 void checkAllDevices() {
     checkIfConnected(PORT_LF, "LF_motor");
     checkIfConnected(PORT_LB, "LM_motor");

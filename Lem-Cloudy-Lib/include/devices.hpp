@@ -5,17 +5,19 @@
 #include "pros/imu.hpp"
 #include "pros/rotation.hpp"
 
+// declares controller
 extern pros::Controller controlla;
 
+// declares rotation sensors for odom with specified ports
 extern pros::Rotation odom_vert_sensor;
 extern pros::Rotation odom_hozi_sensor;
 
-
+// declares chassis
 extern lemlib::Chassis chassis;
 
 //smart wire ports
 
-//drive motors
+//declares drive motors
 extern pros::Motor LF_motor;
 extern pros::Motor LM_motor;
 extern pros::Motor LB_motor;
@@ -23,15 +25,15 @@ extern pros::Motor RF_motor;
 extern pros::Motor RM_motor;
 extern pros::Motor RB_motor;
 
-//other motors
+// declares other motors
 extern pros::Motor intake;
 extern pros::Motor conveyor;
 extern pros::Motor arm;
 
-//sensor ports
+// declares sensor ports
 extern pros::Imu IMU;
 
-//tw ports
+// declares tw ports
 
 extern pros::adi::DigitalOut intake_lift;
 extern pros::adi::DigitalOut intake_lift_left;
@@ -45,7 +47,7 @@ extern pros::adi::DigitalOut ring_stopper;
 
 extern pros::Rotation armRotation;
 
-//smart wire ports
+// defined smart wire ports
 #define PORT_LF -19
 #define PORT_LM 12
 #define PORT_LB -11
@@ -70,7 +72,7 @@ extern pros::Rotation armRotation;
 
 #define PORT_ARM_ROTATION 2
 
-//tw ports
+// defines tw ports
 #define PORT_INTAKE_LIFT 'G'
 // #define PORT_INTAKE_LIFT_LEFT 'A'
 // #define PORTS_INTAKE_LIFT_RIGHT 'B'
@@ -81,14 +83,14 @@ extern pros::Rotation armRotation;
 #define PORT_DOINKER 'B'
 #define PORT_RING_STOPPER 'A'
 
-//odom sensor offsets
+// defines odom sensor offsets
 #define VERTICAL_OFFSET 0
 #define HORIZONTAL_OFFSET 0
 
-//drive curve
+// defines drive curve
 #define DRIVE_CURVE 1
 
-//buttons
+// defines buttons
 #define intakeButton pros::E_CONTROLLER_DIGITAL_L1
 #define intakeReverseButton pros::E_CONTROLLER_DIGITAL_L2
 #define intakeLifTButton pros::E_CONTROLLER_DIGITAL_DOWN
@@ -98,10 +100,10 @@ extern pros::Rotation armRotation;
 #define doinkerButton pros::E_CONTROLLER_DIGITAL_Y
 #define ringStopperButton pros::E_CONTROLLER_DIGITAL_RIGHT
 
-//algo inputs
+// defines algo inputs
 #define arm_kp 0.5
 
-//checking devices
+// checking devices functions
 bool isConnected(int port);
 void checkIfConnected(int port, std::string deviceName);
 void checkAllDevices();

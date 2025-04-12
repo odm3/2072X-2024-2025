@@ -1,5 +1,6 @@
 #pragma once
 
+// declares autonomous functions
 void noAuto();
 void testEzDrive();
 void testEzTurn();

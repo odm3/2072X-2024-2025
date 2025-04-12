@@ -13,6 +13,7 @@ rd::Selector autoSelector1( {
 }
 );
 
+// creates a console for robodash
 rd::Console(mainConsole);
 
 /**
@@ -93,16 +94,14 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-
+	// Set the brake mode of the motors
 	EzTempChassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
 	MotorIntakeLeft.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	MotorIntakeRight.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 
-	while (true) {
-
+	while (true) {	//infinite loop for driver control
 		// get the pose of the chassis
 		lemlib::Pose Cpose = LemLibChassis.getPose();
-
 		// PID Tuner / Auton Tester
     	if (!pros::competition::is_connected()) {
       		// Enable / Disable PID Tuner
@@ -117,16 +116,12 @@ void opcontrol() {
         		autonomous();
         		// EzTempChassis.drive_brake_set(driver_preference_brake);
       }
-
       EzTempChassis.pid_tuner_iterate();  // Allow PID Tuner to iterate
-
     }
-
 		//drive chassis styles whichever is uncommented is active
 		// EzTempChassis.opcontrol_tank();
 		// EzTempChassis.opcontrol_arcade_standard(ez::SINGLE);
 		EzTempChassis.opcontrol_arcade_standard(ez::SPLIT);
-
 		//controls functions from controls.cpp/.hpp which let the user control all devices in opcontrol
 		controlIntake();
 		controlArm();
@@ -135,20 +130,17 @@ void opcontrol() {
 		controlDoinker();
 		controlHang();
 		controlHoodLift();
-
-		  	if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))	{
-			
+		  	if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))	{	//if the A button is pressed
 		// print the x, y, and theta values of the pose
 			mainConsole.printf("X: %f, Y: %f, Theta: %f\n", Cpose.x, Cpose.y, Cpose.theta);
 		}
-
-					else if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_R2))	{
+					else if (controlla.get_digital(pros::E_CONTROLLER_DIGITAL_R2))	{	//if the R2 button is pressed
+				// resets the position and imu readings
 				LemLibChassis.resetLocalPosition();
-				intertialIMU.tare();
-				mainConsole.clear();
+				intertialIMU.tare();	
+				mainConsole.clear();	//clears the console to allow for more data to be printed
 			}
 
-		pros::delay(ez::util::DELAY_TIME);                               // Run for 20 ms then update
+		pros::delay(ez::util::DELAY_TIME);                               // Run for 10 ms then update
 	}
 }
-
