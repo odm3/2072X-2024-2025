@@ -242,8 +242,8 @@ void handleBlueRing() {
         wrongColorDetected = true;  //stops driver control intake function
         intakeSet(12000);   //set intake to max vltg
         long start = pros::millis();    //start counting from when ring was sensed
-        while (optical_sort.get_proximity() > ambientProximity && pros::millis() - start < 125) {   //while the ring is travelling up
-            intakeSet(10000);   //set the intake to 10 volts
+        while (optical_sort.get_proximity() > ambientProximity && pros::millis() - start < 240) {   //while the ring is travelling up
+            intakeSet(12000);   //set the intake to 10 volts
             pros::delay(10);    //delay to not overwork v5 cortex
         }
         intakeSet(-12000);  //set intake to revese at max vltg
@@ -263,8 +263,8 @@ void handleRedRing() {
         wrongColorDetected = true;
         intakeSet(12000);
         long start = pros::millis();
-        while (optical_sort.get_proximity() > ambientProximity && pros::millis() - start < 125) {
-            intakeSet(10000);
+        while (optical_sort.get_proximity() > ambientProximity && pros::millis() - start < 240) {
+            intakeSet(12000);
             pros::delay(10);
         }
         intakeSet(-12000);

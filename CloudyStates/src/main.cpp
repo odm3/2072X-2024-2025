@@ -26,12 +26,13 @@ void initialize() {
   default_constants();  //sets pid constants to the defaults setin subsystems.hpp
 
   // Autonomous Selector using LLEMU
-  ez::as::auton_selector.autons_add({
+  ez::as::auton_selector.autons_add({ 
+    {"cornerTest", cornerTest},
+    {"SoloAwp Blue", soloAwpBlue},
     {"Elim Neg 5 Blue", elimNeg5Blue},
     {"Elim Neg 5 Red", elimNeg5Red},
     {"Drive 6", drive6},
     {"SoloAwp Red", soloAwpRed},
-    {"SoloAwp Blue", soloAwpBlue},
     {"Qual Neg Red", qualNegRed},
     {"Qual Neg Blue", qualNegBlue}, 
     {"Skills", skills},

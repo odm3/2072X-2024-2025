@@ -22,8 +22,8 @@
 #define PORT_RB 11
 
 // declaring subsystem motor port variables
-#define PORT_INTAKE    15
-#define PORT_HOOKS      21 //change ts
+#define PORT_INTAKE    -21
+#define PORT_HOOKS      15 //change ts
 #define PORT_ARM       8
 
 // declaring subsystem piston port variables

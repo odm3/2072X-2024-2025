@@ -17,6 +17,20 @@
 //  auto that just drives forward a little bit, use if teammate has a good soloawp
 void drive6() { EzChassis.pid_drive_set(6, DRIVE_SPEED); }
 
+void cornerTest(){
+  isRed = true;
+  autoClampActive = false;
+  ColorLoopActive = false;
+
+  intake_vltg = -12000;
+  EzChassis.pid_wait();
+  EzChassis.pid_drive_set(25, 110);
+  pros::delay(400);
+  intake_vltg = 12000;
+  pros::delay(400);
+  EzChassis.pid_drive_set(-36, DRIVE_SPEED);
+}
+
 void soloAwpRed() {
   isRed = true;
   autoClampActive = false;
