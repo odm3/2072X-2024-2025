@@ -2,11 +2,17 @@
 
 // declaring qual autos
 void drive6();
+
+
+void newSoloAwpRed();
+void newSoloAwpBlue();
 void soloAwpRed();
 void soloAwpBlue();
 void qualNegBlue();
 void qualNegRed();
 // declaring elim autos
+void elimNegRed();
+void elimPosRed();
 void elimNeg5Red();
 void elimNeg5Blue();
 

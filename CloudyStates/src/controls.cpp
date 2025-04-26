@@ -18,7 +18,16 @@ using namespace std;    //using standard namespace
 //sets the intake voltage to a certain value
 void intakeSet(int vltg) {
     intake_vltg = vltg;
-} 
+}
+
+void hookSet(int vltg) {
+    hook_vltg = vltg;
+}
+
+void intakeAndHookSet(int vltg) {
+    intake_vltg = vltg;
+    hook_vltg = vltg;
+}
 
 //code checking if the intake is jammed, and then it will unjam
 void unjam() {
@@ -60,9 +69,9 @@ void intake_control() {
     if (isStuck == true) return;    //if the intake is stuck, return to let the unjamming function take over
     
 
-    else if (controlla.get_digital(BUTTON_INTAKE)) { intakeSet(12000); }  // if intake button is pressed, set intake voltage variable to 12000
-    else if (controlla.get_digital(BUTTON_INTAKE_REVERSE)) { intakeSet(-12000); }   // if intake reverse button is pressed, set intake voltage variable to -12000
-    else { intake_vltg = 0; }   // if no buttons are pressed, set intake voltage to 0        
+    else if (controlla.get_digital(BUTTON_INTAKE)) { intakeAndHookSet(12000); }  // if intake button is pressed, set intake voltage variable to 12000
+    else if (controlla.get_digital(BUTTON_INTAKE_REVERSE)) { intakeAndHookSet(-12000); }   // if intake reverse button is pressed, set intake voltage variable to -12000
+    else { intakeAndHookSet(0); }   // if no buttons are pressed, set intake voltage to 0        
 }
 
 // task for controlling the intake
@@ -70,16 +79,16 @@ void intake_t() {
     pros::delay(100);   // small delay to prevent the task from running when ez-temp is initializing
     while (true) {          // infinite loop
         //unstuck();            //checks if the intake is jammed
-        if (motor_intake.get_efficiency() < 10 && abs(intake_vltg) > 0) {  //if the variable is true
+        if (motor_hooks.get_efficiency() < 10 && abs(hook_vltg) > 0) {  //if the variable is true
             if ((int)armPid.target_get() != ARM_PRIME1) {
-                intakeSet(-12000);  //set intake to revese at max vltg
+                hookSet(-12000);  //set intake to revese at max vltg
                 pros::delay(200);   //wait for 0.2 seconds
-                intakeSet(12000);   //set intake to forward speed
+                hookSet(12000);   //set intake to forward speed
             }
         }
         intake_control();   // run the intake control function to constantly update the intake voltage variable during driver control
         motor_intake.move_voltage(intake_vltg);  // move the intake motor with the intake voltage variable
-        motor_hooks.move_voltage(intake_vltg);
+        motor_hooks.move_voltage(hook_vltg);
         pros::delay(ez::util::DELAY_TIME);  // delay to prevent the v5 cortex from being overworked
     }
 }
@@ -240,15 +249,15 @@ void handleBlueRing() {
         //cout << "BLUE DETECTED" << "\n";
         master.rumble(".");
         wrongColorDetected = true;  //stops driver control intake function
-        intakeSet(12000);   //set intake to max vltg
+        hookSet(12000);   //set intake to max vltg
         long start = pros::millis();    //start counting from when ring was sensed
         while (optical_sort.get_proximity() > ambientProximity && pros::millis() - start < 240) {   //while the ring is travelling up
             intakeSet(12000);   //set the intake to 10 volts
             pros::delay(10);    //delay to not overwork v5 cortex
         }
-        intakeSet(-12000);  //set intake to revese at max vltg
+        hookSet(-12000);  //set intake to revese at max vltg
         pros::delay(200);   //wait for 0.2 seconds
-        intakeSet(12000);   //set intake to forward speed
+        hookSet(12000);   //set intake to forward speed
         wrongColorDetected = false; //no longer seeing wrong color, resume driver control
     } else {
         handleRightColor(); //if blue ring is the right color then handle as normal
@@ -261,15 +270,15 @@ void handleRedRing() {
         cout << "RED DETECTED" << "\n";
         master.rumble(". .");
         wrongColorDetected = true;
-        intakeSet(12000);
+        hookSet(12000);
         long start = pros::millis();
         while (optical_sort.get_proximity() > ambientProximity && pros::millis() - start < 240) {
-            intakeSet(12000);
+            hookSet(12000);
             pros::delay(10);
         }
-        intakeSet(-12000);
+        hookSet(-12000);
         pros::delay(200);
-        intakeSet(12000);
+        hookSet(12000);
         wrongColorDetected = false;
     } else {
         handleRightColor();
@@ -282,16 +291,16 @@ void handleRightColor() {
         ringsSeen++;
         rightRingBeingSeen = true;
         if (ringsSeen >= colorUntilRings) { //once rings seen has been reached
-            intakeSet(-12000);  //reverse to lose momentum
+            hookSet(-12000);  //reverse to lose momentum
             pros::delay(75);    //wait for 0.075seconds
-            intakeSet(0);   //stop intake
+            hookSet(0);   //stop intake
             colorUntilActivated = false;
         } else if (safeScoring) {   //prevents scoring while turning for better consistency
             while ((imu.get_heading() - prevHeading) / (pros::millis() - prevTime) > 0.5) {
-                intakeSet(0);
+                hookSet(0);
                 pros::delay(10);
             }
-            intakeSet(12000);
+            hookSet(12000);
         }
     }
 }

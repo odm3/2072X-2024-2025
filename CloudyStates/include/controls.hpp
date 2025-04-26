@@ -11,10 +11,13 @@ inline bool isRed;  //
 
 // declaring intake variables
 inline int intake_vltg = 0;
+inline int hook_vltg = 0;
 inline bool isStuck = false;
 
 // declaring intake functions
 void intakeSet(int vltg);
+void hookSet(int vltg);
+void intakeAndHookSet(int vltg);
 void unstuck(); 
 void intake_control();
 void intake_t();
