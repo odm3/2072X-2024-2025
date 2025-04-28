@@ -27,7 +27,8 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({ 
-    {"Elim Neg Red", elimNegRed},
+    {"Ring Rush Red", ringRushRed},
+    //{"Elim Neg Red", elimNegRed},
     {"Drive 6", drive6}, // Example auto that just drives forward a little bit, use if teammate has a good soloawp
     {"Elim Pos Red", elimPosRed},
     {"New SoloAwp Red", newSoloAwpRed},

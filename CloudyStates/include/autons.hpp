@@ -11,6 +11,7 @@ void soloAwpBlue();
 void qualNegBlue();
 void qualNegRed();
 // declaring elim autos
+void ringRushRed();
 void elimNegRed();
 void elimPosRed();
 void elimNeg5Red();

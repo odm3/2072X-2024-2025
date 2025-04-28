@@ -31,7 +31,7 @@ void cornerTest(){
   EzChassis.pid_drive_set(-36, DRIVE_SPEED);
 }
 
-void elimNegRed() {
+void ringRushRed() {
   isRed = true;
   autoClampActive = true;
   ColorLoopActive = true;
@@ -41,61 +41,67 @@ void elimNegRed() {
   doinkerLeftState = true;
   //intake_vltg = 12000;
   intakeSet(12000);
-  EzChassis.pid_wait_until(25);
-  //EzChassis.pid_speed_max_set(45);
   EzChassis.pid_wait_quick_chain();
-  EzChassis.pid_drive_set(-32, 60);
+  EzChassis.pid_turn_set(310, TURN_SPEED, true);
+  //EzChassis.pid_wait_quick();
+  EzChassis.pid_drive_set(-28, DRIVE_SPEED, true);
   EzChassis.pid_wait_until(-10);
-  EzChassis.pid_speed_max_set(DRIVE_SPEED);
+  EzChassis.pid_speed_max_set(60);
   EzChassis.pid_wait();
+  hookSet(12000);
+  // EzChassis.pid_swing_set(ez::RIGHT_SWING, 208, 60, 18);
+  // EzChassis.pid_wait();
+  EzChassis.pid_turn_set(290, TURN_SPEED, true);
+  EzChassis.pid_wait_quick();
   doinkerLeftState = false;
   pros::delay(500);
-  EzChassis.pid_turn_set(210, TURN_SPEED, true);
+  EzChassis.pid_turn_set(270, TURN_SPEED, true);
   EzChassis.pid_wait_quick();
-  EzChassis.pid_drive_set(-16, DRIVE_SPEED);
-  EzChassis.pid_wait();
-  pros::delay(590);
-  EzChassis.pid_turn_set(260, TURN_SPEED, true);
+  EzChassis.pid_drive_set(24, 80, true);
+  EzChassis.pid_wait_quick_chain();
+
+  EzChassis.pid_turn_set(180, TURN_SPEED, true);
   EzChassis.pid_wait_quick();
-  hookSet(12000);
   EzChassis.pid_drive_set(20, DRIVE_SPEED, true);
   EzChassis.pid_wait_quick_chain();
-  EzChassis.pid_turn_set(200, TURN_SPEED);
+  EzChassis.pid_turn_set(223.5, TURN_SPEED, true);
   EzChassis.pid_wait_quick();
-  EzChassis.pid_drive_set(38, 80);
-  armPid.target_set(20000);
+  EzChassis.pid_drive_set(24, 30, false);
+  armPos(19500);
   EzChassis.pid_wait_quick();
-  EzChassis.pid_drive_set(-20, 60);
-  EzChassis.pid_wait_quick();
-  // EzChassis.pid_drive_set(8, 60);
-  // EzChassis.pid_wait_quick_chain();
+  EzChassis.pid_drive_set(-20, 127);
+  EzChassis.pid_wait();
+  EzChassis.pid_drive_set(6, DRIVE_SPEED);
+  EzChassis.pid_wait_quick_chain();
+  EzChassis.pid_drive_set(-4, DRIVE_SPEED);
+  EzChassis.pid_wait_quick_chain();
   
-  EzChassis.pid_turn_set(103, TURN_SPEED);
+  EzChassis.pid_turn_set(105, TURN_SPEED, true);
   EzChassis.pid_wait_quick();
-  EzChassis.pid_drive_set(36, DRIVE_SPEED);
+  EzChassis.pid_drive_set(28, DRIVE_SPEED);
   armPid.target_set(ARM_PRIME1);
   EzChassis.pid_wait_quick_chain();
   doinkerLeftState = true;
   pros::delay(500);
-  EzChassis.pid_turn_set(140, 45, true);
+  EzChassis.pid_drive_set(-12, DRIVE_SPEED);
   EzChassis.pid_wait_quick();
-  EzChassis.pid_drive_set(12, 45);
+  doinkerLeftState = false;
+  pros::delay(500);
+  EzChassis.pid_turn_set(80, TURN_SPEED);
+  EzChassis.pid_wait_quick();
+  EzChassis.pid_drive_set(6,  DRIVE_SPEED);
   EzChassis.pid_wait_quick_chain();
+  EzChassis.pid_turn_set(152, TURN_SPEED);
+  EzChassis.pid_wait_quick();
+  EzChassis.pid_drive_set(14, DRIVE_SPEED);
   armPid.target_set(ARM_ALLIANCE);
   hookSet(0);
+  pros::delay(100);
+  hookSet(12000);
   pros::delay(850);
+  EzChassis.pid_wait();
 
-  // EzChassis.pid_drive_set(36, DRIVE_SPEED);
-  // EzChassis.pid_wait_until(8);
-  // armPid.target_set(ARM_PRIME1);
-  // EzChassis.pid_wait_quick_chain();
-  // doinkerLeftState = true;
-  // pros::delay(100);
-  // EzChassis.pid_turn_set(135, TURN_SPEED, true);
-  // EzChassis.pid_wait_quick();
-  // EzChassis.pid_drive_set(8, DRIVE_SPEED);
-  // armPid.target_set(ARM_ALLIANCE);
-  // pros::delay(850);
+  
 }
 
 
