@@ -27,20 +27,17 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({ 
-    {"Ring Rush Red", ringRushRed},
-    //{"Elim Neg Red", elimNegRed},
-    {"Drive 6", drive6}, // Example auto that just drives forward a little bit, use if teammate has a good soloawp
-    {"Elim Pos Red", elimPosRed},
     {"New SoloAwp Red", newSoloAwpRed},
+    {"Elim Pos Red", elimPosRed},
+    {"Elim Pos Red No Stake", elimPosRedNoStake},
+    {"Interference Example", interfered_example},
+    {"Corner Test", cornerTest},
+    {"Elim Neg Red", elimNegRed},
+    {"Ring Rush Red", ringRushRed},
+    {"Drive 6", drive6}, // Example auto that just drives forward a little bit, use if teammate has a good soloawp
     {"New SoloAwp Blue", newSoloAwpBlue},
     {"SoloAwp Red", soloAwpRed},
     {"SoloAwp Blue", soloAwpBlue},
-    {"cornerTest", cornerTest},
-    {"Elim Neg 5 Blue", elimNeg5Blue},
-    {"Elim Neg 5 Red", elimNeg5Red},
-    {"Drive 6", drive6},
-    {"Qual Neg Red", qualNegRed},
-    {"Qual Neg Blue", qualNegBlue}, 
     {"Skills", skills},
 
   });
