@@ -10,6 +10,8 @@ void soloAwpRed();
 void soloAwpBlue();
 void qualNegBlue();
 void qualNegRed();
+void qualPosRed();
+void qualPosBlue();
 // declaring elim autos
 void ringRushRed();
 void ringRushBlue();
@@ -17,7 +19,8 @@ void elimNegRed();
 void elimNegBlue();
 void elimPosRed();
 void elimPosBlue();
-void elimPosRedNoStake();
+void elimPosRed();
+void elimPosRedWall();
 void elimPosBlueNoStake();
 
 //declaring skills auto

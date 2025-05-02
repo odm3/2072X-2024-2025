@@ -27,9 +27,11 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({ 
-    {"New SoloAwp Red", newSoloAwpRed},
-    {"Elim Pos Red", elimPosRed},
-    {"Elim Pos Red No Stake", elimPosRedNoStake},
+    //{"New SoloAwp Red", newSoloAwpRed},
+    //{"Elim Pos Red No Stake", elimPosRedNoStake},
+    {"Elim Pos Red Wall", elimPosRedWall},
+    {"Elim Pos Red No Stake", elimPosRed},
+    {"Qual Pos Red", qualPosRed},
     {"Interference Example", interfered_example},
     {"Corner Test", cornerTest},
     {"Elim Neg Red", elimNegRed},
