@@ -19,9 +19,8 @@ void elimNegRed();
 void elimNegBlue();
 void elimPosRed();
 void elimPosBlue();
-void elimPosRed();
 void elimPosRedWall();
-void elimPosBlueNoStake();
+void elimPosBlueWall();
 
 //declaring skills auto
 void skills();

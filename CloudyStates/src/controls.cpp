@@ -150,7 +150,7 @@ void arm_t() {
         motor_arm.move_voltage(arm_vltg);  // move the arm motor with the arm voltage variable
          //printing out values to the brain, most don't have to do with the arm but it's nice to have all in one place.
          pros::lcd::print(4, "imu: %f", imu.get_rotation());
-         pros::lcd::print(5, "angle: %d", rotation_arm.get_position());
+         pros::lcd::print(5, "angle: %d", motor_arm.get_position());
          pros::lcd::print(6, "color prox: %d", optical_sort.get_proximity());
          pros::lcd::print(7, "clamp prox: %d", optical_clamp.get_proximity());
 

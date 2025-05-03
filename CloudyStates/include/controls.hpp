@@ -73,3 +73,10 @@ void startColorUntil(int rings);
 void handleBlueRing();
 void handleRedRing();
 void handleRightColor();
+
+inline pros::Task arm_task(arm_t);                            // starts the arm task
+inline pros::Task intake_task(intake_t);                      // starts the intake task
+inline pros::Task piston_task(piston_t);                      // starts the piston task
+//pros::Task temp_task(checkTempAndPorts);                     // starts the temperature task
+inline pros::Task sort_task(colorSort_t);   
+inline pros::Task clamp_task(clamp_t);                               // starts the clamp task

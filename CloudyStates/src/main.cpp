@@ -1,5 +1,6 @@
 #include "main.h"
 #include <type_traits>
+#include "EZ-Template/piston.hpp"
 #include "EZ-Template/sdcard.hpp"
 #include "autons.hpp"
 #include "controls.hpp"
@@ -21,25 +22,28 @@ void initialize() {
 
   // Configure your EzChassis controls
   EzChassis.opcontrol_curve_buttons_toggle(false);   // Enables modifying the controller curve with buttons on the joysticks
-  EzChassis.opcontrol_drive_activebrake_set(0.0);   // Sets the active brake kP. We recommend ~2.  0 will disable.
+  //EzChassis.opcontrol_drive_activebrake_set(0.0);   // Sets the active brake kP. We recommend ~2.  0 will disable.
   EzChassis.opcontrol_curve_default_set(EZ_DRIVE_CURVE_1, EZ_DRIVE_CURVE_2);  // Defaults for curve. 
+  EzChassis.opcontrol_curve_default_set(1,1);
   default_constants();  //sets pid constants to the defaults setin subsystems.hpp
 
   // Autonomous Selector using LLEMU
-  ez::as::auton_selector.autons_add({ 
-    //{"New SoloAwp Red", newSoloAwpRed},
-    //{"Elim Pos Red No Stake", elimPosRedNoStake},
-    {"Elim Pos Red Wall", elimPosRedWall},
-    {"Elim Pos Red No Stake", elimPosRed},
-    {"Qual Pos Red", qualPosRed},
-    {"Interference Example", interfered_example},
-    {"Corner Test", cornerTest},
-    {"Elim Neg Red", elimNegRed},
+  ez::as::auton_selector.autons_add({
+    {"SAWP Red", newSoloAwpRed},
+    {"SAWP Blue", newSoloAwpBlue},
+    {"Q Red Pos 5+1", qualPosRed},
+    {"Q Blue Pos 5+1", qualPosBlue},
+    {"Q Red Neg 6+1", qualNegRed},
+    {"Q Blue Neg 6+1", qualNegBlue},
+    {"E Pos Red 6+0", elimPosRed},
+    {"E Pos Red 5+Wall", elimPosRedWall},
+    {"E Pos Blue 6+0", elimPosBlue},
+    {"E Pos Blue 5+Wall", elimPosBlueWall},
+    {"E Neg Red 6+1", elimNegRed},
+    {"E Neg Blue 6+1", elimNegBlue},
     {"Ring Rush Red", ringRushRed},
+    {"Ring Rush Blue", ringRushBlue},
     {"Drive 6", drive6}, // Example auto that just drives forward a little bit, use if teammate has a good soloawp
-    {"New SoloAwp Blue", newSoloAwpBlue},
-    {"SoloAwp Red", soloAwpRed},
-    {"SoloAwp Blue", soloAwpBlue},
     {"Skills", skills},
 
   });
@@ -234,6 +238,10 @@ void opcontrol() {
     EzChassis.opcontrol_arcade_standard(ez::SPLIT);   // Activates arcade control
 
     if (controlla.get_digital_new_press(BUTTON_DRIVE_BACK)) { //backs up a distance to score allaince stake
+      // arm_task.suspend(); //suspends the arm task to prevent it from moving while driving
+      // motor_arm.move_absolute(14000, 90);
+      // pros::delay(1000);
+      // arm_task.resume(); //resumes the arm task
       EzChassis.pid_drive_set(-7.5, DRIVE_SPEED, false, false);
       EzChassis.pid_wait();
     }
