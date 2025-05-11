@@ -1,21 +1,28 @@
 #pragma once
 
 // declaring qual autos
+void drive6();
 
+void newSoloAwpRed();
+void newSoloAwpBlue();
+void soloAwpRed();
+void soloAwpBlue();
+void qualNegBlue();
+void qualNegRed();
+void qualPosRed();
+void qualPosBlue();
 // declaring elim autos
+void ringRushRed();
+void ringRushBlue();
+void elimNegRed();
+void elimNegBlue();
+void elimPosRed();
+void elimPosBlue();
+void elimPosRedWall();
+void elimPosBlueWall();
 
-// declaring example autos
-void drive_example();
-void turn_example();
-void drive_and_turn();
-void wait_until_change_speed();
-void swing_example();
-void motion_chaining();
-void combining_movements();
+//declaring skills auto
+void skills();
+
 void interfered_example();
-void odom_drive_example();
-void odom_pure_pursuit_example();
-void odom_pure_pursuit_wait_until_example();
-void odom_boomerang_example();
-void odom_boomerang_injected_pure_pursuit_example();
-void measure_offsets();
+void cornerTest();

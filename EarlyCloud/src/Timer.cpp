@@ -12,3 +12,4 @@ double Timer::getElapsedTimeMS() {
 void Timer::reset() {
     start = pros::millis();
 }
+

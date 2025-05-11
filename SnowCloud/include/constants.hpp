@@ -1,5 +1,4 @@
 #pragma once
-
 // lists includes
 #include "EZ-Template/PID.hpp"
 #include "EZ-Template/drive/drive.hpp"
@@ -112,7 +111,6 @@ enum ringColors       { RED = 15, BLUE = 100};
 
 // declares default constants
 void default_constants();
-
 // declares color sorting variables
 // bool doColorSort;
 // bool isRedAllinace;

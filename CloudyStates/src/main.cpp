@@ -1,8 +1,13 @@
 #include "main.h"
+#include <type_traits>
+#include "EZ-Template/piston.hpp"
+#include "EZ-Template/sdcard.hpp"
+#include "autons.hpp"
 #include "controls.hpp"
+#include "pros/misc.h"
 #include "pros/motors.h"
+#include "pros/rtos.hpp"
 #include "subsystems.hpp"
-
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -11,61 +16,62 @@
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-  // Print our branding over your terminal :D
   ez::ez_template_print();
 
   pros::delay(500);  // Stop the user from doing anything while legacy ports configure
 
   // Configure your EzChassis controls
-  EzChassis.opcontrol_curve_buttons_toggle(true);   // Enables modifying the controller curve with buttons on the joysticks
-  EzChassis.opcontrol_drive_activebrake_set(0.0);   // Sets the active brake kP. We recommend ~2.  0 will disable.
-  EzChassis.opcontrol_curve_default_set(EZ_DRIVE_CURVE_1, EZ_DRIVE_CURVE_2);  // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)
-  default_constants();
-
-  // These are already defaulted to these buttons, but you can change the left/right curve buttons here!
-  // EzChassis.opcontrol_curve_buttons_left_set(pros::E_CONTROLLER_DIGITAL_LEFT, pros::E_CONTROLLER_DIGITAL_RIGHT);  // If using tank, only the left side is used.
-  // EzChassis.opcontrol_curve_buttons_right_set(pros::E_CONTROLLER_DIGITAL_Y, pros::E_CONTROLLER_DIGITAL_A);
+  EzChassis.opcontrol_curve_buttons_toggle(false);   // Enables modifying the controller curve with buttons on the joysticks
+  //EzChassis.opcontrol_drive_activebrake_set(0.0);   // Sets the active brake kP. We recommend ~2.  0 will disable.
+  EzChassis.opcontrol_curve_default_set(EZ_DRIVE_CURVE_1, EZ_DRIVE_CURVE_2);  // Defaults for curve. 
+  EzChassis.opcontrol_curve_default_set(1,1);
+  default_constants();  //sets pid constants to the defaults setin subsystems.hpp
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-      {"Drive\n\nDrive forward and come back", drive_example},
-      {"Turn\n\nTurn 3 times.", turn_example},
-      {"Drive and Turn\n\nDrive forward, turn, come back", drive_and_turn},
-      {"Drive and Turn\n\nSlow down during drive", wait_until_change_speed},
-      {"Swing Turn\n\nSwing in an 'S' curve", swing_example},
-      {"Motion Chaining\n\nDrive forward, turn, and come back, but blend everything together :D", motion_chaining},
-      {"Combine all 3 movements", combining_movements},
-      {"Interference\n\nAfter driving forward, robot performs differently if interfered or not", interfered_example},
-      {"Simple Odom\n\nThis is the same as the drive example, but it uses odom instead!", odom_drive_example},
-      {"Pure Pursuit\n\nGo to (0, 30) and pass through (6, 10) on the way.  Come back to (0, 0)", odom_pure_pursuit_example},
-      {"Pure Pursuit Wait Until\n\nGo to (24, 24) but start running an intake once the robot passes (12, 24)", odom_pure_pursuit_wait_until_example},
-      {"Boomerang\n\nGo to (0, 24, 45) then come back to (0, 0, 0)", odom_boomerang_example},
-      {"Boomerang Pure Pursuit\n\nGo to (0, 24, 45) on the way to (24, 24) then come back to (0, 0, 0)", odom_boomerang_injected_pure_pursuit_example},
-      {"Measure Offsets\n\nThis will turn the robot a bunch of times and calculate your offsets for your tracking wheels.", measure_offsets},
+
+    {"E Neg Blue 6+1", elimNegBlue},
+
+    //{"SAWP Red", newSoloAwpRed},
+    //{"SAWP Blue", newSoloAwpBlue},
+    //{"Q Pos Red 5+1", qualPosRed},
+    //{"Q Pos Blue 5+1", qualPosBlue},
+    //{"Q Neg Red 5+1", qualNegRed},
+    //{"Q Neg Blue 5+1", qualNegBlue},
+    {"E Neg Red 6+1", elimNegRed},
+    {"E Neg Blue 6+1", elimNegBlue},
+    //{"Ring Rush Red", ringRushRed},
+    //{"Ring Rush Blue", ringRushBlue},
+    {"E Pos Red 6+0", elimPosRed},
+    //{"E Pos Red 5+Wall", elimPosRedWall},
+    {"E Pos Blue 6+0", elimPosBlue},
+    //{"E Pos Blue 5+Wall", elimPosBlueWall},
+    {"Drive 6", drive6}, // Example auto that just drives forward a little bit, use if teammate has a good soloawp
+    {"Skills", skills},
+
   });
 
   // Initialize EzChassis and auton selector
   EzChassis.initialize();
-  LLCHASSIS.calibrate(false);
+  //LLCHASSIS.calibrate(false);
   ez::as::initialize();
-
-  //  
-  // if (rotation_arm.get_position() <= -350000) {
-  //   rotation_arm.set_position(rotation_arm.get_position() + 360);
-  // }
 
   motor_intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);     //sets intake motor to coast and not resist external movement
   motor_arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);         //sets arm motor to hold to resist against gravity and other robots
+  rotation_arm.set_reversed(true);
   optical_clamp.set_integration_time(10);                     // sets the integration time of the optical sensor to 10ms
-  optical_sort.set_integration_time(10);                      // sets the integration time of the optical sensor to 10ms
+  optical_sort.set_integration_time(5);                      // sets the integration time of the optical sensor to 10ms
   optical_clamp.set_led_pwm(100);                            // sets the led brightness of the optical sensor to 100%
   optical_sort.set_led_pwm(100);                             // sets the led brightness of the optical sensor to 100%
 
   pros::Task arm_task(arm_t);                            // starts the arm task
   pros::Task intake_task(intake_t);                      // starts the intake task
-  pros::Task piston_task(piston_control);                // starts the piston task
+  pros::Task piston_task(piston_t);                      // starts the piston task
+  //pros::Task temp_task(checkTempAndPorts);                     // starts the temperature task
+  pros::Task sort_task(colorSort_t);   
+  pros::Task clamp_task(clamp_t);                               // starts the clamp task
 
-  master.rumble(EzChassis.drive_imu_calibrated() ? "." : "---");
+  controlla.rumble(EzChassis.drive_imu_calibrated() ? "." : "---"); //vibrates the controller depending on if the imu is calibrated 
 }
 
 /**
@@ -109,19 +115,6 @@ void autonomous() {
   EzChassis.odom_xyt_set(0_in, 0_in, 0_deg);    // Set the current position, you can start at a specific position with this
   EzChassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
 
-  /*
-  Odometry and Pure Pursuit are not magic
-
-  It is possible to get perfectly consistent results without tracking wheels,
-  but it is also possible to have extremely inconsistent results without tracking wheels.
-  When you don't use tracking wheels, you need to:
-   - avoid wheel slip
-   - avoid wheelies
-   - avoid throwing momentum around (super harsh turns, like in the example below)
-  You can do cool curved motions, but you have to give your robot the best chance
-  to be consistent
-  */
-
   ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
 
@@ -156,7 +149,6 @@ void ez_screen_task() {
                                "\ny: " + util::to_string_with_precision(EzChassis.odom_y_get()) +
                                "\na: " + util::to_string_with_precision(EzChassis.odom_theta_get()),
                            1);  // Don't override the top Page line
-
           // Display all trackers that are being used
           screen_print_tracker(EzChassis.odom_tracker_left, "l", 4);
           screen_print_tracker(EzChassis.odom_tracker_right, "r", 5);
@@ -187,6 +179,9 @@ pros::Task ezScreenTask(ez_screen_task);
 void ez_template_extras() {
   // Only run this when not connected to a competition switch
   if (!pros::competition::is_connected()) {
+    if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
+      ez::as::page_blank_is_on(0);
+    }
     // PID Tuner
     // - after you find values that you're happy with, you'll have to set them in auton.cpp
 
@@ -194,7 +189,7 @@ void ez_template_extras() {
     //  When enabled:
     //  * use A and Y to increment / decrement the constants
     //  * use the arrow keys to navigate the constants
-    if (master.get_digital_new_press(DIGITAL_X))
+    if (master.get_digital_new_press(DIGITAL_Y))
       EzChassis.pid_tuner_toggle();
 
     // Trigger the selected autonomous routine
@@ -229,18 +224,32 @@ void ez_template_extras() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-  // Set isAuto to false to allow for user control
-  isAuto = false;
+  
+  isAuto = false; // Set isAuto to false to allow for user control
+  //ColorLoopActive = false; // Set ColorLoopActive to true to allow for color sorting
+  ColorLoopActive = true; // Set ColorLoopActive to true to allow for color sorting
+
+  autoClampActive = false; // Set autoClampActive to true to allow for automatically clamping
   // Sets the motors to coast when not in autonomous for smoother driving and protecting motors
   EzChassis.drive_brake_set(MOTOR_BRAKE_COAST);
+  pros::Task display_task(efficiency_t);                 // starts the color sort task
+
 
   while (true) {
     // Gives you some extras to make EZ-Template ezier
-    ez_template_extras();
+    //ez_template_extras();
 
     //EzChassis.opcontrol_tank();  // Activates tank controls
     EzChassis.opcontrol_arcade_standard(ez::SPLIT);   // Activates arcade control
 
+    if (controlla.get_digital_new_press(BUTTON_DRIVE_BACK)) { //backs up a distance to score allaince stake
+      // arm_task.suspend(); //suspends the arm task to prevent it from moving while driving
+      // motor_arm.move_absolute(14000, 90);
+      // pros::delay(1000);
+      // arm_task.resume(); //resumes the arm task
+      EzChassis.pid_drive_set(-7.5, DRIVE_SPEED, false, false);
+      EzChassis.pid_wait();
+    }
 
     pros::delay(ez::util::DELAY_TIME);  // Delay to prevent the v5 cortex from being overworked
   }

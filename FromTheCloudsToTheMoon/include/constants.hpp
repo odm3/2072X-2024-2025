@@ -20,13 +20,13 @@
 #define PORT_LF 18
 #define PORT_LM -19
 #define PORT_LB -20
-#define PORT_RF 13
-#define PORT_RM -12
+#define PORT_RF -13
+#define PORT_RM 12
 #define PORT_RB 11
 
 //defines subsystem motor port variables
 #define PORT_INTAKE    15
-#define PORT_ARM       9
+#define PORT_ARM       10
 
 //defines piston port variables
 #define PORT_CLAMP         'A'
@@ -36,15 +36,15 @@
 #define PORT_LIMIT_HOOK    'H'
 
 //defines sensor port variables
-#define PORT_IMU            2
-#define PORT_ROTATION_ARM   10
+#define PORT_IMU            3
+#define PORT_ROTATION_ARM   9
 #define PORT_DISTANCE_CLAMP 16
 #define PORT_OPTICAL_SORT   8
 #define PORT_ODOM_VERT      0
 #define PORT_ODOM_HORI      0
 
 //defines drive constants
-#define WHEEL_DIAMETER 2.75
+#define WHEEL_DIAMETER 3.25
 #define DRIVE_RPM      450 
 #define ODOM_DIAMETER  2
 #define OFFSET_VERT    0

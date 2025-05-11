@@ -67,18 +67,6 @@ void deActivateHang() {
     pistonHang.set_value(false);
 }
 
-// void activate() {
-
-// }
-
-// void deActivate() {
-
-// }
-
-// void control() {
-    
-// }
-
 // activates the hood lift
 void activateHoodLift() {
     pistonHoodLift.set_value(true);

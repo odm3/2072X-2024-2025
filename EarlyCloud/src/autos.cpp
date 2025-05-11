@@ -3,10 +3,10 @@
 #include "EZ-Template/util.hpp"
 #include "controls.hpp"
 #include "devices.hpp"
-#include "lemlib/asset.hpp"
+#include "lemlib/asset.hpp" // IWYU pragma: keep
 #include "main.h" // IWYU pragma: keep
-#include "pros/device.h"
-#include "pros/device.hpp"
+#include "pros/device.h"  // IWYU pragma: keep
+#include "pros/device.hpp"  // IWYU pragma: keep
 #include "pros/rtos.hpp"
 
 // a universal speed for the EzTempChassis to follow. These are out of 127
@@ -285,9 +285,6 @@ void qualLeft() {
     armVoltage(3000);
     LemLibChassis.waitUntilDone();
 }
-
-
-
 //default auto for qualifications on the right side
 // (1 stake, 2 rings, ladder touch, 4pts.)
 void qualRight() {

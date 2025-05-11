@@ -83,12 +83,6 @@ void initialize() {
       Auton("Example Turn\n\nTurn 3 times.", turn_example),
       // Auton("Skills", skills),
       Auton("LB TESTING", ladyBrownTesting),
-      // Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
-      // Auton("Drive and Turn\n\nSlow down during drive.", wait_until_change_speed),
-      // Auton("Swing Example\n\nSwing in an 'S' curve", swing_example),
-      // Auton("Motion Chaining\n\nDrive forward, turn, and come back, but blend everything together :D", motion_chaining),
-      // Auton("Combine all 3 movements", combining_movements),
-      // Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
   });
 
   // Initialize chassis and auton selector
@@ -108,7 +102,6 @@ void initialize() {
   // MOTORGROUP_ARM.tare_position();
   master.rumble("_"); // Rumble the controller to let the driver know that the robot is ready
 }
-
 /**
  * Runs while the robot is in the disabled state of Field Management System or
  * the VEX Competition Switch, following either autonomous or opcontrol. When
@@ -117,7 +110,6 @@ void initialize() {
 void disabled() {
   // . . .
 }
-
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
  * Management System or the VEX Competition Switch. This is intended for
@@ -130,7 +122,6 @@ void disabled() {
 void competition_initialize() {
   // . . .
 }
-
 /**
  * Runs the user autonomous code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -148,11 +139,8 @@ void autonomous() {
   EZ_CHASSIS.drive_sensor_reset();               // Reset drive sensors to 0
   EZ_CHASSIS.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
   LL_CHASSIS.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-
-
   ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
-
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -170,8 +158,6 @@ void opcontrol() {
   // Sets the drive motors to coast
   EZ_CHASSIS.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
   LL_CHASSIS.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
-
-
   while (true) {
     // PID Tuner
     // After you find values that you're happy with, you'll have to set them in auton.cpp
@@ -192,13 +178,7 @@ void opcontrol() {
 
       EZ_CHASSIS.pid_tuner_iterate();  // Allow PID Tuner to iterate
     }
-
-    // EZ_CHASSIS.opcontrol_tank();  // Tank control
     EZ_CHASSIS.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
-    // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
-    // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
-    // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
-
     //runs the control functions in this infinite loop
     controlIntake();
     controlArm();

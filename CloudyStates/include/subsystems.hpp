@@ -1,40 +1,74 @@
 #pragma once
 
 // including all necessary header files
+#include "EZ-Template/piston.hpp"
 #include "api.h"
 #include "EZ-Template/api.hpp"
 #include "lemlib/api.hpp"
 #include "lemlib/chassis/trackingWheel.hpp"
+#include "pros/adi.h"
+#include "pros/adi.hpp"
 #include "pros/link.hpp"
 #include "pros/optical.hpp"
 #include "pros/rotation.hpp"
+#include "subsystems.hpp"
 
 // declaring drive motor port variables
 #define PORT_LF 18
 #define PORT_LM -19
 #define PORT_LB -20
-#define PORT_RF 13
-#define PORT_RM -12
+#define PORT_RF -13
+#define PORT_RM 12
 #define PORT_RB 11
 
 // declaring subsystem motor port variables
-#define PORT_INTAKE    15
-#define PORT_ARM       10
+#define PORT_INTAKE    -21
+#define PORT_HOOKS      15 //change ts
+#define PORT_ARM       8
 
 // declaring subsystem piston port variables
 #define PORT_CLAMP         'A'
-#define PORT_LIFT          'B'
+#define PORT_LIFT          'E'
+#define PORT_RESET_SWITCH  'B'
 #define PORT_DOINKER_LEFT  'C'
 #define PORT_DOINKER_RIGHT 'D'
 
 // declaring smartwire sensor port variables
-#define PORT_IMU            2
-#define PORT_ROTATION_ARM   9
-#define PORT_OPTICAL_CLAMP  17
-#define PORT_OPTICAL_SORT   8
+#define PORT_IMU            3
+#define PORT_ROTATION_ARM   -9
+#define PORT_OPTICAL_CLAMP  16
+#define PORT_OPTICAL_SORT   4
 #define PORT_ODOM_VERT      13
 #define PORT_ODOM_HORI      14
 #define PORT_VEXNET         21
+
+// // old bot ports
+// // declaring drive motor port variables
+// #define PORT_LF -18
+// #define PORT_LM -7
+// #define PORT_LB -6
+// #define PORT_RF 2
+// #define PORT_RM -4
+// #define PORT_RB 3
+
+// // declaring subsystem motor port variables
+// #define PORT_INTAKE    -1
+// #define PORT_ARM       12
+
+// // declaring subsystem piston port variables
+// #define PORT_CLAMP         'A'
+// #define PORT_LIFT          'B'
+// #define PORT_DOINKER_LEFT  'D'
+// #define PORT_DOINKER_RIGHT 'B'
+
+// // declaring smartwire sensor port variables
+// #define PORT_IMU            19
+// #define PORT_ROTATION_ARM   9
+// #define PORT_OPTICAL_CLAMP  14
+// #define PORT_OPTICAL_SORT   20
+// #define PORT_ODOM_VERT      13
+// #define PORT_ODOM_HORI      14
+// #define PORT_VEXNET         21
 
 // declaring constant variables
 #define WHEEL_DIAMETER 3.25
@@ -55,12 +89,12 @@
 #define BUTTON_ARM            pros::E_CONTROLLER_DIGITAL_R1
 #define BUTTON_ARM_REVERSE    pros::E_CONTROLLER_DIGITAL_R2
 #define BUTTON_ARM_PRIME      pros::E_CONTROLLER_DIGITAL_DOWN
-#define BUTTON_ARM_SCORE      pros::E_CONTROLLER_DIGITAL_X
 #define BUTTON_CLAMP          pros::E_CONTROLLER_DIGITAL_B
 #define BUTTON_LIFT           pros::E_CONTROLLER_DIGITAL_Y
 #define BUTTON_DOINKER_LEFT   pros::E_CONTROLLER_DIGITAL_LEFT
 #define BUTTON_DOINKER_RIGHT  pros::E_CONTROLLER_DIGITAL_A
 #define BUTTON_COLOR_SORT     pros::E_CONTROLLER_DIGITAL_RIGHT
+#define BUTTON_DRIVE_BACK     pros::E_CONTROLLER_DIGITAL_X
 
 // controller constructors
 inline pros::Controller controlla(pros::E_CONTROLLER_MASTER);
@@ -74,8 +108,9 @@ inline pros::Motor motor_RM     (PORT_RM, pros::v5::MotorGears::blue);
 inline pros::Motor motor_RB     (PORT_RB, pros::v5::MotorGears::blue);
 
 // subsystem motor constructors
-inline pros::Motor motor_intake (PORT_INTAKE, pros::v5::MotorGears::blue);
-inline pros::Motor motor_arm    (PORT_ARM, pros::v5::MotorGears::blue);
+inline pros::Motor motor_intake (PORT_INTAKE, pros::v5::MotorGears::green);
+inline pros::Motor motor_hooks (PORT_HOOKS, pros::v5::MotorGears::green);
+inline pros::Motor motor_arm    (PORT_ARM, pros::v5::MotorGears::red);
 
 // subsystem constructors
 inline ez::Piston piston_clamp         (PORT_CLAMP, false);
@@ -85,8 +120,9 @@ inline ez::Piston piston_doinker_right (PORT_DOINKER_RIGHT, false);
 
 // smartwire sensor constructors
 inline pros::Imu      imu            (PORT_IMU);
+inline pros::adi::DigitalIn reset_switch(PORT_RESET_SWITCH);
 inline pros::Rotation rotation_arm   (PORT_ROTATION_ARM);
-inline pros::Optical optical_clamp  (PORT_OPTICAL_CLAMP);
+inline pros::Optical optical_clamp   (PORT_OPTICAL_CLAMP);
 inline pros::Optical  optical_sort   (PORT_OPTICAL_SORT);
 inline pros::Rotation odom_hori      (PORT_ODOM_HORI);
 inline pros::Rotation odom_vert      (PORT_ODOM_VERT);
@@ -180,21 +216,21 @@ inline ez::Drive EzChassis(
 
 inline void default_constants() {
   // P, I, D, and Start I
-  EzChassis.pid_drive_constants_set(20.0, 0.0, 100.0);         // Fwd/rev constants, used for odom and non odom motions
+  EzChassis.pid_drive_constants_set(20.0, 0.0, 200.0);         // Fwd/rev constants, used for odom and non odom motions
   EzChassis.pid_heading_constants_set(11.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
-  EzChassis.pid_turn_constants_set(3.0, 0.05, 20.0, 15.0);     // Turn in place constants
-  EzChassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
+  EzChassis.pid_turn_constants_set(6.0, 0.05, 45.0, 15.0);     // Turn in place constants
+  EzChassis.pid_swing_constants_set(5.0, 0.0, 35.0);           // Swing constants
   EzChassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
   EzChassis.pid_odom_boomerang_constants_set(5.8, 0.0, 32.5);  // Angular control for boomerang motions
       
   // Exit conditions
-  EzChassis.pid_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  EzChassis.pid_swing_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
+  EzChassis.pid_turn_exit_condition_set(90_ms, 2_deg, 250_ms, 5_deg, 500_ms, 500_ms);
+  EzChassis.pid_swing_exit_condition_set(90_ms, 2_deg, 250_ms, 5_deg, 500_ms, 500_ms);
   EzChassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
   EzChassis.pid_odom_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 750_ms);
   EzChassis.pid_odom_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 500_ms, 750_ms);
   // motion chaining constants
-  EzChassis.pid_turn_chain_constant_set(3_deg);
+  EzChassis.pid_turn_chain_constant_set(2_deg);
   EzChassis.pid_swing_chain_constant_set(5_deg);
   EzChassis.pid_drive_chain_constant_set(3_in);
   
