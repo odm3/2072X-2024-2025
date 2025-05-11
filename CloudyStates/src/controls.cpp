@@ -122,10 +122,10 @@ void arm_control() {
        // else if (armState == 2) { armPos(ARM_DOWN); armState = 0; }  // if the arm state is 2, set the arm position to ARM_DOWN and reset the arm state
     }
     // **OUTDATED**
-    // else if (controlla.get_digital_new_press(BUTTON_ARM_SCORE)) {
-    //     armPos(18000);
-    //     armState = 1;
-    // }
+    else if (controlla.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+        armPos(ARM_PRIME1);
+        armState = 0;
+    }
 }
 
 // task for controlling the arm
@@ -150,9 +150,12 @@ void arm_t() {
         motor_arm.move_voltage(arm_vltg);  // move the arm motor with the arm voltage variable
          //printing out values to the brain, most don't have to do with the arm but it's nice to have all in one place.
          pros::lcd::print(4, "imu: %f", imu.get_rotation());
-         pros::lcd::print(5, "angle: %d", motor_arm.get_position());
+         pros::lcd::print(5, "angle: %d", rotation_arm.get_position());
          pros::lcd::print(6, "color prox: %d", optical_sort.get_proximity());
          pros::lcd::print(7, "clamp prox: %d", optical_clamp.get_proximity());
+         if ((int)armPid.target_get() == ARM_PRIME1) {
+            controlla.rumble(".");
+         }
 
         pros::delay(ez::util::DELAY_TIME);                                    // delay to prevent the v5 cortex from being overworked
     }

@@ -3,7 +3,6 @@
 // declaring qual autos
 void drive6();
 
-
 void newSoloAwpRed();
 void newSoloAwpBlue();
 void soloAwpRed();

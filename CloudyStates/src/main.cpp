@@ -29,20 +29,23 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-    {"SAWP Red", newSoloAwpRed},
-    {"SAWP Blue", newSoloAwpBlue},
-    {"Q Red Pos 5+1", qualPosRed},
-    {"Q Blue Pos 5+1", qualPosBlue},
-    {"Q Red Neg 6+1", qualNegRed},
-    {"Q Blue Neg 6+1", qualNegBlue},
-    {"E Pos Red 6+0", elimPosRed},
-    {"E Pos Red 5+Wall", elimPosRedWall},
-    {"E Pos Blue 6+0", elimPosBlue},
-    {"E Pos Blue 5+Wall", elimPosBlueWall},
+
+    {"E Neg Blue 6+1", elimNegBlue},
+
+    //{"SAWP Red", newSoloAwpRed},
+    //{"SAWP Blue", newSoloAwpBlue},
+    //{"Q Pos Red 5+1", qualPosRed},
+    //{"Q Pos Blue 5+1", qualPosBlue},
+    //{"Q Neg Red 5+1", qualNegRed},
+    //{"Q Neg Blue 5+1", qualNegBlue},
     {"E Neg Red 6+1", elimNegRed},
     {"E Neg Blue 6+1", elimNegBlue},
-    {"Ring Rush Red", ringRushRed},
-    {"Ring Rush Blue", ringRushBlue},
+    //{"Ring Rush Red", ringRushRed},
+    //{"Ring Rush Blue", ringRushBlue},
+    {"E Pos Red 6+0", elimPosRed},
+    //{"E Pos Red 5+Wall", elimPosRedWall},
+    {"E Pos Blue 6+0", elimPosBlue},
+    //{"E Pos Blue 5+Wall", elimPosBlueWall},
     {"Drive 6", drive6}, // Example auto that just drives forward a little bit, use if teammate has a good soloawp
     {"Skills", skills},
 
@@ -223,7 +226,9 @@ void ez_template_extras() {
 void opcontrol() {
   
   isAuto = false; // Set isAuto to false to allow for user control
+  //ColorLoopActive = false; // Set ColorLoopActive to true to allow for color sorting
   ColorLoopActive = true; // Set ColorLoopActive to true to allow for color sorting
+
   autoClampActive = false; // Set autoClampActive to true to allow for automatically clamping
   // Sets the motors to coast when not in autonomous for smoother driving and protecting motors
   EzChassis.drive_brake_set(MOTOR_BRAKE_COAST);

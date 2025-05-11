@@ -25,10 +25,10 @@ void intake_t();
 // declaring arm variables
 inline int arm_vltg = 0;
 inline int armState = 0;
-enum armStates{ARM_DOWN = 1000, ARM_PRIME1 = 2600, ARM_PRIME2 = 5000, ARM_SCORE = 15000, ARM_ALLIANCE = 21000};
+enum armStates{ARM_DOWN = 1000, ARM_PRIME1 = 3200, ARM_PRIME2 = 5000, ARM_SCORE = 15000, ARM_ALLIANCE = 21000};
 
 // declaring arm PID control loop
-inline ez::PID armPid(2, 0, 10, 0, "Lady Brown PID");
+inline ez::PID armPid(2, 0.02, 8, 0, "Lady Brown PID");
 
 // declaring arm functions
 void armPos(int target);
